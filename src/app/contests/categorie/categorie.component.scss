@@ -1,0 +1,134 @@
+.categorie-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 80%;
+    height: fit-content;
+    align-items: center;
+    overflow: scroll;
+    max-height: 100%;
+
+    .scrollable {
+        align-items: center;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        padding: 30px 15px;
+        min-width: fit-content;
+    }
+
+    .mat-form-field {
+        width: 90%;
+    }
+
+    .example-form {
+        width: 100%;
+    }
+
+    .pool {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        background-color: #f1f1f1;
+        border-radius: 32px;
+        margin: 10px 0;
+
+        .poule {
+            margin: 15px 0;
+        }
+
+        .participants {
+            width: 100%;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+
+            .delete {
+                width: 40%;
+                min-width: fit-content;
+            }
+
+            .participants-cont {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+
+                .vote-mode {
+                    display: flex;
+                    width: 100%;
+                    flex-wrap: wrap;
+                    margin: 10px 0px;
+
+                    .icon {
+                        font-size: 40px;
+                        flex: 0 0 auto;
+                        width: fit-content;
+                    }
+
+                    .info {
+                        display: flex;
+                        flex-direction: column;
+                        flex: 1;
+                        margin: 0 10px;
+                    }
+
+                    .vote-input {
+                        margin: 10px 0 20px 0;
+                        font-size: 25px;
+                        flex: 0 0 auto;
+                        width: 100%;
+                    }
+                }
+            }
+
+            .button {
+                font-size: 1em;
+            }
+        }
+    }
+
+    .button {
+        width: 80%;
+        font-size: 1.5em;
+        margin: 10px 0;
+
+        &.save {
+            margin-top: 30px;
+        }
+
+        &.scores {
+            background-color: #007106;
+            margin-top: 30px;
+            color: #ffffff;
+        }
+    }
+}
+
+@media (max-width: 570px) {
+
+    .categorie-container {
+        width: 95%;
+    }
+}
+
+@media (max-width: 270px) {
+    .pool {
+
+        .participants {
+
+            .icon {
+                display: none;
+            }
+        }
+    }
+}

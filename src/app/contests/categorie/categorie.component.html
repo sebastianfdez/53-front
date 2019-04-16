@@ -1,0 +1,84 @@
+<div class="categorie-container">
+
+  <div class="scrollable" *ngIf="!loading">
+
+    <span style="font-size: 2em; margin-bottom: 30px;" *ngIf="!isAdmin && !isSpeaker && (judgeName !== '')">Juge: {{judgeName}} </span>
+    <span style="font-size: 2em; margin-bottom: 30px;">Categorie: {{categorie.name}} </span>
+
+    <form class="example-form" *ngIf="isAdmin" >
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Name" [(ngModel)]="categorie.name" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+    </form>
+
+    <div class="pool mat-elevation-z2" *ngFor="let pool of pools; let j = index;">
+      <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
+      <div class="participants">
+        <div class="participants-cont" *ngFor="let participantName of pool.participants; let i = index;">
+          <ng-container *ngIf="isAdmin">
+          
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Prenom" [(ngModel)]="pool.participants[i].name" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nom" [(ngModel)]="pool.participants[i].lastName" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Licence" [(ngModel)]="pool.participants[i].licence" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Ville/Club" [(ngModel)]="pool.participants[i].club" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            
+            <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
+              - Suprimer Participant
+            </button>
+          </ng-container>
+          <div class="vote-mode" *ngIf="!isAdmin">
+              <mat-icon class="icon" matSuffix>person</mat-icon>
+              <div class="info">
+                <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{pool.participants[i].name}} </span></span>
+                <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].lastName}} </span></span>
+                <span *ngIf="!isSpeaker">Licence: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].licence}} </span></span>
+                <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].club}} </span></span>
+              </div>
+              <mat-form-field class="vote-input" *ngIf="!isAdmin && !isSpeaker">
+                <input matInput placeholder="Note (1-100)" type="number" [min]="0" [max]="100" [(ngModel)]="votesRecord[pool.participants[i].id]" 
+                  [ngModelOptions]="{standalone: true}" required>
+              </mat-form-field>
+          </div>
+          
+        </div>
+
+        <button mat-stroked-button *ngIf="isAdmin" class="button" (click)="addParticipant(pool)">
+          + Ajouter Participant
+        </button>
+
+        <button mat-raised-button color="warn" *ngIf="isAdmin" class="button delete-pool" (click)="deletePool(j)">
+          - Suprimer Poule
+        </button>
+      </div>
+    </div>
+
+    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button" style="margin-top: 20px;" (click)="addPool()">
+      Ajouter Poule
+    </button>
+
+    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="save()">
+      Sauvegarder Categorie
+    </button>
+
+    <button mat-flat-button *ngIf="!isAdmin && !isSpeaker" color="primary" class="button save" (click)="saveVotes()">
+      Actualizer Notes
+    </button>
+
+    <button mat-flat-button *ngIf="isAdmin && !createNew" color="#007106" class="button scores" (click)="goToScores()">
+      Regarder Notes
+    </button>
+  </div>
+
+  <div class="scrollable" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>

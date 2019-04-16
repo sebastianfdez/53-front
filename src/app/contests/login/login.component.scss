@@ -1,0 +1,32 @@
+:host {
+    font-size: 1.6em;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: fit-content;
+
+    .example-form {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+    }
+
+    .button {
+        height: 4em;
+        width: 12em;
+        font-size: 1em;
+    }
+}
+

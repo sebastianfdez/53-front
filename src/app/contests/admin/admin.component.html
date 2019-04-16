@@ -1,0 +1,34 @@
+<div class="categories">
+
+    <span style="font-size: 6vw;
+    margin-bottom: 30px;
+    width: 90%;
+    text-align: center;
+    margin: 30px 0;" *ngIf="!loading">Admin: {{admin.name}} {{admin.lastName}}</span>
+    <span style="font-size: 6vw;
+    margin-bottom: 30px;
+    width: 90%;
+    text-align: center;" *ngIf="!loading">{{contest?.name}}</span>
+  
+    <span style="font-size: 2em; margin-top: 35px;">Liste de Catégories</span>
+  
+    <div class="grid">
+      <div class="categorie mat-elevation-z3" *ngFor="let categorie of categories"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)">
+        <div class="delete" *ngIf="deleteCategories[categorie.id]">
+          <mat-icon>close</mat-icon>
+        </div>
+        <span class="name"> {{categorie.name}} </span>
+        <span class="pool"> Poules: {{categorie.pools.length}} </span>
+      </div>
+      <div class="scrollable" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="categorie new"  (click)="goToNew()" >
+        <span style="font-size: 3.5em; font-weight: 900;">+</span>
+        <span class="pool">New Categorie</span>
+      </div>
+    </div>
+  
+  </div>
+  
