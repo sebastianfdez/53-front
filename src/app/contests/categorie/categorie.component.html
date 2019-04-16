@@ -2,7 +2,7 @@
 
   <div class="scrollable" *ngIf="!loading">
 
-    <span style="font-size: 2em; margin-bottom: 30px;" *ngIf="!isAdmin && !isSpeaker && (judgeName !== '')">Juge: {{judgeName}} </span>
+    <span style="font-size: 2em; margin-bottom: 30px;" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
     <span style="font-size: 2em; margin-bottom: 30px;">Categorie: {{categorie.name}} </span>
 
     <form class="example-form" *ngIf="isAdmin" >
@@ -39,10 +39,10 @@
               <div class="info">
                 <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{pool.participants[i].name}} </span></span>
                 <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].lastName}} </span></span>
-                <span *ngIf="!isSpeaker">Licence: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].licence}} </span></span>
+                <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].licence}} </span></span>
                 <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].club}} </span></span>
               </div>
-              <mat-form-field class="vote-input" *ngIf="!isAdmin && !isSpeaker">
+              <mat-form-field class="vote-input" *ngIf="isJudge">
                 <input matInput placeholder="Note (1-100)" type="number" [min]="0" [max]="100" [(ngModel)]="votesRecord[pool.participants[i].id]" 
                   [ngModelOptions]="{standalone: true}" required>
               </mat-form-field>
@@ -68,8 +68,8 @@
       Sauvegarder Categorie
     </button>
 
-    <button mat-flat-button *ngIf="!isAdmin && !isSpeaker" color="primary" class="button save" (click)="saveVotes()">
-      Actualizer Notes
+    <button mat-flat-button *ngIf="isJudge" color="primary" class="button save" (click)="saveVotes()">
+      Actualiser Notes
     </button>
 
     <button mat-flat-button *ngIf="isAdmin && !createNew" color="#007106" class="button scores" (click)="goToScores()">

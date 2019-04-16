@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { Categorie, Judge, Participant, CategoriePopulated } from '../models/categorie';
+import { Categorie, Judge, CategoriePopulated, Participant } from '../models/categorie';
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, combineLatest, Subscription, Observable } from 'rxjs';
+import { Contest } from '../models/contest';
 
 export interface ScoreElement {
   pool: number;
   name: string;
   licence: string;
-  scoreJ1: number;
-  scoreJ2: number;
-  scoreJ3: number;
+  scores: {[idJudge: string]: number};
   average: number;
   calification: number;
 }
@@ -23,39 +22,98 @@ export interface ScoreElement {
   templateUrl: './score-table.component.html',
   styleUrls: ['./score-table.component.scss']
 })
-export class ScoreTableComponent implements OnInit {
+export class ScoreTableComponent implements OnInit, OnDestroy {
 
   public categorie: CategoriePopulated = null;
+  public categoriePop: CategoriePopulated = null;
   public judges: Judge[] = [];
   public dataSource: ScoreElement[] = [];
-  displayedColumns: string[] = ['pool', 'name', 'licence', 'scoreJ1', 'scoreJ2', 'scoreJ3', 'average', 'calification'];
+  displayedColumns: string[] = [];
   loading = false;
+
+  subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private database: AngularFirestore,
-  ) {
-    this.loading = true;
-    this.route.params.subscribe((params) => {
-      this.database.collection<Categorie>('categories').doc<CategoriePopulated>(params.id).valueChanges().pipe(
-        switchMap((categorie) => {
-          // categorie.pools.map((pool) => {
-          //   pool.participants.
-          // });
-          return of(categorie);
-        })
-      )
-      .subscribe((categorie: CategoriePopulated) => {
-        this.categorie = categorie;
-        console.log(this.categorie);
-        this.getTableData();
-        this.loading = false;
-      });
-      this.database.collection('judges').valueChanges().subscribe((judges: Judge[]) => this.judges = judges);
-    });
-  }
+  ) {}
 
   ngOnInit() {
+    this.subscriptions.push(
+      combineLatest(
+        this.getPools(),
+        this.getJudges(),
+      ).subscribe(([categorie, judges]) => {
+        this.judges = judges;
+        this.categorie = categorie;
+        this.getTableData();
+        this.loading = false;
+        console.log(this.judges);
+        this.displayedColumns = ['pool', 'name', 'licence'];
+        this.judges.forEach(judge => this.displayedColumns.push(`${judge.name}${judge.lastName}`));
+        this.displayedColumns.push('average', 'calification');
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  getJudges(): Observable<Judge[]> {
+    const contestId = localStorage.getItem('contestId');
+    return this.database.collection('contests').doc<Contest>(contestId).snapshotChanges().pipe(
+      switchMap((contest) => {
+        return combineLatest(
+          contest.payload.data().judges.map((judge) => {
+            return this.database.collection('users').doc<Judge>(judge).snapshotChanges();
+          })
+        );
+      }),
+      switchMap((judges) => {
+        return of(judges.map(judge => {
+          return {...judge.payload.data(), id: judge.payload.id};
+        }));
+      })
+    );
+  }
+
+  getPools(): Observable<CategoriePopulated> {
+    this.loading = true;
+    let categorie_: Categorie;
+    return this.route.params.pipe(
+      switchMap((params) => {
+        return this.database.doc<Categorie>(`categories/${params.id}`).snapshotChanges();
+      }),
+      switchMap((categorie) => {
+        categorie_ = {...categorie.payload.data()};
+        categorie_.id = categorie.payload.id;
+        return combineLatest(
+          categorie_.pools.map((pool) => {
+            return combineLatest(
+              pool.participants.map((participant) => {
+                return this.database.collection('players').doc<Participant>(participant).snapshotChanges();
+              })
+            ).pipe(
+              switchMap((participants) => {
+                return of({ participants: participants
+                  .map((participant) => {
+                    const participant_: Participant = {...participant.payload.data()};
+                    participant_.id = participant.payload.id;
+                    return participant_;
+                  })
+                  .filter(participant => participant.name)
+                });
+              })
+            );
+          })
+        );
+      }),
+      switchMap((pools) => {
+        const categorie: CategoriePopulated = {...categorie_, pools};
+        return of(categorie);
+      })
+    );
   }
 
   getTableData() {
@@ -66,27 +124,18 @@ export class ScoreTableComponent implements OnInit {
           pool: index,
           name: participant.name + ' ' + participant.lastName,
           licence: participant.licence,
-          scoreJ1: 0,
-          scoreJ2: 0,
-          scoreJ3: 0,
+          scores: {},
           average: 0,
           calification: 1,
         };
+        participant.votes.forEach(vote => newScore.scores[vote.codeJuge] = vote.note);
         let totalVotes = 0;
         let totalScore = 0;
         participant.votes.forEach((vote) => {
           totalVotes++;
           totalScore += vote.note;
-          switch (vote.codeJuge) {
-            case('Juge1'):
-              return newScore.scoreJ1 = vote.note;
-            case('Juge2'):
-              return newScore.scoreJ2 = vote.note;
-            case('Juge3'):
-              return newScore.scoreJ3 = vote.note;
-          }
         });
-        totalVotes ? newScore.average = Math.round(totalScore / totalVotes) : newScore.average = 0;
+        newScore.average = totalVotes ? Math.round(totalScore / totalVotes) : 0;
         this.dataSource.push(newScore);
       });
     });
@@ -96,7 +145,6 @@ export class ScoreTableComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
-    console.log(sort);
     const data = this.dataSource.slice();
     if (!sort.active || sort.direction === '') {
       this.dataSource = data;
@@ -121,7 +169,6 @@ export class ScoreTableComponent implements OnInit {
   }
 
   public save(component: ExcelExportComponent): void {
-    console.log(component);
     component.data.forEach(row => row.pool++);
     const options = component.workbookOptions();
 
@@ -130,7 +177,11 @@ export class ScoreTableComponent implements OnInit {
   }
 
   getFileName() {
-    return `Classement ${this.categorie.name}`;
+    return `Classement ${this.categorie ? this.categorie.name : ''}`;
+  }
+
+  getVote(element: ScoreElement, judge: Judge) {
+    return judge.id && element.scores[judge.id] ? element.scores[judge.id] : 0;
   }
 
 }

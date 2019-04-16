@@ -24,19 +24,10 @@
       <td mat-cell *matCellDef="let element"> {{element.licence}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="scoreJ1" >
-      <th mat-header-cell *matHeaderCellDef> Note Juge 1 </th>
-      <td mat-cell *matCellDef="let element"> {{element.scoreJ1}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="scoreJ2" >
-      <th mat-header-cell *matHeaderCellDef> Note Juge 2 </th>
-      <td mat-cell *matCellDef="let element"> {{element.scoreJ2}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="scoreJ3" >
-      <th mat-header-cell *matHeaderCellDef> Note Juge 3 </th>
-      <td mat-cell *matCellDef="let element"> {{element.scoreJ3}} </td>
+    <ng-container matColumnDef="{{judge.name}}{{judge.lastName}}" *ngFor="let judge of judges">
+      <th mat-header-cell *matHeaderCellDef> Note {{judge.name}} {{judge.lastName}} </th>
+      <td mat-cell *matCellDef="let element"> {{getVote(element, judge)}} </td>
+      <!-- <td mat-cell *matCellDef="let element"> 0 </td> -->
     </ng-container>
 
     <ng-container matColumnDef="average">

@@ -36,7 +36,6 @@ export interface Categorie {
 
 export interface CategoriePopulated {
     contest: string;
-    num: number;
     name: string;
     pools: { participants: Participant[] }[];
     id: string;
@@ -51,5 +50,7 @@ export const emptyCategorie: Categorie = {
 
 export interface Judge {
     name: string;
-    code: string;
+    id: string;
+    lastName: string;
+    mail: string;
 }

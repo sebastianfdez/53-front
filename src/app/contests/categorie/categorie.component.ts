@@ -23,6 +23,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
   public votesRecord: { [codeParticipant: string]: number } = {};
 
   public isAdmin = false;
+  public isJudge = false;
   public isSpeaker = false;
   public judgeCode = '';
   public judgeName = '';
@@ -38,8 +39,9 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {
     this.isAdmin = this.authService.authStateUser.role === 'admin';
-    this.judgeCode = localStorage.getItem('judgeCode');
-    this.judgeName = localStorage.getItem('judgeName');
+    this.isJudge = this.authService.authStateUser.role === 'judge';
+    this.judgeCode = this.authService.authStateUser.id;
+    this.judgeName = `${this.authService.authStateUser.name} ${this.authService.authStateUser.lastName}`;
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
       this.isSpeaker = true;
     }
@@ -91,6 +93,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
           );
         })
       ).subscribe((pools) => {
+        console.log({pools});
         this.pools = pools;
         this.pools = this.pools.filter(pool => pool.participants.length);
         this.pools.forEach((pool) => {
@@ -204,23 +207,36 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   saveVotes() {
-    this.pools.forEach((pool) => {
-      pool.participants.forEach((participant: Participant) => {
-        let vote: Votes = participant.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
-        if (!vote) {
-          vote = {
-            codeJuge: this.judgeCode,
-            codeParticipant: participant.licence,
-            nameJuge: this.judgeName,
-            note: 1,
-          };
-          participant.votes.push(vote);
-        }
-        vote.note = this.votesRecord[`${participant.id}`];
-      });
-    });
-    this.database.collection('categories').doc(this.categorie.id).update(this.categorie);
-    this.router.navigate(['contests']);
+    this.subscription.push(
+      combineLatest(
+        Object.keys(this.votesRecord).filter(vote => this.votesRecord[vote]).map((playerID) => {
+          return this.database.collection<Participant>('players').doc<Participant>(playerID).snapshotChanges();
+        })
+      ).pipe(
+        switchMap((actions) => {
+          return combineLatest(
+            actions.map((action) => {
+              const participant: Participant = action.payload.data();
+              participant.id = action.payload.id;
+              let vote: Votes = participant.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
+              if (!vote) {
+                vote = {
+                  codeJuge: this.judgeCode,
+                  codeParticipant: participant.licence,
+                  nameJuge: this.judgeName,
+                  note: 1,
+                };
+                participant.votes.push(vote);
+              }
+              vote.note = this.votesRecord[`${participant.id}`];
+              return from(this.database.collection('players').doc(participant.id).update(participant));
+            })
+          );
+        })
+      ).subscribe(() => {
+        this.router.navigate(['contests']);
+      })
+    );
   }
 
   goToScores() {

@@ -6,27 +6,21 @@
     text-align: center;
     margin: 30px 0;">Bienvenue au Lyon Roller Open 2019</span>
 
-    <div *ngIf="loading2">
-      <mat-spinner></mat-spinner>
-    </div>
+    
+    <span style="font-size: 6vw;
+    margin-bottom: 30px;
+    width: 90%;
+    text-align: center;
+    margin: 30px 0;" *ngIf="!loading">Juge: {{judge.name}} {{judge.lastName}}</span>
 
-    <span style="font-size: 2em; margin-bottom: 20px" *ngIf="!loading2 && isJudge">Qui etes vous?</span>
-    <mat-form-field *ngIf="!loading2 && isJudge">
-      <mat-select placeholder="Votre Nom" [(ngModel)]="selectedJudge" (selectionChange)="changeJudge($event)">
-        <mat-option *ngFor="let judge of judges" [value]="judge">
-            {{judge.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <span style="font-size: 2em;" *ngIf="selectedJudge && !loading2">Liste de Catégories</span>
+    <span style="font-size: 2em;" *ngIf="!loading2">Liste de Catégories</span>
   
-    <div class="grid" *ngIf="selectedJudge.name !== '' || !isJudge">
+    <div class="grid">
       <div class="categorie mat-elevation-z3" (click)="goTo(categorie)" *ngFor="let categorie of categories">
         <span class="name"> {{categorie.name}} </span>
         <span class="pool"> Poules: {{categorie.pools.length}} </span>
       </div>
-      <div class="scrollable" *ngIf="loading && isJudge">
+      <div class="scrollable" *ngIf="loading">
         <mat-spinner></mat-spinner>
       </div>
     </div>

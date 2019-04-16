@@ -55,7 +55,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         ),
         switchMap((contest) => {
           this.contest = {id: contest.payload.id, ...contest.payload.data()};
-          console.log(this.contest);
           localStorage.setItem('contestId', this.contest.id);
           if (this.contest.newCategorie !== '') {
             this.contest.categories.push(this.contest.newCategorie);
@@ -102,7 +101,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (this.time > 20) {
         this.deleteCategories[categorie.id] = true;
       } else {
-        this.router.navigate([`/categorie/${categorie.id}/false`]);
+        this.router.navigate([`/categorie/${categorie.id}`]);
       }
       clearInterval(this.timeoutHandler);
     }
