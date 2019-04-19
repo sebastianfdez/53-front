@@ -1,9 +1,9 @@
-<div class="categorie-container">
+<div class="categorie-container container-51">
 
   <div class="scrollable" *ngIf="!loading">
 
-    <span style="font-size: 2em; margin-bottom: 30px;" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
-    <span style="font-size: 2em; margin-bottom: 30px;">Categorie: {{categorie.name}} </span>
+    <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
+    <span class="title-51">Categorie: {{categorie.name}} </span>
 
     <form class="example-form" *ngIf="isAdmin" >
       <mat-form-field class="example-full-width">
@@ -11,7 +11,7 @@
       </mat-form-field>
     </form>
 
-    <div class="pool mat-elevation-z2" *ngFor="let pool of pools; let j = index;">
+    <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of pools; let j = index;">
       <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
       <div class="participants">
         <div class="participants-cont" *ngFor="let participantName of pool.participants; let i = index;">

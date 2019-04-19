@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   public pass = '';
 
   constructor(
-    public afauth: AngularFireAuth,
     private router: Router,
     private authService: AuthService,
   ) {}
@@ -25,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.refreshAuth();
-    this.afauth.auth.signInWithEmailAndPassword(`${this.user}`, this.pass).then(
+    this.authService.signIn(this.user, this.pass).then(
       (value: auth.UserCredential) => {
         this.router.navigate(['/admin']);
       }, (error) => {

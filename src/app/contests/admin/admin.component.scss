@@ -1,21 +1,6 @@
 
 
 .categories {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: fit-content;
-    max-height: 100%;
-    overflow: scroll;
 
     .grid {
         margin-top: 20px;
@@ -59,6 +44,13 @@
             }
         }
     }
+
+    .button {
+        width: 30%;
+        font-size: 1.5em;
+        margin: 10px 0;
+        min-width: fit-content;
+    }
 }
 
 @media (max-width: 930px) {
@@ -70,15 +62,29 @@
 
 @media (max-width: 760px) {
 
-    .grid {
-        max-width: 540px !important;
+    .categories {
+
+        .grid {
+            max-width: 540px !important;
+        }
+
+        .titles {
+            font-size: 3em;
+        }
     }
 }
 
 @media (max-width: 580px) {
 
-    .grid {
-        max-width: 360px !important;
+    .categories {
+
+        .grid {
+            max-width: 360px !important;
+        }
+
+        .titles {
+            font-size: 2em;
+        }
     }
 }
 

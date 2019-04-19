@@ -13,7 +13,7 @@
   </div>
 
   <div class="buttons">
-    <div class="button-cancel">
+    <div class="button-cancel" *ngIf="data.cancel">
       <button mat-button (click)="cancel()">Annuler</button>
     </div>
     <div class="button-accept">

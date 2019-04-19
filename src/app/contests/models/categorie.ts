@@ -53,4 +53,6 @@ export interface Judge {
     id: string;
     lastName: string;
     mail: string;
+    role: string;
+    contest: string;
 }

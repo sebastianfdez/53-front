@@ -44,9 +44,11 @@ export class ContestsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.authService.authenticated.pipe(
-        switchMap(
-            () => this.db.doc<User>(`users/${this.authService.authStateUser.id}`).snapshotChanges()
-        ),
+        switchMap((value) => {
+          console.log(value);
+          console.log(this.authService.authStateUser);
+          return this.db.collection('users').doc<User>(this.authService.authStateUser.id).snapshotChanges();
+        }),
         switchMap(
           (user) => {
             this.judge = user.payload.data();

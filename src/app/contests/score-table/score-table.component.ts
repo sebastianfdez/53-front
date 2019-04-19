@@ -15,6 +15,7 @@ export interface ScoreElement {
   scores: {[idJudge: string]: number};
   average: number;
   calification: number;
+  club: string;
 }
 
 @Component({
@@ -127,6 +128,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
           scores: {},
           average: 0,
           calification: 1,
+          club: participant.club,
         };
         participant.votes.forEach(vote => newScore.scores[vote.codeJuge] = vote.note);
         let totalVotes = 0;

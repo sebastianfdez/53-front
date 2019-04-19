@@ -8,6 +8,7 @@ import { ContestsComponent } from './contests/contests.component';
 import { AdminComponent } from './admin/admin.component';
 import { CategorieComponent } from './categorie/categorie.component';
 import { ScoreTableComponent } from './score-table/score-table.component';
+import { JudgesComponent } from './judges/judges.component';
 
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService] },
   { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuardService] },
+  { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService] },
   { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService] },
   { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService] },
   { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService] },
@@ -40,6 +42,7 @@ const routes: Routes = [
     AdminComponent,
     CategorieComponent,
     ScoreTableComponent,
+    JudgesComponent,
   ],
   providers: [
     AuthService,

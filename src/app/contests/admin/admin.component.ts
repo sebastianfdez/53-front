@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, of, from, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Categorie } from '../models/categorie';
@@ -8,8 +8,7 @@ import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
 import { Contest } from '../models/contest';
 import { combineLatest } from 'rxjs';
-import { MatDialog } from '@angular/material';
-import { WarningComponent } from 'src/app/shared/warning/warning.component';
+import { WarningService } from 'src/app/shared/warning/warning.service';
 
 @Component({
   selector: 'app-admin',
@@ -36,7 +35,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private db: AngularFirestore,
     private router: Router,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private warningService: WarningService,
   ) {
     this.loading = true;
   }
@@ -116,14 +115,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   deleteCategorie(categorie: Categorie) {
-    const dialogRef = this.dialog.open(WarningComponent, {
-      width: '600px',
-      data: {
-        message: 'Vous êtes sûr que vous voulez supprimer cette catégorie?',
-      },
-    });
     this.subscriptions.push(
-      dialogRef.afterClosed().subscribe((result) => {
+      this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
+      .afterClosed().subscribe((result) => {
         if (result) {
           console.log(categorie);
           categorie.pools.forEach((pool) => {
@@ -137,6 +131,10 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  goToJudges() {
+    this.router.navigate([`/judges`]);
   }
 
 }

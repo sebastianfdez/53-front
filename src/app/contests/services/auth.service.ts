@@ -15,8 +15,13 @@ export class AuthService {
     private isAdminSub: Subject<boolean> = new Subject();
     private isJudgeSub: Subject<boolean> = new Subject();
     private isSpeakerSub: Subject<boolean> = new Subject();
+    private adminPassword = '';
+    private adminMail = '';
 
-    constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
+    constructor(
+        private afAuth: AngularFireAuth,
+        private db: AngularFirestore
+    ) {
         this.refreshAuth();
     }
 
@@ -45,24 +50,46 @@ export class AuthService {
                 this.isAuthenticatedSub.next(true);
                 this.authStateUser = JSON.parse(JSON.stringify(emptyUser));
                 this.authStateUser.id = value.uid;
-                return this.db.doc<User>(`users/${value.uid}`).valueChanges();
+                return this.db.doc<User>(`users/${value.uid}`).snapshotChanges();
             })
         )
         .subscribe((user) => {
-            this.authStateUser = {...this.authStateUser, ...user};
-            if (user.role === 'admin') {
+            this.authStateUser = {...this.authStateUser, ...user.payload.data(), id: user.payload.id};
+            if (this.authStateUser.role === 'admin') {
                 this.isAdminSub.next(true);
-                this.isJudgeSub.next(true);
+                this.isJudgeSub.next(false);
                 this.isSpeakerSub.next(true);
-            } else if (user.role === 'judge') {
+            } else if (this.authStateUser.role === 'judge') {
                 this.isAdminSub.next(false);
                 this.isJudgeSub.next(true);
                 this.isSpeakerSub.next(true);
-            } else if (user.role === 'speaker') {
+            } else if (this.authStateUser.role === 'speaker') {
+                this.isAdminSub.next(false);
+                this.isJudgeSub.next(false);
+                this.isSpeakerSub.next(true);
+            } else {
                 this.isAdminSub.next(false);
                 this.isJudgeSub.next(false);
                 this.isSpeakerSub.next(true);
             }
         });
+    }
+
+    signIn(user: string, pass: string): Promise<firebase.auth.UserCredential> {
+        this.adminMail = user;
+        this.adminPassword = pass;
+        return this.afAuth.auth.signInWithEmailAndPassword(user, pass);
+    }
+
+    createUser(mail: string, password: string) {
+        return this.afAuth.auth.createUserWithEmailAndPassword(mail, password);
+    }
+
+    hasPassword(): boolean {
+        return this.adminPassword !== '';
+    }
+
+    relog() {
+        return this.afAuth.auth.signInWithEmailAndPassword(this.adminMail, this.adminPassword);
     }
 }

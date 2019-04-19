@@ -59,7 +59,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
             return of(null);
           } else {
             this.loading = true;
-            return this.database.doc<Categorie>(`categories/${params.id}`).snapshotChanges();
+            return this.database.collection('categories').doc<Categorie>(params.id).snapshotChanges();
           }
         }),
         switchMap((action: Action<DocumentSnapshot<Categorie>>) => {
@@ -68,9 +68,10 @@ export class CategorieComponent implements OnInit, OnDestroy {
             return of(poolListEmpty);
           }
           this.categorie = {
+            ...action.payload.data(),
             id: action.payload.id,
-            ...action.payload.data()
           };
+          console.log(this.categorie);
           return combineLatest(
             this.categorie.pools.map((pool) => {
               return combineLatest(
@@ -241,6 +242,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   goToScores() {
     console.log(this.route);
+    console.log(this.categorie.id);
     this.router.navigate([`/categorie/${this.categorie.id}/scores`]);
   }
 

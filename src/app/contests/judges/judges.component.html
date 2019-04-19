@@ -1,0 +1,72 @@
+<div class="container-51" *ngIf="!loading">
+
+    <div class="title-51">Liste de Juges</div>
+  
+    <div class="block-51" *ngFor="let judge of judges">
+      <!-- <div class="delete" (click)="deleteJudge(judge)" *ngIf="editing">
+        <mat-icon>close</mat-icon>
+      </div> -->
+      <mat-icon class="icon">person</mat-icon>
+      <div class="form-container">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Prenom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
+          [disabled]="!editing">
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
+          [disabled]="!editing">
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+              
+    <button mat-flat-button class="button" color="primary" *ngIf="!editing && !loadingChanges" (click)="editJudges()">
+      Editer Judges
+    </button>
+              
+    <button mat-flat-button class="button" color="primary" *ngIf="editing && !loadingChanges" (click)="saveJudges()">
+      Sauvagarder Changements
+    </button>
+              
+    <button mat-flat-button class="button" *ngIf="!addJudge && !loadingChanges" color="primary" (click)="toggleAddJudge()">
+      <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter Judge
+    </button>
+  
+    <div class="block-51" style="margin-top: 50px !important;" *ngIf="addJudge && !loadingChanges">
+      <mat-icon class="icon">person_add</mat-icon>
+      <div class="form-container">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Prenom" [(ngModel)]="newJudge.name" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Nom" [(ngModel)]="newJudge.lastName" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+  
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Mot de passe" [(ngModel)]="newJudgePassword" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+    </div>
+              
+    <button mat-flat-button class="button" *ngIf="addJudge && !loadingChanges" color="primary" (click)="sendJudge()"
+      [disabled]="!newJudge.name.length || !newJudge.lastName.length || newJudge.mail.length < 7 || newJudgePassword.length < 6 ">
+      <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Judge
+    </button>
+    <div class="scrollable">
+      <mat-spinner *ngIf="loadingChanges"></mat-spinner>
+    </div>
+  
+  </div>
+  
+  <div class="container-51" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>

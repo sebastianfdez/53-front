@@ -1,6 +1,11 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
+export interface WarningData {
+  message: string;
+  cancel: boolean;
+}
+
 @Component({
   selector: 'app-warning',
   templateUrl: './warning.component.html',
@@ -12,7 +17,7 @@ export class WarningComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<WarningComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: WarningData
   ) { }
 
   ngOnInit() {

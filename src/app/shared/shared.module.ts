@@ -16,6 +16,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WarningComponent } from './warning/warning.component';
 import { firebaseKeys } from 'src/firbase-keys';
+import { WarningService } from './warning/warning.service';
 
 const materialModules = [
   MatInputModule,
@@ -57,6 +58,9 @@ const materialModules = [
     ExcelModule,
     WarningComponent,
     ...materialModules,
+  ],
+  providers: [
+    WarningService,
   ]
 })
 export class SharedModule { }

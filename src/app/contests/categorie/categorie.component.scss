@@ -1,18 +1,4 @@
 .categorie-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 80%;
-    height: fit-content;
-    align-items: center;
-    overflow: scroll;
-    max-height: 100%;
 
     .scrollable {
         align-items: center;
@@ -33,14 +19,7 @@
     }
 
     .pool {
-        width: 90%;
-        display: flex;
         flex-direction: column;
-        align-items: center;
-        padding: 15px;
-        background-color: #f1f1f1;
-        border-radius: 32px;
-        margin: 10px 0;
 
         .poule {
             margin: 15px 0;
