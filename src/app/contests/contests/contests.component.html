@@ -1,17 +1,10 @@
 <div class="categories">
 
-    <span style="font-size: 8vw;
-    margin-bottom: 30px;
-    width: 90%;
-    text-align: center;
-    margin: 30px 0;">Bienvenue au Lyon Roller Open 2019</span>
+    <span class="title-51" >Bienvenue au Lyon Roller Open 2019</span>
 
     
-    <span style="font-size: 6vw;
-    margin-bottom: 30px;
-    width: 90%;
-    text-align: center;
-    margin: 30px 0;" *ngIf="!loading">Juge: {{judge.name}} {{judge.lastName}}</span>
+    <span class="title-51" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
+    <span class="title-51" *ngIf="!loading && !isJudge">Speaker: {{judge.name}} {{judge.lastName}}</span>
 
     <span style="font-size: 2em;" *ngIf="!loading2">Liste de Catégories</span>
   

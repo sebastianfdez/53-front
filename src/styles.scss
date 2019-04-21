@@ -9,6 +9,7 @@ body {
     height: 100%;
     margin: 0;
     font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: url("./assets/Fond.png");
 }
 
 .title-51 {
@@ -48,6 +49,21 @@ body {
     position: relative;
 }
 
+.back-51 {
+    position: absolute;
+    left: 30px;
+    top: 50px;
+
+    button {
+        min-width: fit-content;
+        width: 120px;
+
+        &.small {
+            display: none;
+        }
+    }
+}
+
 @media (max-width: 930px) {
 }
 
@@ -57,6 +73,14 @@ body {
         font-size: 3em;
         margin: 20px 0;
     }
+
+    .back-51 {
+        top: 30px;
+    
+        button {
+            width: 90px;
+        }
+    }
 }
 
 @media (max-width: 580px) {
@@ -64,5 +88,32 @@ body {
     .title-51 {
         font-size: 2em;
         margin: 10px 0;
+    }
+
+    .back-51 {
+        top: 10px;
+    
+        button {
+            width: 90px;
+        }
+    }
+}
+
+@media (max-width: 490px) {
+
+    .back-51 {
+        top: 10px;
+    
+        button {
+            width: 45px;
+
+            &.small {
+                display: inherit;
+            }
+
+            &.big {
+                display: none;
+            }
+        }
     }
 }

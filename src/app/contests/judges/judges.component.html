@@ -1,5 +1,14 @@
 <div class="container-51" *ngIf="!loading">
 
+    <div class="back-51">
+      <button mat-flat-button class="big" color="primary" routerLink="/admin">
+        {{"< Retour"}}
+      </button>
+      <button mat-flat-button class="small" color="primary" routerLink="/admin">
+        {{"<"}}
+      </button>
+    </div>
+
     <div class="title-51">Liste de Juges</div>
   
     <div class="block-51" *ngFor="let judge of judges">

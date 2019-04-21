@@ -1,5 +1,14 @@
 <div class="categorie-container container-51">
 
+  <div class="back-51" *ngIf="!loading">
+    <button mat-flat-button class="big" color="primary" routerLink="/admin">
+      {{"< Retour"}}
+    </button>
+    <button mat-flat-button class="small" color="primary" routerLink="/admin">
+      {{"<"}}
+    </button>
+  </div>
+
   <div class="scrollable" *ngIf="!loading">
 
     <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
@@ -31,7 +40,7 @@
             </mat-form-field>
             
             <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
-              - Suprimer Participant
+              - Supprimer ce rider
             </button>
           </ng-container>
           <div class="vote-mode" *ngIf="!isAdmin">
@@ -51,29 +60,29 @@
         </div>
 
         <button mat-stroked-button *ngIf="isAdmin" class="button" (click)="addParticipant(pool)">
-          + Ajouter Participant
+          + Ajouter un rider
         </button>
 
         <button mat-raised-button color="warn" *ngIf="isAdmin" class="button delete-pool" (click)="deletePool(j)">
-          - Suprimer Poule
+          - Supprimer la poule
         </button>
       </div>
     </div>
 
     <button mat-flat-button *ngIf="isAdmin" color="primary" class="button" style="margin-top: 20px;" (click)="addPool()">
-      Ajouter Poule
+      Ajouter une poule
     </button>
 
     <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="save()">
-      Sauvegarder Categorie
+      Sauvegarder la categorie
     </button>
 
     <button mat-flat-button *ngIf="isJudge" color="primary" class="button save" (click)="saveVotes()">
-      Actualiser Notes
+      Sauvegarder les notes
     </button>
 
     <button mat-flat-button *ngIf="isAdmin && !createNew" color="#007106" class="button scores" (click)="goToScores()">
-      Regarder Notes
+      Regarder le tableau de notes
     </button>
   </div>
 
