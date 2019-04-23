@@ -207,6 +207,22 @@ export class CategorieComponent implements OnInit, OnDestroy {
     }
   }
 
+  valueChange(event: Event, id: string) {
+    const value: number = (event.target as HTMLInputElement).value as any as number;
+    console.log(value);
+    console.log(value % 1);
+    console.log(typeof value);
+
+    if (value > 100) {
+      this.votesRecord[id] = 100;
+    } else if (value < 0) {
+      this.votesRecord[id] = 0;
+    } else if ((value * 100) % 1 !== 0) {
+      this.votesRecord[id] = Math.floor(value * 100) / 100;
+    }
+    console.log(this.votesRecord[id]);
+  }
+
   saveVotes() {
     this.subscription.push(
       combineLatest(

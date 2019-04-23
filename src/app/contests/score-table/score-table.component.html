@@ -1,5 +1,14 @@
 <div class="table-container">
 
+  <div class="back-51" *ngIf="!loading">
+    <button mat-flat-button class="big" color="primary" routerLink="{{'/categorie/' + categorie.id}}">
+      {{"< Retour"}}
+    </button>
+    <button mat-flat-button class="small" color="primary" routerLink="/admin">
+      {{"<"}}
+    </button>
+  </div>
+
   <div class="scrollable" *ngIf="loading">
     <mat-spinner></mat-spinner>
   </div>

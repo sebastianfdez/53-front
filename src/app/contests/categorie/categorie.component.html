@@ -23,20 +23,20 @@
     <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of pools; let j = index;">
       <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
       <div class="participants">
-        <div class="participants-cont" *ngFor="let participantName of pool.participants; let i = index;">
+        <div class="participants-cont" *ngFor="let participant of pool.participants; let i = index;">
           <ng-container *ngIf="isAdmin">
           
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Prenom" [(ngModel)]="pool.participants[i].name" [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Prenom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nom" [(ngModel)]="pool.participants[i].lastName" [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Nom" [(ngModel)]="participant.lastName" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Licence" [(ngModel)]="pool.participants[i].licence" [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Licence" [(ngModel)]="participant.licence" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Ville/Club" [(ngModel)]="pool.participants[i].club" [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Ville/Club" [(ngModel)]="participant.club" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
             
             <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
@@ -44,16 +44,16 @@
             </button>
           </ng-container>
           <div class="vote-mode" *ngIf="!isAdmin">
-              <mat-icon class="icon" matSuffix>person</mat-icon>
+              <mat-icon class="icon">person</mat-icon>
               <div class="info">
-                <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{pool.participants[i].name}} </span></span>
-                <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].lastName}} </span></span>
-                <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].licence}} </span></span>
-                <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{pool.participants[i].club}} </span></span>
+                <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{participant.name}} </span></span>
+                <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{participant.lastName}} </span></span>
+                <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{participant.licence}} </span></span>
+                <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{participant.club}} </span></span>
               </div>
               <mat-form-field class="vote-input" *ngIf="isJudge">
-                <input matInput placeholder="Note (1-100)" type="number" [min]="0" [max]="100" [(ngModel)]="votesRecord[pool.participants[i].id]" 
-                  [ngModelOptions]="{standalone: true}" required>
+                <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant.id]" 
+                  [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant.id)" required>
               </mat-form-field>
           </div>
           

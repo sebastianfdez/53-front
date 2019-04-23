@@ -137,7 +137,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
           totalVotes++;
           totalScore += vote.note;
         });
-        newScore.average = totalVotes ? Math.round(totalScore / totalVotes) : 0;
+        newScore.average = totalVotes ? (Math.round((totalScore / totalVotes) * 100) / 100) : 0;
         this.dataSource.push(newScore);
       });
     });
