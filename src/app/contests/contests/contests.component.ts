@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { switchMap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Contest } from '../models/contest';
+import { WarningService } from 'src/app/shared/warning/warning.service';
 
 @Component({
   selector: 'app-contests',
@@ -26,6 +27,13 @@ export class ContestsComponent implements OnInit, OnDestroy {
   public loading = false;
   public loading2 = false;
   public isJudge = false;
+  public isAdmin = false;
+
+  timeoutHandler: any;
+  time = 0;
+  deleteCategories: {
+    [id: string]: boolean;
+  } = {};
 
   subscriptions: Subscription[] = [];
 
@@ -34,19 +42,17 @@ export class ContestsComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private warningService: WarningService,
   ) {
     this.loading = true;
-    if (this.route.snapshot.routeConfig.path === 'contests' || this.route.snapshot.routeConfig.path === 'admin') {
-      this.isJudge = true;
-    }
   }
 
   ngOnInit() {
     this.subscriptions.push(
       this.authService.authenticated.pipe(
         switchMap((value) => {
-          console.log(value);
-          console.log(this.authService.authStateUser);
+          this.isJudge = this.authService.authStateUser.role === 'judge';
+          this.isAdmin = this.authService.authStateUser.role === 'admin';
           return this.db.collection('users').doc<User>(this.authService.authStateUser.id).snapshotChanges();
         }),
         switchMap(
@@ -57,8 +63,13 @@ export class ContestsComponent implements OnInit, OnDestroy {
         ),
         switchMap((contest) => {
           this.contest = {id: contest.payload.id, ...contest.payload.data()};
-          localStorage.setItem('contestId', this.contest.id);
-          return of(null);
+          if (this.contest.newCategorie !== '') {
+            this.contest.categories.push(this.contest.newCategorie);
+            this.contest.newCategorie = '';
+            return from(this.db.collection('contests').doc<Contest>(this.contest.id).update(this.contest));
+          } else {
+            return of(null);
+          }
         }),
         switchMap(() => {
           return combineLatest(
@@ -77,6 +88,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
           }
         }).filter(cat => cat);
         this.loading = false;
+        this.categories.forEach(categorie => this.deleteCategories[categorie.id] = false);
       })
     );
   }
@@ -86,7 +98,55 @@ export class ContestsComponent implements OnInit, OnDestroy {
   }
 
   goTo(categorie: Categorie) {
-    this.isJudge ? this.router.navigate([`/categorie/${categorie.id}`]) : this.router.navigate([`/categorie/${categorie.id}/speaker`]);
+    (this.isJudge || this.isAdmin) ?
+    this.router.navigate([`/categorie/${categorie.id}`]) : this.router.navigate([`/categorie/${categorie.id}/speaker`]);
+  }
+
+  public mouseup(categorie: Categorie, event: MouseEvent) {
+    if (!this.isAdmin) {
+      return this.goTo(categorie);
+    }
+    if (event.toElement.nodeName === 'MAT-ICON') {
+      this.deleteCategorie(categorie);
+    } else {
+      if (this.time > 20) {
+        this.deleteCategories[categorie.id] = true;
+      } else {
+        return this.goTo(categorie);
+      }
+      clearInterval(this.timeoutHandler);
+    }
+    this.timeoutHandler = null;
+    this.time = 0;
+  }
+
+  goToNew() {
+    this.router.navigate([`/categorie/new`]);
+  }
+
+  public mousedown() {
+    this.timeoutHandler = setInterval(() => {
+      this.time++;
+    }, 100);
+  }
+
+  deleteCategorie(categorie: Categorie) {
+    this.subscriptions.push(
+      this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
+      .afterClosed().subscribe((result) => {
+        if (result) {
+          console.log(categorie);
+          categorie.pools.forEach((pool) => {
+            pool.participants.forEach((participant) => {
+              this.db.collection('players').doc(participant).delete();
+            });
+          });
+          this.db.collection('categories').doc(categorie.id).delete();
+          this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
+          this.db.collection('contests').doc(this.contest.id).update({categories: this.contest.categories});
+        }
+      })
+    );
   }
 
 }

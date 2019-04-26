@@ -16,7 +16,7 @@ export class AdminAuthGuardService implements CanActivate {
                 if (value) {
                     return of(true);
                 } else {
-                    this.router.navigate(['contests']);
+                    this.router.navigate(['admin']);
                     return of(false);
                 }
             })
@@ -36,7 +36,7 @@ export class JudgeAuthGuardService implements CanActivate {
                 if (value) {
                     return of(true);
                 } else {
-                    this.router.navigate(['speaker']);
+                    this.router.navigate(['admin']);
                     return of(false);
                 }
             })

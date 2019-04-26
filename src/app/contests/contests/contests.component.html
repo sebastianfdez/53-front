@@ -1,21 +1,41 @@
+
+<div class="back-51" *ngIf="!loading">
+  <button mat-flat-button class="big" color="primary" routerLink="/admin">
+    {{"< Retour"}}
+  </button>
+  <button mat-flat-button class="small" color="primary" routerLink="/admin">
+    {{"<"}}
+  </button>
+</div>
+  
 <div class="categories">
 
-    <span class="title-51" >Bienvenue au Lyon Roller Open 2019</span>
+    <!-- <span class="title-51" >Bienvenue au Lyon Roller Open 2019</span> -->
 
-    
-    <span class="title-51" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
-    <span class="title-51" *ngIf="!loading && !isJudge">Speaker: {{judge.name}} {{judge.lastName}}</span>
-
-    <span style="font-size: 2em;" *ngIf="!loading2">Liste de Catégories</span>
+  <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
   
-    <div class="grid">
-      <div class="categorie mat-elevation-z3" (click)="goTo(categorie)" *ngFor="let categorie of categories">
-        <span class="name"> {{categorie.name}} </span>
-        <span class="pool"> Poules: {{categorie.pools.length}} </span>
+  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
+  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && isAdmin">Admin: {{judge.name}} {{judge.lastName}}</span>
+  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && !isJudge && !isAdmin">
+    Speaker: {{judge.name}} {{judge.lastName}}</span>
+
+
+  <div class="grid">
+    <div class="categorie mat-elevation-z3"
+    (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categories">
+      <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+        <mat-icon>close</mat-icon>
       </div>
-      <div class="scrollable" *ngIf="loading">
-        <mat-spinner></mat-spinner>
-      </div>
+      <span class="name"> {{categorie.name}} </span>
+      <span class="pool"> Poules: {{categorie.pools.length}} </span>
     </div>
-  
+    <div class="scrollable" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div class="categorie new" *ngIf="isAdmin" (click)="goToNew()" >
+      <span style="font-size: 3.5em; font-weight: 900;">+</span>
+      <span class="pool">New Categorie</span>
+    </div>
   </div>
+
+</div>

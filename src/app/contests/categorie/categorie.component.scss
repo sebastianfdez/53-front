@@ -12,10 +12,13 @@
 
     .mat-form-field {
         width: 90%;
+        max-width: 800px;
     }
 
     .example-form {
         width: 100%;
+        display: flex;
+        place-content: center;
     }
 
     .pool {

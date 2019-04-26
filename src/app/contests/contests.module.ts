@@ -15,14 +15,16 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { JudgeAuthGuardService, AdminAuthGuardService } from './services/admin-guard.service';
 import { AuthService } from './services/auth.service';
 import { SharedModule } from '../shared/shared.module';
+import { SpeakerComponent } from './speaker/speaker.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService] },
-  { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuardService] },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
   { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService] },
   { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService] },
+  { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService] },
   { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService] },
   { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService] },
   { path: 'categorie/:id/scores', component: ScoreTableComponent, canActivate: [JudgeAuthGuardService] },
@@ -43,6 +45,7 @@ const routes: Routes = [
     CategorieComponent,
     ScoreTableComponent,
     JudgesComponent,
+    SpeakerComponent,
   ],
   providers: [
     AuthService,

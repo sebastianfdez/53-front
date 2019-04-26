@@ -38,6 +38,8 @@
             background-color: #ED2790;
             color: #ffffff;
             display: flex;
+            position: relative;
+            cursor: pointer;
 
             .name {
                 margin-top: 20%;
@@ -46,6 +48,13 @@
 
             .pool {
                 margin-bottom: 30px;
+            }
+
+            .delete {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                z-index: 4;
             }
         }
     }

@@ -38,8 +38,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
   ) {
-    this.isAdmin = this.authService.authStateUser.role === 'admin';
-    this.isJudge = this.authService.authStateUser.role === 'judge';
+    this.isAdmin = this.authService.authStateUser ? this.authService.authStateUser.role === 'admin' : false;
+    this.isJudge = this.authService.authStateUser ? this.authService.authStateUser.role === 'judge' : false;
     this.judgeCode = this.authService.authStateUser.id;
     this.judgeName = `${this.authService.authStateUser.name} ${this.authService.authStateUser.lastName}`;
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {

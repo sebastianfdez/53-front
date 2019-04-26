@@ -57,7 +57,7 @@ export class AuthService {
             this.authStateUser = {...this.authStateUser, ...user.payload.data(), id: user.payload.id};
             if (this.authStateUser.role === 'admin') {
                 this.isAdminSub.next(true);
-                this.isJudgeSub.next(false);
+                this.isJudgeSub.next(true);
                 this.isSpeakerSub.next(true);
             } else if (this.authStateUser.role === 'judge') {
                 this.isAdminSub.next(false);
