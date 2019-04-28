@@ -1,0 +1,30 @@
+
+.button {
+    width: 80%;
+    font-size: 1.5em;
+    margin: 10px 0;
+    max-width: 500px;
+
+    &.save {
+        margin-top: 30px;
+    }
+}
+
+.speaker-cont {
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100px;
+    align-items: center;
+    padding: 15px 0;
+    place-content: center;
+
+    .example-full-width {
+        width: 90%;
+    }
+
+    span {
+        font-size: 20px;
+    }
+}

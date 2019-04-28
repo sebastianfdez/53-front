@@ -3,10 +3,10 @@ import { Observable, of, from, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { Categorie } from '../models/categorie';
-import { User } from '../models/user';
-import { AuthService } from '../services/auth.service';
-import { Contest } from '../models/contest';
+import { Categorie } from '../../models/categorie';
+import { User } from '../../models/user';
+import { AuthService } from '../../services/auth.service';
+import { Contest } from '../../models/contest';
 import { combineLatest } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 
@@ -21,6 +21,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   admin: User = null;
 
   subscriptions: Subscription[] = [];
+  isAdmin = false;
+  isJudge = false;
 
   public loading = false;
 
@@ -29,10 +31,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
   ) {
-    this.loading = true;
   }
 
   ngOnInit() {
+    this.loading = true;
     this.subscriptions.push(
       this.authService.authenticated.pipe(
         switchMap(
@@ -40,6 +42,8 @@ export class AdminComponent implements OnInit, OnDestroy {
         ),
         switchMap(
           (user) => {
+            this.isAdmin = this.authService.authStateUser ? this.authService.authStateUser.role === 'admin' : false;
+            this.isJudge = this.authService.authStateUser ? this.authService.authStateUser.role === 'judge' : false;
             this.admin = user.payload.data();
             return this.db.collection<Contest>('contests').doc<Contest>(this.admin.contest).snapshotChanges();
           }
@@ -64,7 +68,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   goToContest() {
-    this.router.navigate([`/contests`]);
+    this.isAdmin || this.isJudge ? this.router.navigate([`/contests`]) : this.router.navigate(['/speaker']);
   }
 
 }

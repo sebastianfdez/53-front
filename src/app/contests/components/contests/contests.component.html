@@ -21,7 +21,7 @@
 
 
   <div class="grid">
-    <div class="categorie mat-elevation-z3"
+    <div class="categorie mat-elevation-z3" [class.final]="categorie.final"
     (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categories">
       <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
         <mat-icon>close</mat-icon>

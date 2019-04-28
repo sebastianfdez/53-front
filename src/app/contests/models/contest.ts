@@ -5,6 +5,7 @@ export interface Contest {
     name: string;
     newCategorie: string;
     judges: string[];
+    speaker: string;
 }
 
 export const emptyContest: Contest = {
@@ -14,4 +15,5 @@ export const emptyContest: Contest = {
     id: '',
     newCategorie: '',
     judges: [],
+    speaker: '',
 };

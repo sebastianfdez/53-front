@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { Judge } from '../models/categorie';
+import { AuthService } from '../../services/auth.service';
+import { Judge } from '../../models/categorie';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Contest } from '../models/contest';
+import { Contest } from '../../models/contest';
 import { combineLatest, Subscription, from, of } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 
@@ -96,40 +96,43 @@ export class JudgesComponent implements OnInit, OnDestroy {
 
   sendJudge() {
     this.loadingChanges = true;
-    from(this.authService.createUser(this.newJudge.mail, this.newJudgePassword)).pipe(
-      switchMap((user) => {
-        this.contest.judges.push(user.user.uid);
-        this.newJudge.contest = this.contestId;
-        this.newJudge.id = user.user.uid;
-        return combineLatest(
-          from(this.db.collection<Judge>('users').doc<Judge>(user.user.uid).set(this.newJudge)),
-          this.db.collection('contests').doc(this.contestId).set(this.contest)
-        );
-      }),
-      switchMap(() => {
-        return this.authService.relog();
-      }),
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
-    ).subscribe((error) => {
-      if (error) {
-        this.warningService.showWarning(`Le mail ${this.newJudge.mail} est déjà utilisé`, false);
-      } else {
-        this.judges.push(JSON.parse(JSON.stringify(this.newJudge)));
-      }
-      this.newJudge = {
-        name: '',
-        id: '',
-        lastName: '',
-        mail: '',
-        role: 'judge',
-        contest: this.contestId,
-      };
-      this.addJudge = false;
-      this.loadingChanges = false;
-    });
+    this.subscriptions.push(
+      from(this.authService.createUser(this.newJudge.mail, this.newJudgePassword)).pipe(
+        switchMap((user) => {
+          this.contest.judges.push(user.user.uid);
+          this.newJudge.contest = this.contestId;
+          this.newJudge.id = user.user.uid;
+          return combineLatest(
+            from(this.db.collection<Judge>('users').doc<Judge>(user.user.uid).set(this.newJudge)),
+            from(this.db.collection('contests').doc<Contest>(this.contestId).set(this.contest))
+          );
+        }),
+        switchMap(([value, value2]) => {
+          console.log({value, value2});
+          return this.authService.relog();
+        }),
+        catchError((error) => {
+          console.log(error);
+          return of(error);
+        }),
+      ).subscribe((error) => {
+        if (error) {
+          this.warningService.showWarning(`Le mail ${this.newJudge.mail} est déjà utilisé`, false);
+        } else {
+          this.judges.push(JSON.parse(JSON.stringify(this.newJudge)));
+        }
+        this.newJudge = {
+          name: '',
+          id: '',
+          lastName: '',
+          mail: '',
+          role: 'judge',
+          contest: this.contestId,
+        };
+        this.addJudge = false;
+        this.loadingChanges = false;
+      })
+    );
   }
 
   deleteJudge(judge: Judge) {

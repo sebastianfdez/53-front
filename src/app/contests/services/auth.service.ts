@@ -1,7 +1,6 @@
 import { Observable, of, Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { switchMap } from 'rxjs/operators';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 import { User, emptyUser } from '../models/user';
 import { AngularFirestore } from '@angular/fire/firestore';

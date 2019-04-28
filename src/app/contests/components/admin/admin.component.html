@@ -1,13 +1,13 @@
 <div class="categories container-51">
   <span class="title-51" *ngIf="!loading">{{contest?.name}}</span>
-  <span class="title-51" *ngIf="!loading">Admin: {{admin.name}} {{admin.lastName}}</span>
+  <span class="title-51" *ngIf="!loading">{{isAdmin ? 'Admin' : isJudge ? 'Judge' : 'Speaker'}}: {{admin.name}} {{admin.lastName}}</span>
 
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"
-  *ngIf="!loading">
+  *ngIf="!loading && isAdmin">
     Juges
   </button>
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" routerLink="/sponsors"
-  *ngIf="!loading">
+  *ngIf="!loading && isAdmin">
     Speaker & Sponsors
   </button>
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToContest()"
@@ -15,7 +15,7 @@
     Riders
   </button>
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"
-  *ngIf="!loading">
+  *ngIf="!loading && isAdmin">
     Benevolats
   </button>
   <div class="scrollable" *ngIf="loading">

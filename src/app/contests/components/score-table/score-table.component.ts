@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { Categorie, Judge, CategoriePopulated, Participant } from '../models/categorie';
+import { Categorie, Judge, CategoriePopulated, Participant } from '../../models/categorie';
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
 import { of, combineLatest, Subscription, Observable } from 'rxjs';
-import { Contest } from '../models/contest';
+import { Contest } from '../../models/contest';
 
 export interface ScoreElement {
   pool: number;

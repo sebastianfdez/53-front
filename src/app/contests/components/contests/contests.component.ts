@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription, from, of, combineLatest } from 'rxjs';
-import { Categorie, Judge } from '../models/categorie';
+import { Categorie, Judge } from '../../models/categorie';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSelectChange } from '@angular/material';
 import { timer } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { switchMap } from 'rxjs/operators';
-import { User } from '../models/user';
-import { Contest } from '../models/contest';
+import { User } from '../../models/user';
+import { Contest } from '../../models/contest';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 
 @Component({

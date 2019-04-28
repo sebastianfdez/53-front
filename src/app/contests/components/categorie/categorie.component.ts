@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../models/categorie';
+import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { map, switchMap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { combineLatest, of, from, Subscription } from 'rxjs';
 
 @Component({

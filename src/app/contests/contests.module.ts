@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { LoginComponent } from './login/login.component';
-import { ContestsComponent } from './contests/contests.component';
-import { AdminComponent } from './admin/admin.component';
-import { CategorieComponent } from './categorie/categorie.component';
-import { ScoreTableComponent } from './score-table/score-table.component';
-import { JudgesComponent } from './judges/judges.component';
+import { LoginComponent } from './components/login/login.component';
+import { ContestsComponent } from './components/contests/contests.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { CategorieComponent } from './components/categorie/categorie.component';
+import { ScoreTableComponent } from './components/score-table/score-table.component';
+import { JudgesComponent } from './components/judges/judges.component';
 
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
 import { JudgeAuthGuardService, AdminAuthGuardService } from './services/admin-guard.service';
 import { AuthService } from './services/auth.service';
 import { SharedModule } from '../shared/shared.module';
-import { SpeakerComponent } from './speaker/speaker.component';
+import { SpeakerComponent } from './components/speaker/speaker.component';
 
 
 const routes: Routes = [

@@ -1,15 +1,15 @@
 <div class="categorie-container container-51">
 
   <div class="back-51" *ngIf="!loading">
-    <button mat-flat-button class="big" color="primary" routerLink="/contests">
+    <button mat-flat-button class="big" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
       {{"< Retour"}}
     </button>
-    <button mat-flat-button class="small" color="primary" routerLink="/contests">
+    <button mat-flat-button class="small" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
       {{"<"}}
     </button>
   </div>
 
-  <div class="scrollable" *ngIf="!loading">
+  <div class="scrollable-51" *ngIf="!loading">
 
     <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
     <span class="title-51">Categorie: {{categorie.name}} </span>
@@ -86,7 +86,7 @@
     </button>
   </div>
 
-  <div class="scrollable" *ngIf="loading">
+  <div class="scrollable-51" *ngIf="loading">
     <mat-spinner></mat-spinner>
   </div>
 
