@@ -40,6 +40,7 @@ export interface CategoriePopulated {
     name: string;
     pools: { participants: Participant[] }[];
     id: string;
+    final: boolean;
 }
 
 export const emptyCategorie: Categorie = {

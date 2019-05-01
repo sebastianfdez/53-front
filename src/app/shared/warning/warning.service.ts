@@ -11,12 +11,13 @@ export class WarningService {
     private dialog: MatDialog,
   ) { }
 
-  showWarning(message: string, cancel: boolean) {
+  showWarning(message: string, cancel: boolean, input?: string) {
     return this.dialog.open(WarningComponent, {
       width: '600px',
       data: {
         message,
         cancel,
+        input,
       },
     });
   }

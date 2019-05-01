@@ -4,6 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export interface WarningData {
   message: string;
   cancel: boolean;
+  input?: string;
+}
+
+export interface WarningReponse {
+  accept: boolean;
+  input?: number;
 }
 
 @Component({
@@ -15,6 +21,8 @@ export interface WarningData {
 
 export class WarningComponent implements OnInit {
 
+  inputResponse = 1;
+
   constructor(
     public dialogRef: MatDialogRef<WarningComponent>,
     @Inject(MAT_DIALOG_DATA) public data: WarningData
@@ -24,15 +32,19 @@ export class WarningComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close({ accept: false });
   }
 
   public accept() {
-    this.dialogRef.close(true);
+    const reponse: WarningReponse = { accept: true };
+    if (this.data.input && this.inputResponse > 0) {
+      reponse.input = this.inputResponse;
+    }
+    this.dialogRef.close(reponse);
   }
 
   public cancel() {
-    this.dialogRef.close(false);
+    this.dialogRef.close({ accept: false });
   }
 
 }

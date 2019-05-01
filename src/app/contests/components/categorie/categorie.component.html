@@ -69,9 +69,11 @@
       </div>
     </div>
 
-    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button" style="margin-top: 20px;" (click)="addPool()">
-      Ajouter une poule
-    </button>
+    <div class="pool block-51 mat-elevation-z2" *ngIf="isAdmin">
+      <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPool()">
+        + Ajouter une poule
+      </button>
+    </div>
 
     <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="save()">
       Sauvegarder la categorie
@@ -82,7 +84,7 @@
     </button>
 
     <button mat-flat-button *ngIf="isAdmin && !createNew" color="#007106" class="button scores" (click)="goToScores()">
-      Regarder le tableau de notes
+      Classement et Finale
     </button>
   </div>
 

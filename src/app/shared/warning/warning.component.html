@@ -12,6 +12,10 @@
     </span>
   </div>
 
+  <mat-form-field *ngIf="data.input" class="example-full-width">
+    <input matInput [placeholder]="data.input" type="number" [min]="1" [(ngModel)]="inputResponse">
+  </mat-form-field>
+
   <div class="buttons">
     <div class="button-cancel" *ngIf="data.cancel">
       <button mat-button (click)="cancel()">Annuler</button>

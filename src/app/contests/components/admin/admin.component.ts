@@ -1,14 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, of, from, Subscription } from 'rxjs';
+import { of, from, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
+import { AngularFirestore} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { Categorie } from '../../models/categorie';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 import { Contest } from '../../models/contest';
-import { combineLatest } from 'rxjs';
-import { WarningService } from 'src/app/shared/warning/warning.service';
 
 @Component({
   selector: 'app-admin',

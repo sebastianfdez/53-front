@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription, from, of, combineLatest } from 'rxjs';
-import { Categorie, Judge } from '../../models/categorie';
+import { Categorie } from '../../models/categorie';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSelectChange } from '@angular/material';
-import { timer } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { switchMap } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { Contest } from '../../models/contest';
 import { WarningService } from 'src/app/shared/warning/warning.service';
+import { WarningReponse } from 'src/app/shared/warning/warning.component';
 
 @Component({
   selector: 'app-contests',
@@ -133,14 +132,16 @@ export class ContestsComponent implements OnInit, OnDestroy {
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
       this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
-      .afterClosed().subscribe((result) => {
-        if (result) {
+      .afterClosed().subscribe((result: WarningReponse) => {
+        if (result.accept) {
           console.log(categorie);
-          categorie.pools.forEach((pool) => {
-            pool.participants.forEach((participant) => {
-              this.db.collection('players').doc(participant).delete();
+          if (!categorie.final) {
+            categorie.pools.forEach((pool) => {
+              pool.participants.forEach((participant) => {
+                this.db.collection('players').doc(participant).delete();
+              });
             });
-          });
+          }
           this.db.collection('categories').doc(categorie.id).delete();
           this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
           this.db.collection('contests').doc(this.contest.id).update({categories: this.contest.categories});

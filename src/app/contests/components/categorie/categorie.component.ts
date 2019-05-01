@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { combineLatest, of, from, Subscription } from 'rxjs';
 
@@ -99,7 +99,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.pools = this.pools.filter(pool => pool.participants.length);
         this.pools.forEach((pool) => {
           pool.participants.forEach((participant) => {
-            const vote: Votes = participant.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
+            const vote: Votes = (this.categorie.final ? participant.votesFinal : participant.votes)
+            .find(vote_ => vote_.codeJuge === this.judgeCode);
             this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
           });
         });
@@ -168,8 +169,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
             return from(this.database.collection('contests').doc(this.contestId).update({ newCategorie: doc.id }));
           })
         ).subscribe(() => {
-          this.authService.isAdmin ?
-          this.router.navigate(['admin']) :
           this.router.navigate(['contests']);
         })
       );
@@ -209,9 +208,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   valueChange(event: Event, id: string) {
     const value: number = (event.target as HTMLInputElement).value as any as number;
-    console.log(value);
-    console.log(value % 1);
-    console.log(typeof value);
 
     if (value > 100) {
       this.votesRecord[id] = 100;
@@ -220,7 +216,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
     } else if ((value * 100) % 1 !== 0) {
       this.votesRecord[id] = Math.floor(value * 100) / 100;
     }
-    console.log(this.votesRecord[id]);
   }
 
   saveVotes() {
@@ -235,7 +230,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
             actions.map((action) => {
               const participant: Participant = action.payload.data();
               participant.id = action.payload.id;
-              let vote: Votes = participant.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
+              let vote: Votes = (this.categorie.final ? participant.votesFinal : participant.votes)
+              .find(vote_ => vote_.codeJuge === this.judgeCode);
               if (!vote) {
                 vote = {
                   codeJuge: this.judgeCode,
@@ -243,7 +239,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
                   nameJuge: this.judgeName,
                   note: 1,
                 };
-                participant.votes.push(vote);
+                (this.categorie.final ? participant.votesFinal : participant.votes).push(vote);
               }
               vote.note = this.votesRecord[`${participant.id}`];
               return from(this.database.collection('players').doc(participant.id).update(participant));
