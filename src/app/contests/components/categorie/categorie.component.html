@@ -11,6 +11,19 @@
 
   <div class="scrollable-51" *ngIf="!loading">
 
+    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="openUploeader()">
+      Importer depuis excel
+    </button>
+
+    <kendo-upload
+      #UploadComponent
+      [autoUpload]="false"
+      [restrictions]="myRestrictions"
+      (select)="fileSelected($event)"
+      (upload)="uploadFile($event)"
+      *ngIf="showUploader">
+    </kendo-upload>
+
     <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
     <span class="title-51">Categorie: {{categorie.name}} </span>
 

@@ -32,6 +32,7 @@
     "@progress/kendo-angular-intl": "^1.0.0",
     "@progress/kendo-angular-l10n": "^1.1.0",
     "@progress/kendo-angular-popup": "^2.0.0",
+    "@progress/kendo-angular-upload": "^4.3.0",
     "@progress/kendo-data-query": "^1.0.0",
     "@progress/kendo-drawing": "^1.0.0",
     "@progress/kendo-theme-default": "latest",
@@ -40,6 +41,7 @@
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.0.0",
     "tslib": "^1.9.0",
+    "xlsx": "^0.14.3",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

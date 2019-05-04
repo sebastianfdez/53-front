@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ComponentRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { combineLatest, of, from, Subscription } from 'rxjs';
+import { WarningService } from 'src/app/shared/warning/warning.service';
+import { WarningReponse } from 'src/app/shared/warning/warning.component';
+import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-categorie',
@@ -22,11 +26,20 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   public votesRecord: { [codeParticipant: string]: number } = {};
 
+  // Roles
   public isAdmin = false;
   public isJudge = false;
   public isSpeaker = false;
   public judgeCode = '';
   public judgeName = '';
+
+  // Upload
+  myRestrictions: FileRestrictions = {
+    allowedExtensions: ['.xls', '.xlsx']
+  };
+  showUploader = false;
+  playersByPool = 1;
+  @ViewChild('UploadComponent') uploadComponent: UploadComponent;
 
   deletedPlayers: string[] = [];
 
@@ -37,6 +50,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private database: AngularFirestore,
     private authService: AuthService,
     private router: Router,
+    private warningService: WarningService,
   ) {
     this.isAdmin = this.authService.authStateUser ? this.authService.authStateUser.role === 'admin' : false;
     this.isJudge = this.authService.authStateUser ? this.authService.authStateUser.role === 'judge' : false;
@@ -253,13 +267,83 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   goToScores() {
-    console.log(this.route);
-    console.log(this.categorie.id);
     this.router.navigate([`/categorie/${this.categorie.id}/scores`]);
   }
 
   getVote(pool: Pool, i: number) {
     return this.votesRecord[`${pool.participants[i].id}`];
+  }
+
+  openUploeader() {
+    this.warningService
+    .showWarning(`Le tableau excel doit comporter des colonnes avec exactement les noms suivantes: 'nom', 'nrenom', 'licence', 'club'`,
+    true,
+    'Combien de riders par poule?').afterClosed()
+    .subscribe((response: WarningReponse) => {
+      this.playersByPool = response ? response.input : 0;
+      this.showUploader = response ? response.accept : false;
+    });
+  }
+
+  fileSelected(event: SelectEvent) {
+    this.uploadComponent.fileList.clear();
+  }
+
+  uploadFile(event: UploadEvent) {
+    event.preventDefault();
+    this.showUploader = false;
+    const excelFile: File = event.files[0].rawFile;
+    const fr: FileReader = new FileReader();
+    fr.onload = (event_) => {
+      const bstr: ArrayBuffer = ((event_.target as FileReader).result) as ArrayBuffer;
+      const datas = new Uint8Array(bstr);
+      const arr = [];
+      datas.forEach(data => arr.push(String.fromCharCode(data)));
+      console.log(arr);
+      // var bstr = arr.join("");
+      const workbook = XLSX.read(bstr, { type: 'binary' });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const players: { nom: string; prenom: string; club: string; licence: string; }[] = XLSX.utils.sheet_to_json(worksheet, {raw: true});
+      if (!players[0].nom || !players[0].prenom || !players[0].club || !players[0].licence) {
+        let error = `Erreur: Colonnes pas trouvees: `;
+        error += !players[0].nom ? 'nom, ' : '';
+        error += !players[0].prenom ? 'prenom, ' : '';
+        error += !players[0].club ? 'club, ' : '';
+        !players[0].licence ? error += 'licence' : error.slice(0, error.length - 3);
+        this.warningService.showWarning(error, false);
+        console.log(players[0]);
+      } else {
+        if (!this.pools.length) {
+          this.pools.push({ participants: []});
+        }
+        players.sort((a , b) => 0.5 - Math.random());
+        players.forEach((player) => {
+          if (this.pools[this.pools.length - 1].participants.length < this.playersByPool) {
+            this.pools[this.pools.length - 1].participants.push({
+              id: '',
+              votes: [],
+              votesFinal: [],
+              club: player.club,
+              lastName: player.nom,
+              name: player.prenom,
+              licence: player.licence,
+            });
+          } else {
+            this.pools.push({ participants: [{
+              id: '',
+              votes: [],
+              votesFinal: [],
+              club: player.club,
+              lastName: player.nom,
+              name: player.prenom,
+              licence: player.licence,
+            }]});
+          }
+        });
+      }
+    };
+    fr.readAsBinaryString(excelFile);
   }
 
 }

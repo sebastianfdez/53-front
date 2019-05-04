@@ -6,6 +6,12 @@ import { AppComponent } from './app.component';
 import { ContestsModule } from './contests/contests.module';
 import { SharedModule } from '@progress/kendo-angular-dropdowns';
 import { PublicModule } from './public/public.module';
+import { UploadModule } from '@progress/kendo-angular-upload';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+
+
+
 
 const routes: Routes = [
 
@@ -20,6 +26,9 @@ const routes: Routes = [
     SharedModule,
     ContestsModule,
     PublicModule,
+    UploadModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
