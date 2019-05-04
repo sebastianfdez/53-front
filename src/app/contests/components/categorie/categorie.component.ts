@@ -299,8 +299,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
       const datas = new Uint8Array(bstr);
       const arr = [];
       datas.forEach(data => arr.push(String.fromCharCode(data)));
-      console.log(arr);
-      // var bstr = arr.join("");
       const workbook = XLSX.read(bstr, { type: 'binary' });
       const first_sheet_name = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[first_sheet_name];
@@ -312,7 +310,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
         error += !players[0].club ? 'club, ' : '';
         !players[0].licence ? error += 'licence' : error.slice(0, error.length - 3);
         this.warningService.showWarning(error, false);
-        console.log(players[0]);
       } else {
         if (!this.pools.length) {
           this.pools.push({ participants: []});
