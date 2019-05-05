@@ -1,108 +1,113 @@
 <div class="categorie-container container-51">
 
-  <div class="back-51" *ngIf="!loading">
-    <button mat-flat-button class="big" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
-      {{"< Retour"}}
-    </button>
-    <button mat-flat-button class="small" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
-      {{"<"}}
-    </button>
-  </div>
-
-  <div class="scrollable-51" *ngIf="!loading">
-
-    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="openUploeader()">
-      Importer depuis excel
-    </button>
-
-    <kendo-upload
-      #UploadComponent
-      [autoUpload]="false"
-      [restrictions]="myRestrictions"
-      (select)="fileSelected($event)"
-      (upload)="uploadFile($event)"
-      *ngIf="showUploader">
-    </kendo-upload>
-
-    <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
-    <span class="title-51">Categorie: {{categorie.name}} </span>
-
-    <form class="example-form" *ngIf="isAdmin" >
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Name" [(ngModel)]="categorie.name" [ngModelOptions]="{standalone: true}">
-      </mat-form-field>
-    </form>
-
-    <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of pools; let j = index;">
-      <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
-      <div class="participants">
-        <div class="participants-cont" *ngFor="let participant of pool.participants; let i = index;">
-          <ng-container *ngIf="isAdmin">
-          
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Prenom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nom" [(ngModel)]="participant.lastName" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Licence" [(ngModel)]="participant.licence" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Ville/Club" [(ngModel)]="participant.club" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
+    <div class="back-51" *ngIf="!loading">
+      <button mat-flat-button class="big" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
+        {{"< Retour"}}
+      </button>
+      <button mat-flat-button class="small" color="primary" [routerLink]="(isAdmin || isJudge) ? '/contests' : '/speaker'">
+        {{"<"}}
+      </button>
+    </div>
+  
+    <div class="scrollable-51" *ngIf="!loading">
+  
+      <span class="title-51" *ngIf="isJudge && (judgeName !== '')">Juge: {{judgeName}} </span>
+      <span class="title-51">Categorie: {{categorie.name}} </span>
+  
+      <form class="example-form" *ngIf="isAdmin" >
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Name" [(ngModel)]="categorie.name" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </form>
+  
+      <button mat-flat-button *ngIf="isAdmin && !loadingSave" color="primary" class="button save" (click)="save()">
+        Sauvegarder la categorie
+      </button>
+  
+      <button mat-flat-button *ngIf="isJudge && !loadingSave" color="primary" class="button save" (click)="saveVotes()">
+        Sauvegarder les notes
+      </button>
+  
+      <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" color="#007106" class="button scores" (click)="goToScores()">
+        Classement et Finale
+      </button>
+  
+      <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button save" (click)="openUploeader()">
+        Importer depuis excel
+      </button>
+  
+      <kendo-upload
+        #UploadComponent
+        [autoUpload]="false"
+        [restrictions]="myRestrictions"
+        (select)="fileSelected($event)"
+        (upload)="uploadFile($event)"
+        *ngIf="showUploader">
+      </kendo-upload>
+  
+      <div class="button" *ngIf="loadingSave">
+        <mat-spinner></mat-spinner>
+      </div>
+  
+      <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of categorie.pools; let j = index;">
+        <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
+        <div class="participants">
+          <div class="participants-cont" *ngFor="let participant of pool.participants; let i = index;">
+            <ng-container *ngIf="isAdmin">
             
-            <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
-              - Supprimer ce rider
-            </button>
-          </ng-container>
-          <div class="vote-mode" *ngIf="!isAdmin">
-              <mat-icon class="icon">person</mat-icon>
-              <div class="info">
-                <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{participant.name}} </span></span>
-                <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{participant.lastName}} </span></span>
-                <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{participant.licence}} </span></span>
-                <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{participant.club}} </span></span>
-              </div>
-              <mat-form-field class="vote-input" *ngIf="isJudge">
-                <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant.id]" 
-                  [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant.id)" required>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Prenom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nom" [(ngModel)]="participant.lastName" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Licence" [(ngModel)]="participant.licence" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Ville/Club" [(ngModel)]="participant.club" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+              
+              <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
+                - Supprimer ce rider
+              </button>
+            </ng-container>
+            <div class="vote-mode" *ngIf="!isAdmin">
+                <mat-icon class="icon">person</mat-icon>
+                <div class="info">
+                  <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{participant.name}} </span></span>
+                  <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{participant.lastName}} </span></span>
+                  <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{participant.licence}} </span></span>
+                  <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{participant.club}} </span></span>
+                </div>
+                <mat-form-field class="vote-input" *ngIf="isJudge">
+                  <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant.id]" 
+                    [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant.id)" required>
+                </mat-form-field>
+            </div>
+            
           </div>
-          
+  
+          <button mat-stroked-button *ngIf="isAdmin" class="button" (click)="addParticipant(pool)">
+            + Ajouter un rider
+          </button>
+  
+          <button mat-raised-button color="warn" *ngIf="isAdmin" class="button delete-pool" (click)="deletePool(j)">
+            - Supprimer la poule
+          </button>
         </div>
-
-        <button mat-stroked-button *ngIf="isAdmin" class="button" (click)="addParticipant(pool)">
-          + Ajouter un rider
-        </button>
-
-        <button mat-raised-button color="warn" *ngIf="isAdmin" class="button delete-pool" (click)="deletePool(j)">
-          - Supprimer la poule
+      </div>
+  
+      <div class="pool block-51 mat-elevation-z2" *ngIf="isAdmin">
+        <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPool()">
+          + Ajouter une poule
         </button>
       </div>
     </div>
-
-    <div class="pool block-51 mat-elevation-z2" *ngIf="isAdmin">
-      <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPool()">
-        + Ajouter une poule
-      </button>
+  
+    <div class="scrollable-51" *ngIf="loading">
+      <mat-spinner></mat-spinner>
     </div>
-
-    <button mat-flat-button *ngIf="isAdmin" color="primary" class="button save" (click)="save()">
-      Sauvegarder la categorie
-    </button>
-
-    <button mat-flat-button *ngIf="isJudge" color="primary" class="button save" (click)="saveVotes()">
-      Sauvegarder les notes
-    </button>
-
-    <button mat-flat-button *ngIf="isAdmin && !createNew" color="#007106" class="button scores" (click)="goToScores()">
-      Classement et Finale
-    </button>
+  
   </div>
-
-  <div class="scrollable-51" *ngIf="loading">
-    <mat-spinner></mat-spinner>
-  </div>
-
-</div>
+  

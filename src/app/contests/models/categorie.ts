@@ -10,7 +10,6 @@ export interface Participant {
     lastName: string;
     licence: string;
     votes: Votes[];
-    votesFinal: Votes[];
     club: string;
     id: string;
 }
@@ -20,7 +19,6 @@ export const emptyParticipant: Participant = {
     lastName: '',
     licence: '',
     votes: [],
-    votesFinal: [],
     club: '',
     id: '',
 };
@@ -30,14 +28,6 @@ export interface Pool {
 }
 
 export interface Categorie {
-    contest: string;
-    name: string;
-    pools: { participants: string[] }[];
-    id: string;
-    final: boolean;
-}
-
-export interface CategoriePopulated {
     contest: string;
     name: string;
     pools: { participants: Participant[] }[];

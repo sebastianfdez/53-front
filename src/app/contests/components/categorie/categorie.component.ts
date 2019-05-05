@@ -20,9 +20,9 @@ export class CategorieComponent implements OnInit, OnDestroy {
   public createNew = false;
   public categorie: Categorie = JSON.parse(JSON.stringify(emptyCategorie));
   public contestId = '';
-  public pools: Pool[] = [];
 
   public loading = false;
+  public loadingSave = false;
 
   public votesRecord: { [codeParticipant: string]: number } = {};
 
@@ -44,6 +44,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
   deletedPlayers: string[] = [];
 
   subscription: Subscription[] = [];
+
+  test = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -76,44 +78,20 @@ export class CategorieComponent implements OnInit, OnDestroy {
             return this.database.collection('categories').doc<Categorie>(params.id).snapshotChanges();
           }
         }),
-        switchMap((action: Action<DocumentSnapshot<Categorie>>) => {
-          if (!action) {
-            const poolListEmpty: Pool[] = [];
-            return of(poolListEmpty);
-          }
+      ).subscribe((action: Action<DocumentSnapshot<Categorie>>) => {
+        if (!action) {
+          const poolListEmpty: Pool[] = [];
+          this.categorie = emptyCategorie;
+        } else {
           this.categorie = {
             ...action.payload.data(),
             id: action.payload.id,
           };
-          console.log(this.categorie);
-          return combineLatest(
-            this.categorie.pools.map((pool) => {
-              return combineLatest(
-                pool.participants.map((participant) => {
-                  return this.database.doc<Participant>(`players/${participant}`).snapshotChanges();
-                })
-              ).pipe(
-                switchMap((participants) => {
-                  return of({ participants: participants
-                    .map((participant) => {
-                      const participant_: Participant = {...participant.payload.data()};
-                      participant_.id = participant.payload.id;
-                      return participant_;
-                    })
-                    .filter(participant => participant.name)
-                  });
-                })
-              );
-            })
-          );
-        })
-      ).subscribe((pools) => {
-        console.log({pools});
-        this.pools = pools;
-        this.pools = this.pools.filter(pool => pool.participants.length);
-        this.pools.forEach((pool) => {
+        }
+        this.categorie.pools = this.categorie.pools.filter(pool => pool.participants.length);
+        this.categorie.pools.forEach((pool) => {
           pool.participants.forEach((participant) => {
-            const vote: Votes = (this.categorie.final ? participant.votesFinal : participant.votes)
+            const vote: Votes = participant.votes
             .find(vote_ => vote_.codeJuge === this.judgeCode);
             this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
           });
@@ -129,15 +107,17 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   addParticipant(pool: Pool) {
     if (pool.participants.length === 0 || pool.participants[pool.participants.length - 1].name !== '') {
-      pool.participants.push(JSON.parse(JSON.stringify(emptyParticipant)));
+      const participant: Participant = JSON.parse(JSON.stringify(emptyParticipant));
+      participant.id = `${(new Date()).getTime()}${Math.random() * 1000}`;
+      pool.participants.push(participant);
     }
   }
 
   addPool() {
     console.log(this.categorie);
     if (!this.categorie.pools.length || this.categorie.pools[this.categorie.pools.length - 1].participants.length > 0 &&
-      this.pools[this.pools.length - 1].participants[0].name !== '') {
-      this.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
+      this.categorie.pools[this.categorie.pools.length - 1].participants[0].name !== '') {
+      this.categorie.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
     }
   }
 
@@ -149,119 +129,66 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   deletePool(j: number) {
-    this.pools[j].participants.forEach((participant) => {
+    this.categorie.pools[j].participants.forEach((participant) => {
       if (participant.id) {
         this.deletedPlayers.push(participant.id);
       }
     });
-    this.pools.splice(j, 1);
+    this.categorie.pools.splice(j, 1);
   }
 
   save() {
+    this.loadingSave = true;
+    this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
-      const playersPoolId: {participants: string[]}[] = [];
-      this.subscription.push(
-        combineLatest(
-          this.pools.map((pool) => {
-            return combineLatest(
-              pool.participants.map((participant) => {
-                return this.database.collection('players').add(participant);
-              })
-            ).pipe(
-              switchMap((values) => {
-                playersPoolId.push({participants: values.map(value => value.id)});
-                return of(null);
-              })
-            );
-          })
-        ).pipe(
-          switchMap(() => {
-            this.categorie.pools = playersPoolId;
-            return from(this.database.collection('categories').add(this.categorie));
-          }),
-          switchMap((doc) => {
-            return from(this.database.collection('contests').doc(this.contestId).update({ newCategorie: doc.id }));
-          })
-        ).subscribe(() => {
-          this.router.navigate(['contests']);
-        })
-      );
+      this.database.collection('categories').add(this.categorie)
+      .then((doc) => {
+        this.database.collection('contests').doc(this.contestId).update({ newCategorie: doc.id });
+        this.router.navigate(['contests']);
+        this.loadingSave = false;
+      });
     } else {
-      this.subscription.push(
-        combineLatest(
-          this.pools.map((pool) => {
-            return combineLatest(
-              pool.participants.map((participant) => {
-                if (participant.id === '') {
-                  return from(this.database.collection('players').add(participant)).pipe(
-                    switchMap((value) => {
-                      return of(value.id);
-                    })
-                  );
-                } else {
-                  return of(participant.id);
-                }
-              })
-            ).pipe(
-              switchMap((participants) => {
-                return of({participants});
-              })
-            );
-          })
-        ).subscribe((pools: {participants: string[]}[]) => {
-          this.categorie.pools = pools;
-          this.database.collection('categories').doc(this.categorie.id).update(this.categorie);
-          this.authService.isAdmin ? this.router.navigate(['admin']) : this.router.navigate(['contests']);
-        })
-      );
-      this.deletedPlayers.forEach((player) => {
-        this.database.collection('players').doc(player).delete();
+      this.database.collection('categories').doc(this.categorie.id).update(this.categorie)
+      .then(() => {
+        this.authService.isAdmin ? this.router.navigate(['admin']) : this.router.navigate(['contests']);
+        this.loadingSave = false;
       });
     }
   }
 
   valueChange(event: Event, id: string) {
     const value: number = (event.target as HTMLInputElement).value as any as number;
-
     if (value > 100) {
       this.votesRecord[id] = 100;
     } else if (value < 0) {
       this.votesRecord[id] = 0;
     } else if ((value * 100) % 1 !== 0) {
-      this.votesRecord[id] = Math.floor(value * 100) / 100;
+      this.votesRecord[id] = Math.floor(value * 100) / 100 ? Math.floor(value * 100) / 100 : 0;
     }
   }
 
   saveVotes() {
+    this.loadingSave = true;
+    this.subscription.forEach(s => s.unsubscribe());
+    this.categorie.pools.forEach((pool) => {
+      pool.participants.forEach((player) => {
+        let vote: Votes = player.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
+        if (!vote) {
+          vote = {
+            codeJuge: this.judgeCode,
+            codeParticipant: player.licence,
+            nameJuge: this.judgeName,
+            note: 1,
+          };
+          player.votes.push(vote);
+        }
+        vote.note = this.votesRecord[`${player.id}`];
+      });
+    });
     this.subscription.push(
-      combineLatest(
-        Object.keys(this.votesRecord).filter(vote => this.votesRecord[vote]).map((playerID) => {
-          return this.database.collection<Participant>('players').doc<Participant>(playerID).snapshotChanges();
-        })
-      ).pipe(
-        switchMap((actions) => {
-          return combineLatest(
-            actions.map((action) => {
-              const participant: Participant = action.payload.data();
-              participant.id = action.payload.id;
-              let vote: Votes = (this.categorie.final ? participant.votesFinal : participant.votes)
-              .find(vote_ => vote_.codeJuge === this.judgeCode);
-              if (!vote) {
-                vote = {
-                  codeJuge: this.judgeCode,
-                  codeParticipant: participant.licence,
-                  nameJuge: this.judgeName,
-                  note: 1,
-                };
-                (this.categorie.final ? participant.votesFinal : participant.votes).push(vote);
-              }
-              vote.note = this.votesRecord[`${participant.id}`];
-              return from(this.database.collection('players').doc(participant.id).update(participant));
-            })
-          );
-        })
-      ).subscribe(() => {
+      from(this.database.collection('categories').doc(this.categorie.id).update(this.categorie)).subscribe(() => {
         this.router.navigate(['contests']);
+        this.loadingSave = false;
       })
     );
   }
@@ -311,26 +238,24 @@ export class CategorieComponent implements OnInit, OnDestroy {
         !players[0].licence ? error += 'licence' : error.slice(0, error.length - 3);
         this.warningService.showWarning(error, false);
       } else {
-        if (!this.pools.length) {
-          this.pools.push({ participants: []});
+        if (!this.categorie.pools.length) {
+          this.categorie.pools.push({ participants: []});
         }
         players.sort((a , b) => 0.5 - Math.random());
         players.forEach((player) => {
-          if (this.pools[this.pools.length - 1].participants.length < this.playersByPool) {
-            this.pools[this.pools.length - 1].participants.push({
-              id: '',
+          if (this.categorie.pools[this.categorie.pools.length - 1].participants.length < this.playersByPool) {
+            this.categorie.pools[this.categorie.pools.length - 1].participants.push({
+              id: `${(new Date()).getTime()}${Math.random() * 1000}`,
               votes: [],
-              votesFinal: [],
               club: player.club,
               lastName: player.nom,
               name: player.prenom,
               licence: player.licence,
             });
           } else {
-            this.pools.push({ participants: [{
-              id: '',
+            this.categorie.pools.push({ participants: [{
+              id: `${(new Date()).getTime()}${Math.random() * 1000}`,
               votes: [],
-              votesFinal: [],
               club: player.club,
               lastName: player.nom,
               name: player.prenom,

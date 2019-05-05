@@ -134,14 +134,6 @@ export class ContestsComponent implements OnInit, OnDestroy {
       this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
       .afterClosed().subscribe((result: WarningReponse) => {
         if (result.accept) {
-          console.log(categorie);
-          if (!categorie.final) {
-            categorie.pools.forEach((pool) => {
-              pool.participants.forEach((participant) => {
-                this.db.collection('players').doc(participant).delete();
-              });
-            });
-          }
           this.db.collection('categories').doc(categorie.id).delete();
           this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
           this.db.collection('contests').doc(this.contest.id).update({categories: this.contest.categories});

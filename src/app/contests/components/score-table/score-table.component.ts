@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Categorie, Judge, CategoriePopulated, Participant, emptyCategorie } from '../../models/categorie';
+import { Categorie, Judge, Participant, emptyCategorie } from '../../models/categorie';
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export interface ScoreElement {
 })
 export class ScoreTableComponent implements OnInit, OnDestroy {
 
-  public categorie: CategoriePopulated = null;
+  public categorie: Categorie = null;
   public judges: Judge[] = [];
   public dataSource: ScoreElement[] = [];
   displayedColumns: string[] = [];
@@ -83,7 +83,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  getPools(): Observable<CategoriePopulated> {
+  getPools(): Observable<Categorie> {
     this.loading = true;
     let categorie_: Categorie;
     return this.route.params.pipe(
@@ -93,30 +93,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       switchMap((categorie) => {
         categorie_ = {...categorie.payload.data()};
         categorie_.id = categorie.payload.id;
-        return combineLatest(
-          categorie_.pools.map((pool) => {
-            return combineLatest(
-              pool.participants.map((participant) => {
-                return this.database.collection('players').doc<Participant>(participant).snapshotChanges();
-              })
-            ).pipe(
-              switchMap((participants) => {
-                return of({ participants: participants
-                  .map((participant) => {
-                    const participant_: Participant = {...participant.payload.data()};
-                    participant_.id = participant.payload.id;
-                    return participant_;
-                  })
-                  .filter(participant => participant.name)
-                });
-              })
-            );
-          })
-        );
-      }),
-      switchMap((pools) => {
-        const categorie: CategoriePopulated = {...categorie_, pools};
-        return of(categorie);
+        return of(categorie_);
       })
     );
   }
@@ -135,12 +112,12 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
           club: participant.club,
           idPlayer: participant.id,
         };
-        (this.categorie.final ? participant.votesFinal : participant.votes).forEach(vote => newScore.scores[vote.codeJuge] = vote.note);
+        participant.votes.forEach(vote => newScore.scores[vote.codeJuge] = vote.note);
         let totalVotes = 0;
         let totalScore = 0;
-        (this.categorie.final ? participant.votesFinal : participant.votes).forEach((vote) => {
+        participant.votes.forEach((vote) => {
           totalVotes++;
-          totalScore += vote.note;
+          totalScore += 1 * (vote.note as number);
         });
         newScore.average = totalVotes ? (Math.round((totalScore / totalVotes) * 100) / 100) : 0;
         this.dataSource.push(newScore);
@@ -196,7 +173,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     let limit = 0;
     this.subscriptions.push(
       this.warningService
-      .showWarning('Es-tu sûr de vouloir générer la finale ?', true, 'Combien de riders doivent qualifier pour la finale?')
+      .showWarning('Es-tu sûr de vouloir générer la finale ?', true, 'Combien de riders sont qualifiés pour la finale?')
       .afterClosed()
       .pipe(
         switchMap((response: WarningReponse) => {
@@ -215,18 +192,30 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
             newCategorie.name = `${this.categorie.name} Finale`;
             newCategorie.contest = this.categorie.contest;
             const ridersPool: number = response.input;
-            const pools: { participants: string[] }[] = [];
-            let pool: string[] = [];
-            console.log(ridersPool);
+            const pools: { participants: Participant[] }[] = [];
+            let pool: Participant[] = [];
             this.dataSource.sort((a, b) => a.average > b.average ? -1 : 1).slice(0, limit)
             .reverse()
             .forEach((particpant, index) => {
-              console.log(index % ridersPool === 0);
               if (index % ridersPool === 0 && index !== 0) {
                 pools.push({ participants: JSON.parse(JSON.stringify(pool)) });
-                pool = [particpant.idPlayer];
+                pool = [{
+                  licence: particpant.licence,
+                  club: particpant.club,
+                  name: particpant.name.split(' ')[0],
+                  lastName: particpant.name.split(' ')[1],
+                  id: particpant.idPlayer,
+                  votes: [],
+                }];
               } else {
-                pool.push(particpant.idPlayer);
+                pool.push({
+                  licence: particpant.licence,
+                  club: particpant.club,
+                  name: particpant.name.split(' ')[0],
+                  lastName: particpant.name.split(' ')[1],
+                  id: particpant.idPlayer,
+                  votes: [],
+                });
               }
             });
             pools.push({ participants: pool });
