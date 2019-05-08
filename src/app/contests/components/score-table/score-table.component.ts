@@ -11,14 +11,14 @@ import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 
 export interface ScoreElement {
-  pool: number;
+  pool: string;
   name: string;
   licence: string;
-  scores: {[idJudge: string]: number};
-  average: number;
-  calification: number;
+  average: string;
+  calification: string;
   club: string;
   idPlayer: string;
+  [idJudge: string]: string;
 }
 
 @Component({
@@ -83,6 +83,10 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  getScore(judge) {
+    console.log('entro', judge);
+  }
+
   getPools(): Observable<Categorie> {
     this.loading = true;
     let categorie_: Categorie;
@@ -103,28 +107,27 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     this.categorie.pools.forEach((pool, index) => {
       pool.participants.forEach((participant) => {
         const newScore: ScoreElement = {
-          pool: index,
+          pool: `${index}`,
           name: participant.name + ' ' + participant.lastName,
           licence: participant.licence,
-          scores: {},
-          average: 0,
-          calification: 1,
+          average: `0`,
+          calification: `1`,
           club: participant.club,
           idPlayer: participant.id,
         };
-        participant.votes.forEach(vote => newScore.scores[vote.codeJuge] = vote.note);
+        participant.votes.forEach(vote => newScore[vote.codeJuge] = `${vote.note}`);
         let totalVotes = 0;
         let totalScore = 0;
         participant.votes.forEach((vote) => {
           totalVotes++;
           totalScore += 1 * (vote.note as number);
         });
-        newScore.average = totalVotes ? (Math.round((totalScore / totalVotes) * 100) / 100) : 0;
+        newScore.average = `${totalVotes ? (Math.round((totalScore / totalVotes) * 100) / 100) : 0}`;
         this.dataSource.push(newScore);
       });
     });
     this.dataSource = this.dataSource.sort((a, b) => a.average > b.average ? -1 : 1);
-    this.dataSource.forEach((data, index) => data.calification = index + 1);
+    this.dataSource.forEach((data, index) => data.calification = `${index + 1}`);
     this.dataSource = this.dataSource.sort((a, b) => a.pool > b.pool ? 1 : -1);
     console.log(this.dataSource);
   }
@@ -153,12 +156,14 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  public save(component: ExcelExportComponent): void {
-    component.data.forEach(row => row.pool++);
+  save(component: ExcelExportComponent): void {
+    console.log(this.judges);
+    console.log(component.data[0]);
+    console.log(component.data[0][this.judges[0].id]);
+    console.log(component.data[0][this.judges[1].id]);
     const options = component.workbookOptions();
-
+    console.log(options);
     component.save(options);
-    component.data.forEach(row => row.pool--);
   }
 
   getFileName() {
@@ -166,7 +171,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
   }
 
   getVote(element: ScoreElement, judge: Judge) {
-    return judge.id && element.scores[judge.id] ? element.scores[judge.id] : 0;
+    return judge.id && element[judge.id] ? element[judge.id] : 0;
   }
 
   createFinal() {

@@ -53,8 +53,12 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <button mat-flat-button class="button scores" (click)="save(excelexport)" *ngIf="!loading">
-    Export to Excel
+  <button mat-flat-button class="button scores" (click)="save(excelexportPublic)" *ngIf="!loading">
+    Export to Excel (Public)
+  </button>
+
+  <button mat-flat-button class="button scores" (click)="save(excelexportFederation)" *ngIf="!loading">
+    Export to Excel (Federation)
   </button>
 
   <button mat-flat-button color="primary" class="button save" (click)="createFinal()" *ngIf="!loading && !categorie.final">
@@ -62,10 +66,21 @@
   </button>
 </div>
 
-<kendo-excelexport [data]="dataSource" fileName="{{getFileName()}}" #excelexport>
+<kendo-excelexport [data]="dataSource" fileName="{{getFileName()}}" #excelexportPublic>
+  <kendo-excelexport-column field="name" title="Nom"></kendo-excelexport-column>
+  <kendo-excelexport-column field="club" title="Club/Ville"></kendo-excelexport-column>
+  <kendo-excelexport-column field="average" title="Moyenne"></kendo-excelexport-column>
+  <kendo-excelexport-column field="calification" title="Classement"></kendo-excelexport-column>
+</kendo-excelexport>
+
+<kendo-excelexport [data]="dataSource" fileName="{{getFileName()}}" #excelexportFederation>
   <kendo-excelexport-column field="name" title="Nom"></kendo-excelexport-column>
   <kendo-excelexport-column field="licence" title="Licence"></kendo-excelexport-column>
   <kendo-excelexport-column field="club" title="Club/Ville"></kendo-excelexport-column>
+  <ng-container *ngFor="let judge of judges">
+    <kendo-excelexport-column [field]="judge.id"
+    title="Note {{judge.name}} {{judge.lastName}}"></kendo-excelexport-column>
+  </ng-container>
   <kendo-excelexport-column field="average" title="Moyenne"></kendo-excelexport-column>
   <kendo-excelexport-column field="calification" title="Classement"></kendo-excelexport-column>
 </kendo-excelexport>
