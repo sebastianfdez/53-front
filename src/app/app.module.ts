@@ -10,9 +10,6 @@ import { UploadModule } from '@progress/kendo-angular-upload';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
-
-
-
 const routes: Routes = [
 
 ];

@@ -83,10 +83,6 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  getScore(judge) {
-    console.log('entro', judge);
-  }
-
   getPools(): Observable<Categorie> {
     this.loading = true;
     let categorie_: Categorie;

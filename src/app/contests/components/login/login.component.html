@@ -1,6 +1,6 @@
-<div class="login-container">
+<div class="login-container"  (keyup.enter)="login()">
 
-  <img style="max-width: 80%;" style="max-width: 64%;margin: 17px 0;" src="../../../assets/51logo.jpeg">
+  <img src="../../../assets/51logo.jpeg">
 
   <form class="example-form">
     <mat-form-field class="example-full-width">
@@ -13,8 +13,8 @@
     </mat-form-field>
   </form>
 
-  <button mat-button class="button" (click)="login()">
-    Log in
+  <button mat-flat-button color="primary" class="button" (click)="login()">
+    Connectez-vous
   </button>
 
 </div>

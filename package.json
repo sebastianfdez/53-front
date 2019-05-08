@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^7.2.12",
     "@angular/platform-browser-dynamic": "^7.2.12",
     "@angular/router": "^7.2.12",
+    "@ng-bootstrap/ng-bootstrap": "^4.1.2",
     "@progress/kendo-angular-buttons": "^4.0.0",
     "@progress/kendo-angular-dateinputs": "2 - 3",
     "@progress/kendo-angular-dropdowns": "2 - 3",

@@ -17,16 +17,30 @@
     margin-bottom: auto;
     height: fit-content;
 
+    img {
+        max-width: 800px;
+        width: 60%;
+        margin: 17px 0;
+    }
+
     .example-form {
         display: flex;
         flex-direction: column;
-        width: 80%;
+        width: 450px;
+        max-width: 90%;
     }
 
     .button {
-        height: 4em;
-        width: 12em;
+        width: 300px;
         font-size: 1em;
     }
 }
 
+@media (max-width: 500px) {
+    .login-container {
+    
+        img {
+            width: 100%;
+        }
+    }
+}
