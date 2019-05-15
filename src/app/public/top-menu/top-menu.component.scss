@@ -47,16 +47,11 @@
         
         .images {
 
-            height: 60px;
+            height: 90px;
             display: flex;
 
             .big {
-                height: 60px;
-            }
-            
-            .small {
-                display: none;
-                height: 60px;
+                height: 90px;
             }
         
             &:focus {

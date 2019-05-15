@@ -14,12 +14,15 @@
   *ngIf="!loading">
     Riders
   </button>
-  <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"
-  *ngIf="!loading && isAdmin">
-    Benevolats
+  <button mat-flat-button color="primary" class="button" style="margin-top: 20px;"
+  *ngIf="!loading && isAdmin" disabled>
+    Benevolats (Coming soon)
   </button>
   <div class="scrollable" *ngIf="loading">
     <mat-spinner></mat-spinner>
+  </div>
+  <div class="footer-image">
+      <img src="../../../assets/Logo-53.png">
   </div>
 
 </div>

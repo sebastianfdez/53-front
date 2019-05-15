@@ -2,13 +2,14 @@
 
     <div class="title" [routerLink]="['']">
       <div class="images">
-        <img class="big" src="../../../assets/51logo.jpeg">
+        <img *ngIf="bottomMenu" class="big" src="../../../assets/Logo-53.png">
+        <img *ngIf="!bottomMenu" class="big" src="../../../assets/Logo-53-blanc.png">
       </div>
     </div>
 
-    <div class="start">
+    <!-- <div class="start">
       <span [class.bottom-menu]="bottomMenu" class="button" >La 53 News!</span>
-    </div>
+    </div> -->
   
     <div class="start" title="Proposer un projet">
         <span [class.bottom-menu]="bottomMenu" class="button" routerLink="/login">Login</span>

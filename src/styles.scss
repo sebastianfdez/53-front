@@ -13,10 +13,10 @@ body {
 }
 
 .title-51 {
-    font-size: 4em;
+    font-size: 3em;
     width: 90%;
     text-align: center;
-    margin: 30px 0;
+    margin: 10px 0;
 }
 
 .scrollable-51 {
@@ -99,12 +99,33 @@ body {
     }
 }
 
-@media (max-width: 970px) {
+.footer-image {
+    display: flex;
+    place-content: center;
+    height: 150px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    flex: 0 0 auto;
 
-    .title-51 {
-        font-size: 3em;
-        margin: 20px 0;
+    img {
+        height: 100%;
     }
+}
+
+.carousel-indicators {
+    li {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 970px) {
 
     .back-51 {
         top: 30px;
@@ -130,7 +151,7 @@ body {
 
     .title-51 {
         font-size: 2em;
-        margin: 10px 0;
+        margin: 5px 0;
     }
 
     .back-51 {
