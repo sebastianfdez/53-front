@@ -6,10 +6,17 @@
 }
 
 body {
-    height: 100%;
+    height: 100vh;
+    display: flex;
     margin: 0;
     font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
     background: url("./assets/Fond.png");
+    background-size: cover;
+    place-content: center;
+}
+
+.body2 {
+    background-image: url('./assets/skatepark-lyon.jpg');
 }
 
 .title-51 {

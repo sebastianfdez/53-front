@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   setHeaderAnimation() {
     window.addEventListener('scroll', ((event) => {
-      pageYOffset = (event.target as Document).scrollingElement.scrollTop;
+      pageYOffset = (event.target as HTMLElement).scrollTop;
       if (pageYOffset > 200) {
         this.showSticky = false;
         if (pageYOffset > window.innerHeight) {

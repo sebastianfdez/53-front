@@ -9,7 +9,7 @@
     min-height: 70px;
     display: flex;
     align-items: center;
-    padding: 10px 90px;
+    padding: 0px 90px;
     position: relative;
     height: fit-content;
     font-size: 14px;
@@ -39,7 +39,6 @@
         align-items: center;
         font-family: Roboto,"Helvetica Neue",sans-serif;
         font-weight: 500;
-        padding: 5px;
         flex: 1;
         width: 270px;
         left: calc(50% - 250px);
