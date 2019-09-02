@@ -8,6 +8,7 @@
 }
 
 .carrousel-cont {
+    padding-top: 11vh;
     width: 100%;
     height: fit-content;
     color: #ffffff;
@@ -17,8 +18,7 @@
     place-content: center;
     align-items: center;
     position: relative;
-	height: 100vh;
-	background-color: #000000;
+	height: 89vh;
 
     .header {
         width: 100%;
@@ -40,7 +40,6 @@
     min-height: 100vh;
     place-content: flex-end;
     width: 100%;
-    background-color: #ffffff7d;
     .title {
         font-size: 50px;
         font-family: AxeHandel;
