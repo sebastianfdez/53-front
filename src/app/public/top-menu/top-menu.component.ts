@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TopMenuComponent implements OnInit {
 
   @Input() bottomMenu: boolean;
+  @Input() bottomMenu2: boolean;
 
   constructor() { }
 

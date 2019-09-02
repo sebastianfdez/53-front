@@ -27,7 +27,6 @@
 		position: absolute;
     
         &.sticky {
-            background-color: #ffffff;
 			position: fixed;
         }
     }
@@ -37,8 +36,36 @@
     }
 }
 
-.rest-of-the-app {
-	min-height: 200vh;
-	background-color: #ffffff;
-	width: 100%;
+.contacts-cont {
+    min-height: 100vh;
+    place-content: flex-end;
+    width: 100%;
+    background-color: #ffffff7d;
+    .title {
+        font-size: 50px;
+        font-family: AxeHandel;
+        letter-spacing: 13px;
+    }
+    .contacts {
+        width: 100%;
+        background-color: #ffffff9f;
+        font-family: SlabTallX;
+        min-height: 40vh;
+        font-size: 28px;
+        padding: 5%;
+        letter-spacing: 6px;
+    }
+}
+
+@media (max-width: 930px) {
+
+    .contacts-cont {
+        .title {
+            letter-spacing: 10px;
+        }
+        .contacts {
+            font-size: 15px;
+            letter-spacing: 3px;
+        }
+    }
 }

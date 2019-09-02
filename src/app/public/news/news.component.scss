@@ -1,99 +1,77 @@
 :host {
     width: 100%;
+    background-color: #ffffff7d;
 }
 
 .news-container {
-    display: flex;
-    padding: 150px 30px;
-    place-content: center;
+    padding: 150px 100px;
 
-    .block {
-        flex-direction: column;
+    .section {
+        height: 100vh;
+        place-content: center;
+        width: 100%;
 
-        .section {
-            padding: 10px 40px;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            place-content: center;
+        .block {
+            background-color: #ffffffc7;
+            padding: 40px 0;
+            border-radius: 5px;
+            margin: 22px 0;
+            min-width: 70%;
+            min-height: 40%;
 
-            img {
-                height: 100%;
+            &.left {
+                align-self: flex-start;
+                align-items: flex-start;
             }
 
-            .image {
-                flex: 1;
-                height: 120px;
-                display: flex;
-                box-sizing: border-box;
-                place-content: center;
-
-                img {
-                    height: 100%;
-                }
-            }
-
-            .text {
-                flex: 2;
-                font-size: 30px;
-                display: flex;
-                place-content: center;
-
-                span {
-                    text-align: center;
-                }
+            &.rigth {
+                align-self: flex-end;
+                align-items: flex-end;
             }
         }
     }
 }
 
-@media (max-width: 780px) {
-
-    .news-container {
-        .block {
-            .section {
-                height: 160px;
-                .text {
-                    font-size: 25px;
-                }
-            }
-        }
+.logo {
+    max-width: 100%;
+    img {
+        max-width: 70vw;
     }
 }
 
-
-@media (max-width: 660px) {
-
-    .news-container {
-        .block {
-            .section {
-                height: 140px;
-                .text {
-                    font-size: 20px;
-                }
-                .image {
-                    padding: 0 15px;
-                    flex: 0;
-                    height: 50px;
-                }
-            }
-        }
+.description {
+    position: relative;
+    .title {
+        margin: 0 40px 30px 40px;
+        font-family: AxeHandel;
+        font-size: 40px;
+        letter-spacing: 10px;    
+        text-align: center;
+    }
+    .body {
+        margin: 0 40px;
+        font-size: 20px; 
+    }
+    .big-letter {
+        position: absolute;
+        font-size: 55vh;
+        line-height: 0.8;
+        font-family: applegothic;
+        color: #00000045;
     }
 }
 
-
-@media (max-width: 540px) {
+@media (max-width: 930px) {
 
     .news-container {
-        .block {
-            .section {
-                height: 100px;
-                padding: 0;
-                .text {
-                    font-size: 15px;
-                }
-            }
+        padding: 150px 40px;    
+    }
+    .description {
+        .title {
+            font-size: 25px;
+        }
+        .body {
+            font-size: 15px; 
         }
     }
 }

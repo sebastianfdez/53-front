@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,15 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppComponent {
 
-  @ViewChild('body') body: HTMLElement;
-
   constructor(
     route: ActivatedRoute,
   ) {
     route.fragment.subscribe((route_) => {
-      console.log(route.children[0] ? route.children[0].routeConfig.path : '');
       if (route.children[0] && route.children[0].routeConfig.path === 'home') {
-        console.log(this.body);
+        document.body.classList.add('body2');
+      } else {
+        document.body.classList.remove('body2');
       }
     });
   }

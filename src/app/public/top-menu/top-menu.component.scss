@@ -1,5 +1,4 @@
 :host {
-    color: #FFFFFF;
     width: 100%;
     top: 0;
     margin-bottom: 20px;
@@ -9,7 +8,7 @@
     min-height: 70px;
     display: flex;
     align-items: center;
-    padding: 0px 90px;
+    padding: 0px 30px;
     position: relative;
     height: fit-content;
     font-size: 14px;
@@ -17,7 +16,7 @@
 
     .start {
         flex: 0 0 auto;
-        width: 100px;
+        width: 65px;
         display: flex;
         cursor: pointer;
 
@@ -45,14 +44,20 @@
         cursor: pointer;
         
         .images {
-
             height: 90px;
             display: flex;
-
+            visibility: hidden;
+            img {
+                opacity: 0;
+                transition: visibility 0s, opacity 0.5s linear;
+                &.show {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
             .big {
                 height: 90px;
             }
-        
             &:focus {
                 outline: none;
             }

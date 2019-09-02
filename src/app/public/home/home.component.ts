@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
 
   showSticky = true;
   bottomMenu = false;
+  bottomMenu2 = false;
 
   @ViewChild('header') header: ElementRef;
   @ViewChild('carrousel') carrousel: ElementRef;
@@ -47,6 +48,11 @@ export class HomeComponent implements OnInit {
           this.carrousel.nativeElement.classList.add('sticky');
           this.showSticky = true;
           this.bottomMenu = true;
+          if (pageYOffset > 2 * window.innerHeight) {
+            this.bottomMenu2 = true;
+          } else {
+            this.bottomMenu2 = false;
+          }
         } else {
           this.header.nativeElement.classList.remove('sticky');
           this.carrousel.nativeElement.classList.remove('sticky');
@@ -55,6 +61,7 @@ export class HomeComponent implements OnInit {
       } else {
         this.showSticky = true;
         this.bottomMenu = false;
+        this.bottomMenu2 = false;
       }
     }), true);
   }
