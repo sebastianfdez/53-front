@@ -10,13 +10,14 @@ body {
     display: flex;
     margin: 0;
     font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
-    background: url("./assets/Fond.png");
     background-size: cover;
     place-content: center;
 }
 
-.body2 {
-    background-image: url('./assets/skatepark-lyon.jpg');
+.background-cont {
+    height: 100vh;
+    overflow: scroll;
+    background-color: #ffffff66;
 }
 
 .body2::after {
