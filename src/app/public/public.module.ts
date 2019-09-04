@@ -7,9 +7,16 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { NewsComponent } from './news/news.component';
+import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
+import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: 'home', children: [
+    { path: '', component: HomeComponent },
+    { path: ':type', component: DescriptionOverviewComponent, resolve: {
+      template: DescriptionOverviewResolve
+    }},
+  ]},
 ];
 
 @NgModule({
@@ -23,7 +30,11 @@ const routes: Routes = [
     HomeComponent,
     TopMenuComponent,
     CarouselComponent,
-    NewsComponent
+    NewsComponent,
+    DescriptionOverviewComponent
+  ],
+  providers: [
+    DescriptionOverviewResolve,
   ],
   exports: [
     HomeComponent,

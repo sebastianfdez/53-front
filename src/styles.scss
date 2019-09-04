@@ -18,6 +18,7 @@ body {
     height: 100vh;
     overflow: scroll;
     background-color: #ffffff66;
+    width: 100%;
 }
 
 .body2::after {
@@ -43,6 +44,18 @@ body {
     &.column {
         flex-direction: column;
     }
+}
+
+*:focus {
+    outline:0;
+}
+
+.full-heigth {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .scrollable-51 {

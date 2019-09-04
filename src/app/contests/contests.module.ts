@@ -29,7 +29,6 @@ const routes: Routes = [
   { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService] },
   { path: 'categorie/:id/scores', component: ScoreTableComponent, canActivate: [JudgeAuthGuardService] },
   { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService] },
-  { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({
