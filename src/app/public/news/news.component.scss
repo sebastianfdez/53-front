@@ -14,18 +14,24 @@
             background-color: #ffffffc7;
             padding: 40px 0;
             border-radius: 5px;
-            margin: 22px 0;
-            min-width: 70%;
-            min-height: 40%;
+            margin: 5vh 0;
+            min-height: 40vh;
+            width: 70vw;
 
             &.left {
                 align-self: flex-start;
                 align-items: flex-start;
+                text-align: left;
             }
 
             &.rigth {
                 align-self: flex-end;
                 align-items: flex-end;
+                text-align: right;
+            }
+
+            &.center {
+              text-align: center;
             }
         }
     }
@@ -44,17 +50,19 @@
         margin: 0 40px 30px 40px;
         font-family: AxeHandel;
         font-size: 40px;
-        letter-spacing: 10px;    
+        letter-spacing: 10px;
         text-align: center;
     }
-    .body {
+    .descrip {
         margin: 0 40px;
-        font-size: 20px; 
+        font-size: 20px;
+        font-family: Kohinoor Telugu;
+        letter-spacing: 1.5px;
     }
     .big-letter {
         position: absolute;
         font-size: 55vh;
-        line-height: 0.8;
+        line-height: 0.75;
         font-family: applegothic;
         color: #00000045;
     }
@@ -63,14 +71,14 @@
 @media (max-width: 930px) {
 
     .news-container {
-        padding: 150px 40px;    
+        padding: 150px 40px;
     }
     .description {
         .title {
             font-size: 25px;
         }
         .body {
-            font-size: 15px; 
+            font-size: 15px;
         }
     }
 }
