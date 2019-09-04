@@ -1,0 +1,31 @@
+<div class="background-cont flex-div column">
+  <app-top-menu></app-top-menu>
+  <div class="flex-div column full-heigth full-width">
+
+    <!-- JUDGE -->
+    <div class="block flex-div column" *ngIf="(type | async)  === 'judge'">
+      <span class="title">Juge</span>
+      <span class="descrip"> Envoi des notes rapidement et facilement. En un rien de temps, les moyennes et les classements sont fait. </span>
+    </div>
+
+    <!-- Organizer -->
+    <div class="block flex-div column" *ngIf="(type | async)  === 'organizer'">
+      <span class="title">Organisateur</span>
+      <span class="descrip"> Facilite la création des catégories et des poules de manière informatique. Si des modifications sont faites concernant des riders ou les poules, les juges et le speaker en seront automatiquement informés. Plus besoin de courrir à travers tout le skate park pour prévenir d'un changement ! </span>
+    </div>
+
+    <!-- Speaker -->
+    <div class="block flex-div column" *ngIf="(type | async)  === 'speaker'">
+      <span class="title">Speaker</span>
+      <span class="descrip">Mise à jour en direct des catégories, des poules et des infos concernants les riders. Tout est centralisé sur la 53 et accessible en seulement quelques clics. </span>
+    </div>
+
+    <!-- Volunteer -->
+    <div class="block flex-div column" *ngIf="(type | async)  === 'volunteer'">
+      <span class="title">Benevoles</span>
+      <span class="descrip">De nouvelles fonctionnalités, pour la gestion des bénévoles seront disponibles très bientôt ... </span>
+    </div>
+
+  </div>
+</div>
+  
