@@ -1,16 +1,17 @@
-
-<div class="carrousel-cont" #carrousel>
-	<div class="header" #header [@openClose]="showSticky ? 'open' : 'closed'">
-
-		<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
-
+<div class="background-cont home flex-div column">
+	<div class="carrousel-cont" #carrousel>
+		<div class="header" #header [@openClose]="showSticky ? 'open' : 'closed'">
+		
+			<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
+		
+		</div>
+		<app-carousel></app-carousel>
 	</div>
-	<app-carousel></app-carousel>
-</div>
-<app-news></app-news>
-<div class="contacts-cont flex-div column">
-	<span class="title">CONTACTS:</span>
-	<div class="contacts flex-div column">
-		<span>lacinquantetrois@gmail.com</span>
+	<app-news></app-news>
+	<div class="contacts-cont flex-div column">
+		<span class="title">CONTACTS:</span>
+		<div class="contacts flex-div column">
+			<span>mail: lacinquantetrois @gmail.com</span>
+		</div>
 	</div>
 </div>

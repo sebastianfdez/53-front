@@ -1,3 +1,14 @@
+:host {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url("../../../../assets/Fond.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .login-container {
     place-content: center;
     height: 95%;
