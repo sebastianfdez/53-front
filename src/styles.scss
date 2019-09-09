@@ -186,7 +186,12 @@ body {
     .carousel-inner {
         .carousel-item {
             .carousel-caption {
-                font-size: 20px;
+                .carousel-title {
+                    font-size: 25px;
+                }
+                .carousel-subtitle {
+                    font-size: 20px;
+                }
             }
         }
     }

@@ -16,6 +16,7 @@
             border-radius: 5px;
             margin: 5vh 0;
             min-height: 40vh;
+            box-sizing: border-box;
             width: 70vw;
             cursor: pointer;
 
@@ -59,6 +60,8 @@
         font-size: 20px;
         font-family: Kohinoor Telugu;
         letter-spacing: 1.5px;
+        max-height: calc(100% - 38px);
+        overflow: hidden;
     }
     .big-letter {
         position: absolute;
@@ -73,13 +76,42 @@
 
     .news-container {
         padding: 150px 40px;
+        .section {
+            .block {
+                padding: 20px 0;
+                &.left {
+                    align-items: center;
+                    text-align: center;
+                    align-self: center;
+                }
+                &.rigth {
+                    align-self: center;
+                    align-items: center;
+                    text-align: center;
+                }
+                &.center {
+                    align-self: center;
+                    align-items: center;
+                    text-align: center;
+                }
+            }
+        }
     }
     .description {
+        margin: 0 15px;
         .title {
             font-size: 25px;
+            margin: 0 10px 10px 10px;
+        }
+        .descrip {
+            font-size: 14px;
+            margin: 0 10px;
         }
         .body {
             font-size: 15px;
+        }
+        .big-letter {
+            font-size: 40vh;
         }
     }
 }

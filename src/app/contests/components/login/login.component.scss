@@ -34,9 +34,15 @@
 
 @media (max-width: 500px) {
     .login-container {
+        max-width: 92%;
+
+        .example-form {
+            max-width: 75%;
+        }
     
-        img {
-            width: 100%;
+        .button {
+            width: 240px;
+            font-size: 1em;
         }
     }
 }
