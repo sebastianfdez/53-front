@@ -61,11 +61,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   goToJudges() {
-    this.router.navigate([`/judges`]);
+    this.router.navigate([`portal/judges`]);
   }
 
   goToContest() {
-    this.isAdmin || this.isJudge ? this.router.navigate([`/contests`]) : this.router.navigate(['/speaker']);
+    this.isAdmin || this.isJudge ? this.router.navigate([`portal/contests`]) : this.router.navigate(['portal/speaker']);
   }
 
 }

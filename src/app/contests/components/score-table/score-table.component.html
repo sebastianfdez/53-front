@@ -1,74 +1,77 @@
-<div class="table-container">
+<div class="container-51">
 
-  <div class="back-51" *ngIf="!loading">
-    <button mat-flat-button class="big" color="primary" routerLink="{{'/categorie/' + categorie.id}}">
-      {{"< Retour"}}
+  <div class="table-container flex-div column">
+
+    <div class="back-51" *ngIf="!loading">
+      <button mat-flat-button class="big" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}">
+        {{"< Retour"}}
+      </button>
+      <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+        {{"<"}}
+      </button>
+    </div>
+  
+    <div class="scrollable" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  
+    <span class="title-51" *ngIf="!loading">Classement: {{categorie?.name}} </span>
+  
+    <table mat-table [dataSource]="dataSource" class="data-table mat-elevation-z8" *ngIf="!loading" matSort
+    (matSortChange)="sortData($event)">
+  
+      <ng-container matColumnDef="pool">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="pool"> Poule </th>
+        <td mat-cell *matCellDef="let element"> {{parseInt(element.pool) + 1}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Nom </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="licence">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Licence </th>
+        <td mat-cell *matCellDef="let element"> {{element.licence}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="{{judge.name}}{{judge.lastName}}" *ngFor="let judge of judges">
+        <th mat-header-cell *matHeaderCellDef> Note {{judge.name}} {{judge.lastName}} </th>
+        <td mat-cell *matCellDef="let element"> {{getVote(element, judge)}} </td>
+        <!-- <td mat-cell *matCellDef="let element"> 0 </td> -->
+      </ng-container>
+  
+      <ng-container matColumnDef="average">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Moyenne </th>
+        <td mat-cell *matCellDef="let element"> {{element.average}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="calification">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Classement </th>
+        <td mat-cell *matCellDef="let element"> {{element.calification}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <button mat-flat-button class="button scores" (click)="save(excelexportPublic)" *ngIf="!loading">
+      Export to Excel (Public)
     </button>
-    <button mat-flat-button class="small" color="primary" routerLink="/admin">
-      {{"<"}}
+  
+    <button mat-flat-button class="button scores" (click)="save(excelexportFederation)" *ngIf="!loading">
+      Export to Excel (Federation)
+    </button>
+  
+    <button mat-flat-button color="primary" class="button save" (click)="createFinal()" *ngIf="!loading && !categorie?.final">
+      Générer la finale
     </button>
   </div>
-
-  <div class="scrollable" *ngIf="loading">
-    <mat-spinner></mat-spinner>
+  <div class="footer-image">
+      <img src="../../../assets/Logo-53.png">
   </div>
-
-  <span class="title-51" *ngIf="!loading">Classement: {{categorie.name}} </span>
-
-  <table mat-table [dataSource]="dataSource" class="data-table mat-elevation-z8" *ngIf="!loading" matSort
-  (matSortChange)="sortData($event)">
-
-    <ng-container matColumnDef="pool">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="pool"> Poule </th>
-      <td mat-cell *matCellDef="let element"> {{element.pool + 1}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Nom </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="licence">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Licence </th>
-      <td mat-cell *matCellDef="let element"> {{element.licence}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="{{judge.name}}{{judge.lastName}}" *ngFor="let judge of judges">
-      <th mat-header-cell *matHeaderCellDef> Note {{judge.name}} {{judge.lastName}} </th>
-      <td mat-cell *matCellDef="let element"> {{getVote(element, judge)}} </td>
-      <!-- <td mat-cell *matCellDef="let element"> 0 </td> -->
-    </ng-container>
-
-    <ng-container matColumnDef="average">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Moyenne </th>
-      <td mat-cell *matCellDef="let element"> {{element.average}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="calification">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Classement </th>
-      <td mat-cell *matCellDef="let element"> {{element.calification}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <button mat-flat-button class="button scores" (click)="save(excelexportPublic)" *ngIf="!loading">
-    Export to Excel (Public)
-  </button>
-
-  <button mat-flat-button class="button scores" (click)="save(excelexportFederation)" *ngIf="!loading">
-    Export to Excel (Federation)
-  </button>
-
-  <button mat-flat-button color="primary" class="button save" (click)="createFinal()" *ngIf="!loading && !categorie.final">
-    Générer la finale
-  </button>
+      
 </div>
-<div class="footer-image">
-    <img src="../../../assets/Logo-53.png">
-</div>
-
 <kendo-excelexport [data]="dataSource" fileName="{{getFileName()}}" #excelexportPublic>
   <kendo-excelexport-column field="name" title="Nom"></kendo-excelexport-column>
   <kendo-excelexport-column field="club" title="Club/Ville"></kendo-excelexport-column>

@@ -3,14 +3,16 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { ContestsModule } from './contests/contests.module';
-import { SharedModule } from '@progress/kendo-angular-dropdowns';
-import { PublicModule } from './public/public.module';
 import { UploadModule } from '@progress/kendo-angular-upload';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '@progress/kendo-angular-grid';
 
 const routes: Routes = [
+  { path: 'portal', loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule) },
+  { path: 'home', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
   { path: '**', redirectTo: 'home' },
 ];
 
@@ -19,13 +21,13 @@ const routes: Routes = [
     AppComponent,
   ],
   imports: [
+    CommonModule,
     RouterModule.forRoot(routes),
-    SharedModule,
-    ContestsModule,
-    PublicModule,
     UploadModule,
-    BrowserAnimationsModule,
+    BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    SharedModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

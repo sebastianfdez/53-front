@@ -76,7 +76,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.addSpeaker = true;
         this.loadingSave = false;
       } else {
-        this.router.navigate(['login']);
+        this.router.navigate(['portal/login']);
       }
     } else if (this.noSpeaker && this.addSpeaker) {
       this.subscriptions.push(

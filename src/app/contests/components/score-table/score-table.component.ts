@@ -5,7 +5,7 @@ import { Categorie, Judge, Participant, emptyCategorie } from '../../models/cate
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
-import { of, combineLatest, Subscription, Observable } from 'rxjs';
+import { of, combineLatest, Subscription } from 'rxjs';
 import { Contest } from '../../models/contest';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
@@ -45,57 +45,20 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      combineLatest(
-        this.getPools(),
-        this.getJudges(),
-      ).subscribe(([categorie, judges]) => {
-        this.judges = judges;
-        this.categorie = categorie;
+      this.route.data.subscribe((data: { categorie: Categorie, judges: Judge[]}) => {
+        this.judges = data.judges;
+        this.categorie = data.categorie;
         this.getTableData();
         this.loading = false;
-        console.log(this.judges);
         this.displayedColumns = ['pool', 'name', 'licence'];
         this.judges.forEach(judge => this.displayedColumns.push(`${judge.name}${judge.lastName}`));
         this.displayedColumns.push('average', 'calification');
-      })
+      }),
     );
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
-  getJudges(): Observable<Judge[]> {
-    const contestId = localStorage.getItem('contestId');
-    return this.database.collection('contests').doc<Contest>(contestId).snapshotChanges().pipe(
-      switchMap((contest) => {
-        return combineLatest(
-          contest.payload.data().judges.map((judge) => {
-            return this.database.collection('users').doc<Judge>(judge).snapshotChanges();
-          })
-        );
-      }),
-      switchMap((judges) => {
-        return of(judges.map(judge => {
-          return {...judge.payload.data(), id: judge.payload.id};
-        }));
-      })
-    );
-  }
-
-  getPools(): Observable<Categorie> {
-    this.loading = true;
-    let categorie_: Categorie;
-    return this.route.params.pipe(
-      switchMap((params) => {
-        return this.database.doc<Categorie>(`categories/${params.id}`).snapshotChanges();
-      }),
-      switchMap((categorie) => {
-        categorie_ = {...categorie.payload.data()};
-        categorie_.id = categorie.payload.id;
-        return of(categorie_);
-      })
-    );
   }
 
   getTableData() {
@@ -111,7 +74,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
           club: participant.club,
           idPlayer: participant.id,
         };
-        participant.votes.forEach(vote => newScore[vote.codeJuge] = `${vote.note}`);
+        participant.votes.forEach(vote => newScore[vote.codeJuge] = `${vote.note ? vote.note : 0}`);
         let totalVotes = 0;
         let totalScore = 0;
         participant.votes.forEach((vote) => {
@@ -124,8 +87,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     });
     this.dataSource = this.dataSource.sort((a, b) => a.average > b.average ? -1 : 1);
     this.dataSource.forEach((data, index) => data.calification = `${index + 1}`);
-    this.dataSource = this.dataSource.sort((a, b) => a.pool > b.pool ? 1 : -1);
-    console.log(this.dataSource);
+    this.dataSource = this.dataSource.sort((a, b) => this.parseInt(a.pool) > this.parseInt(b.pool) ? 1 : -1);
   }
 
   sortData(sort: Sort) {
@@ -138,7 +100,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     this.dataSource = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'pool': return this.compare(a.pool, b.pool, isAsc);
+        case 'pool': return this.compare(this.parseInt(a.pool), this.parseInt(b.pool), isAsc);
         case 'name': return this.compare(a.name, b.name, isAsc);
         case 'licence': return this.compare(a.licence, b.licence, isAsc);
         case 'average': return this.compare(a.average, b.average, isAsc);
@@ -153,12 +115,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
   }
 
   save(component: ExcelExportComponent): void {
-    console.log(this.judges);
-    console.log(component.data[0]);
-    console.log(component.data[0][this.judges[0].id]);
-    console.log(component.data[0][this.judges[1].id]);
     const options = component.workbookOptions();
-    console.log(options);
     component.save(options);
   }
 
@@ -168,6 +125,10 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
   getVote(element: ScoreElement, judge: Judge) {
     return judge.id && element[judge.id] ? element[judge.id] : 0;
+  }
+
+  parseInt(num: string): number {
+    return parseInt(num, 0);
   }
 
   createFinal() {
@@ -230,7 +191,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       .subscribe((doc) => {
         if (doc) {
           this.database.collection('contests').doc<Contest>(this.categorie.contest).update({newCategorie : doc.id});
-          this.router.navigate(['contests']);
+          this.router.navigate(['portal/contests']);
         }
       })
     );

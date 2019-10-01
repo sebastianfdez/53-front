@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.authService.refreshAuth();
     this.authService.signIn(this.user, this.pass).then(
       (value: auth.UserCredential) => {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['portal/admin']);
       }, (error) => {
         console.log('Error', error);
       }

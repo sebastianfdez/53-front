@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Judge } from '../../models/categorie';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -39,26 +39,15 @@ export class JudgesComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private warningService: WarningService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.contestId = localStorage.getItem('contestId');
     this.loading = true;
     this.subscriptions.push(
-      this.db.collection('contests').doc<Contest>(this.contestId).snapshotChanges().pipe(
-        switchMap((contest) => {
-          this.contest = contest.payload.data();
-          return combineLatest(
-            this.contest.judges.map((judge) => {
-              return this.db.collection('users').doc<Judge>(judge).snapshotChanges();
-            })
-          );
-        })
-      ).subscribe((judges) => {
-        this.judges = [];
-        this.judges = judges.map((judge) => {
-          return {...judge.payload.data(), id: judge.payload.id};
-        });
+      this.route.data.subscribe((judges: {judges: Judge[]}) => {
+        this.judges = judges.judges;
         this.loading = false;
       })
     );

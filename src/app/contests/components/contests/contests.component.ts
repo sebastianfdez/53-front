@@ -98,7 +98,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   goTo(categorie: Categorie) {
     (this.isJudge || this.isAdmin) ?
-    this.router.navigate([`/categorie/${categorie.id}`]) : this.router.navigate([`/categorie/${categorie.id}/speaker`]);
+    this.router.navigate([`/portal/categorie/${categorie.id}`]) : this.router.navigate([`/portal/categorie/${categorie.id}/speaker`]);
   }
 
   public mouseup(categorie: Categorie, event: MouseEvent) {
@@ -120,7 +120,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
   }
 
   goToNew() {
-    this.router.navigate([`/categorie/new`]);
+    this.router.navigate([`/portal/categorie/new`]);
   }
 
   public mousedown() {

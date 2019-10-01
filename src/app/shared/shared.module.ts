@@ -1,6 +1,4 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSelectModule, MatTableModule, MatSortModule, MatDialogModule
 } from '@angular/material';
@@ -9,16 +7,14 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { environment } from 'src/environments/environment';
 import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WarningComponent } from './warning/warning.component';
 import { firebaseKeys } from 'src/firbase-keys';
 import { WarningService } from './warning/warning.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 const materialModules = [
   MatInputModule,
@@ -33,10 +29,9 @@ const materialModules = [
 
 @NgModule({
   imports: [
+    ...materialModules,
     CommonModule,
     FormsModule,
-    BrowserModule,
-    BrowserAnimationsModule,
     GridModule,
     ExcelModule,
     UploadModule,
@@ -46,7 +41,6 @@ const materialModules = [
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     AngularFireDatabaseModule,
-    ...materialModules,
   ],
   declarations: [
     WarningComponent,
@@ -56,8 +50,6 @@ const materialModules = [
   ],
   exports : [
     FormsModule,
-    BrowserModule,
-    BrowserAnimationsModule,
     GridModule,
     ExcelModule,
     WarningComponent,
@@ -66,6 +58,9 @@ const materialModules = [
   ],
   providers: [
     WarningService,
-  ]
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+  ],
 })
 export class SharedModule { }

@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ComponentRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
-import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
-import { switchMap } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../services/auth.service';
-import { combineLatest, of, from, Subscription } from 'rxjs';
+import { from, Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
@@ -66,27 +65,12 @@ export class CategorieComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.contestId = localStorage.getItem('contestId');
     this.subscription.push(
-      this.route.params.pipe(
-        switchMap((params) => {
-          this.categorie.contest = this.authService.authStateUser.contest;
-          console.log(this.categorie.contest);
-          if (!params.id) {
-            this.createNew = true;
-            return of(null);
-          } else {
-            this.loading = true;
-            return this.database.collection('categories').doc<Categorie>(params.id).snapshotChanges();
-          }
-        }),
-      ).subscribe((action: Action<DocumentSnapshot<Categorie>>) => {
-        if (!action) {
-          const poolListEmpty: Pool[] = [];
+      this.route.data.subscribe((categorie: {categorie: Categorie}) => {
+        if (!categorie.categorie) {
           this.categorie = emptyCategorie;
+          this.createNew = true;
         } else {
-          this.categorie = {
-            ...action.payload.data(),
-            id: action.payload.id,
-          };
+          this.categorie = categorie.categorie;
         }
         this.categorie.pools = this.categorie.pools.filter(pool => pool.participants.length);
         this.categorie.pools.forEach((pool) => {
@@ -114,7 +98,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   addPool() {
-    console.log(this.categorie);
     if (!this.categorie.pools.length || this.categorie.pools[this.categorie.pools.length - 1].participants.length > 0 &&
       this.categorie.pools[this.categorie.pools.length - 1].participants[0].name !== '') {
       this.categorie.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
@@ -144,13 +127,13 @@ export class CategorieComponent implements OnInit, OnDestroy {
       this.database.collection('categories').add(this.categorie)
       .then((doc) => {
         this.database.collection('contests').doc(this.contestId).update({ newCategorie: doc.id });
-        this.router.navigate(['contests']);
+        this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       });
     } else {
       this.database.collection('categories').doc(this.categorie.id).update(this.categorie)
       .then(() => {
-        this.authService.isAdmin ? this.router.navigate(['admin']) : this.router.navigate(['contests']);
+        this.authService.isAdmin ? this.router.navigate(['/portal/admin']) : this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       });
     }
@@ -187,14 +170,14 @@ export class CategorieComponent implements OnInit, OnDestroy {
     });
     this.subscription.push(
       from(this.database.collection('categories').doc(this.categorie.id).update(this.categorie)).subscribe(() => {
-        this.router.navigate(['contests']);
+        this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       })
     );
   }
 
   goToScores() {
-    this.router.navigate([`/categorie/${this.categorie.id}/scores`]);
+    this.router.navigate([`/portal/categorie/${this.categorie.id}/scores`]);
   }
 
   getVote(pool: Pool, i: number) {
