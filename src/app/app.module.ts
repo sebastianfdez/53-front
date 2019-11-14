@@ -11,8 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@progress/kendo-angular-grid';
 
 const routes: Routes = [
-  { path: 'portal', loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule) },
-  { path: 'home', loadChildren: () => import('./public/public.module').then(m => m.PublicModule) },
+  { path: 'portal', loadChildren: './contests/contests.module#ContestsModule' },
+  { path: 'home', loadChildren: './public/public.module#PublicModule' },
   { path: '**', redirectTo: 'home' },
 ];
 

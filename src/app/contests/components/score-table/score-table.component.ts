@@ -45,7 +45,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.route.data.subscribe((data: { categorie: Categorie, judges: Judge[]}) => {
+      this.route.data.subscribe((data: {categorie: Categorie, judges: Judge[]}) => {
         this.judges = data.judges;
         this.categorie = data.categorie;
         this.getTableData();
@@ -100,17 +100,24 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     this.dataSource = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'pool': return this.compare(this.parseInt(a.pool), this.parseInt(b.pool), isAsc);
+        case 'pool': return this.compareNumber(this.parseInt(a.pool), this.parseInt(b.pool), isAsc);
         case 'name': return this.compare(a.name, b.name, isAsc);
         case 'licence': return this.compare(a.licence, b.licence, isAsc);
-        case 'average': return this.compare(a.average, b.average, isAsc);
-        case 'calification': return this.compare(a.calification, b.calification, isAsc);
+        case 'average': return this.compareNumber(this.parseInt(a.average), this.parseInt(b.average), isAsc);
+        case 'calification': return this.compareNumber(this.parseInt(a.calification), this.parseInt(b.calification), isAsc);
         default: return 0;
       }
     });
   }
 
-  compare(a: number | string, b: number | string, isAsc: boolean) {
+  /*
+    This help to shit
+  */
+  compare(a: string, b: string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  compareNumber(a: number, b: number, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 

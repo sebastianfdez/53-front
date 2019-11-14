@@ -8,7 +8,7 @@ import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '@progress/kendo-angular-grid';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', children: [
