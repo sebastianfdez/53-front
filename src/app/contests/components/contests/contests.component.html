@@ -14,9 +14,9 @@
 
   <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
   
-  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
-  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && isAdmin">Admin: {{judge.name}} {{judge.lastName}}</span>
-  <span class="title-51" style="font-size: 2em;" *ngIf="!loading && !isJudge && !isAdmin">
+  <span class="title-51" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
+  <span class="title-51" *ngIf="!loading && isAdmin">Admin: {{judge.name}} {{judge.lastName}}</span>
+  <span class="title-51" *ngIf="!loading && !isJudge && !isAdmin">
     Speaker: {{judge.name}} {{judge.lastName}}</span>
 
 

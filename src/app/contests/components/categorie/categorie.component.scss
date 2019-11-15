@@ -11,6 +11,8 @@
 
 .categorie-container {
 
+    overflow: scroll;
+
     .mat-form-field {
         width: 90%;
         max-width: 800px;
@@ -103,18 +105,45 @@
     }
 }
 
+@media (max-width: 800px) {
+
+    .categorie-container {
+
+        .button {
+            &.excel {
+                display: none;
+            }
+            &.scores {
+                margin-top: 0;
+            }
+            &.save {
+                margin-top: 0;
+            }
+        }
+    }
+}
+
 @media (max-width: 570px) {
 
     .categorie-container {
-        width: 95%;
+        .pool {
+            .participants {
+                .participants-cont {
+                    margin-top: 10px;
+                }
+            }
+        }
+
+        .button {
+            font-size: 1em;
+            padding: 0 1px;
+        }
     }
 }
 
 @media (max-width: 270px) {
     .pool {
-
         .participants {
-
             .icon {
                 display: none;
             }

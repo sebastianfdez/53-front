@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-/src/firbase-keys.ts
+/src/firebase-keys.ts
 
 # compiled output
 /dist

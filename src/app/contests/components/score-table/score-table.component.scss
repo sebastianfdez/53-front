@@ -9,13 +9,15 @@
     background-repeat: no-repeat;
 }
 
+.container-51 {
+    overflow: scroll;
+}
+
 .table-container {
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    min-width: 900px;
     height: fit-content;
-    overflow: scroll;
     max-height: 100%;
     padding: 48px 0;
     min-height: fit-content;
@@ -33,6 +35,16 @@
         &.scores {
             background-color: #007106;
             color: #ffffff;
+        }
+    }
+}
+
+@media (max-width: 570px) {
+
+    .table-container {
+
+        .button {
+            font-size: 1em;
         }
     }
 }
