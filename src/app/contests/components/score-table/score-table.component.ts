@@ -85,7 +85,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
         this.dataSource.push(newScore);
       });
     });
-    this.dataSource = this.dataSource.sort((a, b) => a.average > b.average ? -1 : 1);
+    this.dataSource = this.dataSource.sort((a, b) =>  this.parseInt(a.average) >  this.parseInt(b.average) ? -1 : 1);
     this.dataSource.forEach((data, index) => data.calification = `${index + 1}`);
     this.dataSource = this.dataSource.sort((a, b) => this.parseInt(a.pool) > this.parseInt(b.pool) ? 1 : -1);
   }
@@ -135,7 +135,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
   }
 
   parseInt(num: string): number {
-    return parseInt(num, 0);
+    return parseFloat(num);
   }
 
   createFinal() {
