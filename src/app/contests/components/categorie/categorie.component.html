@@ -1,4 +1,4 @@
-<div class="categorie-container container-51">
+<div class="categorie-container container-51 scrollbar-53">
 
     <div class="back-51" *ngIf="!loading">
       <button mat-flat-button class="big" color="primary" [routerLink]="(isAdmin || isJudge) ? '/portal/contests' : '/portal/speaker'">
@@ -32,7 +32,7 @@
         Classement et Finale
       </button>
   
-      <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button save" (click)="openUploeader()">
+      <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button save excel" (click)="openUploeader()">
         Importer depuis excel
       </button>
   

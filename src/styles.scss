@@ -85,7 +85,6 @@ body {
     margin-bottom: auto;
     height: fit-content;
     max-height: 100%;
-    overflow: scroll;
 }
 
 .block-51 {
@@ -113,6 +112,25 @@ body {
             display: none;
         }
     }
+}
+
+// Scroll bar
+.scrollbar-53::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-53::-webkit-scrollbar-track {
+    display: none;
+}
+
+.scrollbar-53::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(201, 201, 201, 0.7);
+}
+
+.scrollbar-53::-webkit-scrollbar-corner {
+    display: none;
 }
 
 .carousel-inner {
@@ -180,6 +198,19 @@ body {
             width: 90px;
         }
     }
+
+    .mat-table {
+        font-size: 1em;
+        .mat-sort-header-container {
+            justify-content: center;
+        }
+        .mat-header-cell {  
+            text-align: center
+        }
+        .mat-cell {
+            text-align: center;
+        }
+    }
 }
 
 @media (max-width: 760px) {
@@ -201,7 +232,7 @@ body {
 @media (max-width: 580px) {
 
     .title-51 {
-        font-size: 2em;
+        font-size: 1.5em;
         margin: 5px 0;
     }
 
@@ -211,6 +242,9 @@ body {
         button {
             width: 90px;
         }
+    }
+    .container-51 {
+        overflow: scroll;
     }
 }
 
