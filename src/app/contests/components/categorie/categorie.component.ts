@@ -186,7 +186,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   openUploeader() {
     this.warningService
-    .showWarning(`Le tableau excel doit comporter des colonnes avec exactement les noms suivantes: 'nom', 'nrenom', 'licence', 'club'`,
+    .showWarning(`Le tableau excel doit comporter des colonnes avec exactement les noms suivantes: 'nom', 'prenom', 'licence', 'club'`,
     true,
     'Combien de riders par poule?').afterClosed()
     .subscribe((response: WarningReponse) => {
