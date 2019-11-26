@@ -1,11 +1,11 @@
-export interface Contest {
+export class Contest {
     id: string;
     admins: string[];
     categories: string[];
     name: string;
-    newCategorie: string;
     judges: string[];
     speaker: string;
+    type: string;
 }
 
 export const emptyContest: Contest = {
@@ -13,7 +13,7 @@ export const emptyContest: Contest = {
     categories: [],
     name: '',
     id: '',
-    newCategorie: '',
     judges: [],
     speaker: '',
+    type: '',
 };

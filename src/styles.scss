@@ -9,7 +9,7 @@ body {
     height: 100vh;
     display: flex;
     margin: 0;
-    font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: Quicksand, Helvetica, Arial, sans-serif;
     background-size: cover;
     place-content: center;
 }
@@ -104,6 +104,11 @@ body {
     left: 30px;
     top: 50px;
 
+    &.logout {
+        right: 30px;
+        left: initial;
+    }
+
     button {
         min-width: fit-content;
         width: 120px;
@@ -145,7 +150,7 @@ body {
             filter: opacity(0.5);
         }
         .carousel-caption {
-            font-family: AxeHandel;
+            font-family: Quicksand, Helvetica, Arial, sans-serif;
             height: fit-content;
             top: 0;
             bottom: 0;
@@ -153,10 +158,11 @@ body {
             margin-bottom: auto;
             .carousel-title {
               font-size: 65px;
+              font-weight: bold;
             }
             .carousel-subtitle {
               font-size: 40px;
-              font-family: Kohinoor Telugu
+              font-family: Quicksand, Helvetica, Arial, sans-serif;
 
             }
         }

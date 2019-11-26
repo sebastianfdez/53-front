@@ -50,7 +50,6 @@
     position: relative;
     .title {
         margin: 0 40px 30px 40px;
-        font-family: AxeHandel;
         font-size: 40px;
         letter-spacing: 10px;
         text-align: center;
@@ -58,15 +57,14 @@
     .descrip {
         margin: 0 40px;
         font-size: 20px;
-        font-family: Kohinoor Telugu;
         letter-spacing: 1.5px;
         max-height: calc(100% - 38px);
         overflow: hidden;
     }
     .big-letter {
         position: absolute;
-        font-size: 55vh;
-        line-height: 0.75;
+        font-size: 57vh;
+        line-height: 0.65;
         font-family: applegothic;
         color: #00000045;
     }

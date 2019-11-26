@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivate } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from '../../auth/auth-form/services/auth.service';
 import { Observable, Subscription, of, ObservableInput } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -13,10 +13,11 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | boolean {
         return this.auth.authenticated.pipe(
             switchMap((value) => {
+                console.log('value: ', value);
                 if (value) {
                     return of(true);
                 } else {
-                    this.router.navigate(['']);
+                    this.router.navigate(['auth/login']);
                     return of(false);
                 }
             })

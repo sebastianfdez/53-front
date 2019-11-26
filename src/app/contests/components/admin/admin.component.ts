@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { of, from, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { AngularFirestore} from '@angular/fire/firestore';
+import { of, Subscription, Observable } from 'rxjs';
+import { switchMap, map, filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { User } from '../../models/user';
-import { AuthService } from '../../services/auth.service';
-import { Contest } from '../../models/contest';
+import { User } from '../../../shared/models/user';
+import { AuthService } from '../../../auth/auth-form/services/auth.service';
+import { Contest } from '../../../shared/models/contest';
+import { ContestsService } from '../../services/contest.service';
 
 @Component({
   selector: 'app-admin',
@@ -15,7 +15,7 @@ import { Contest } from '../../models/contest';
 export class AdminComponent implements OnInit, OnDestroy {
 
   contest: Contest = null;
-  admin: User = null;
+  admin$: Observable<User> = null;
 
   subscriptions: Subscription[] = [];
   isAdmin = false;
@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   public loading = false;
 
   constructor(
-    private db: AngularFirestore,
+    private contestService: ContestsService,
     private router: Router,
     private authService: AuthService,
   ) {
@@ -32,27 +32,21 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
+    this.admin$ = this.authService.getAuthenticatedUser();
     this.subscriptions.push(
-      this.authService.authenticated.pipe(
-        switchMap(
-            () => this.db.doc<User>(`users/${this.authService.authStateUser.id}`).snapshotChanges()
-        ),
-        switchMap(
-          (user) => {
-            this.isAdmin = this.authService.authStateUser ? this.authService.authStateUser.role === 'admin' : false;
-            this.isJudge = this.authService.authStateUser ? this.authService.authStateUser.role === 'judge' : false;
-            this.admin = user.payload.data();
-            return this.db.collection<Contest>('contests').doc<Contest>(this.admin.contest).snapshotChanges();
-          }
-        ),
-        switchMap((contest) => {
-          this.contest = {id: contest.payload.id, ...contest.payload.data()};
-          localStorage.setItem('contestId', this.contest.id);
-          return of(null);
+      this.admin$.pipe(
+        filter(user => user !== null),
+        switchMap((user) => {
+          this.isJudge = user.role === 'judge';
+          this.isAdmin = user.role === 'admin';
+          return this.contestService.getContest(user.contest);
         }),
-      ).subscribe(() => {
-        this.loading = false;
-      })
+        map((contest) => {
+          this.contest = contest;
+          localStorage.setItem('contestId', this.contest.id);
+          this.loading = false;
+        }),
+      ).subscribe()
     );
   }
 
@@ -66,6 +60,11 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   goToContest() {
     this.isAdmin || this.isJudge ? this.router.navigate([`portal/contests`]) : this.router.navigate(['portal/speaker']);
+  }
+
+  async logOut() {
+    await this.authService.logOut();
+    this.router.navigate(['home']);
   }
 
 }

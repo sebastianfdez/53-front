@@ -8,16 +8,13 @@
   </button>
 </div>
   
-<div class="categories">
-
-    <!-- <span class="title-51" >Bienvenue au Lyon Roller Open 2019</span> -->
+<div class="categories scrollbar-53">
 
   <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
   
-  <span class="title-51" *ngIf="!loading && isJudge">Juge: {{judge.name}} {{judge.lastName}}</span>
-  <span class="title-51" *ngIf="!loading && isAdmin">Admin: {{judge.name}} {{judge.lastName}}</span>
-  <span class="title-51" *ngIf="!loading && !isJudge && !isAdmin">
-    Speaker: {{judge.name}} {{judge.lastName}}</span>
+  <span class="title-51" *ngIf="!loading">
+    {{isAdmin ? 'Admin:' : isJudge ? 'Judge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
+  </span>
 
 
   <div class="grid">

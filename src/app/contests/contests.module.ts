@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 // Components
-import { LoginComponent } from './components/login/login.component';
 import { ContestsComponent } from './components/contests/contests.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { CategorieComponent } from './components/categorie/categorie.component';
@@ -14,15 +13,17 @@ import { SpeakerComponent } from './components/speaker/speaker.component';
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
 import { JudgeAuthGuardService, AdminAuthGuardService } from './services/admin-guard.service';
-import { AuthService } from './services/auth.service';
-import { FirebaseService } from './services/firebase.service';
 import { CategorieResolve } from './resolvers/cateogrie.resolve';
 import { JudgeResolve } from './resolvers/judge.resolve';
 import { CommonModule } from '@angular/common';
+import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
+import { UploadModule } from '@progress/kendo-angular-upload';
+import { AuthModule } from '../auth/auth.module';
+import { ContestsService } from './services/contest.service';
 
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', redirectTo: 'admin' },
   { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
   { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService], resolve: {
@@ -46,9 +47,12 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     RouterModule.forChild(routes),
+    GridModule,
+    ExcelModule,
+    UploadModule,
+    AuthModule,
   ],
   declarations: [
-    LoginComponent,
     ContestsComponent,
     AdminComponent,
     CategorieComponent,
@@ -57,13 +61,12 @@ const routes: Routes = [
     SpeakerComponent,
   ],
   providers: [
-    AuthService,
     AuthGuardService,
     AdminAuthGuardService,
     JudgeAuthGuardService,
     CategorieResolve,
     JudgeResolve,
-    FirebaseService,
+    ContestsService
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
