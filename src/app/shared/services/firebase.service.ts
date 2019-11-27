@@ -39,15 +39,13 @@ export class FirebaseService {
         return this.store.select<Contest>('contest').pipe(
             take(1),
             switchMap((contest) => {
-                console.log(contest);
-                return contest.judges.length ? combineLatest(
+                return contest && contest.judges.length ? combineLatest(
                      contest.judges.map((judge) => {
                         return this.database.collection('users').doc<Judge>(judge).snapshotChanges().pipe(take(1));
                     })
                 ) : of([]);
             }),
             switchMap((judges) => {
-                console.log(judges);
                 return of(judges.map(judge => {
                     return {...judge.payload.data(), id: judge.payload.id};
                 }));
@@ -55,8 +53,8 @@ export class FirebaseService {
         );
     }
 
-    getContest(idContest: string): Observable<Action<DocumentSnapshot<Contest>>> {
-        return this.database.collection<Contest>('contests').doc<Contest>(idContest).snapshotChanges();
+    getContest(idContest: string): Observable<Contest> {
+        return this.database.collection<Contest>('contests').doc<Contest>(idContest).valueChanges();
     }
 
     createJudge(userId: string, judge: Judge) {

@@ -36,7 +36,9 @@ export class RegisterComponent implements OnInit {
             type: ['', Validators.required],
             name: ['', Validators.required],
             lastName: ['', Validators.required],
-            contestName: ['', Validators.required]
+            contestName: ['', Validators.required],
+            date: [(new Date()).getTime(), Validators.required],
+            place: ['', Validators.required]
         }, { validators: this.samePassword });
     }
 
@@ -59,7 +61,9 @@ export class RegisterComponent implements OnInit {
             judges: [],
             name: this.registerForm.value.contestName,
             speaker: '',
-            type: this.registerForm.value.type
+            type: this.registerForm.value.type,
+            date: this.registerForm.value.date,
+            place: this.registerForm.value.place,
         };
         const newContest_ = await this.firebaseService.createContest(newContest);
         const newUser: User = {

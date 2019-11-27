@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSelectModule, MatTableModule, MatSortModule,
-  MatDialogModule, MatSnackBarModule,
+  MatDialogModule, MatSnackBarModule, MatDatepickerModule, MatNativeDateModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -28,6 +28,8 @@ const materialModules = [
   MatSortModule,
   MatDialogModule,
   MatSnackBarModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
 @NgModule({
@@ -60,6 +62,7 @@ const materialModules = [
     SnackBarService,
     ComponentUtils,
     FirebaseService,
+    MatDatepickerModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

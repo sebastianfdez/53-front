@@ -103,6 +103,7 @@ body {
     position: absolute;
     left: 30px;
     top: 50px;
+    z-index: 3;
 
     &.logout {
         right: 30px;
@@ -195,6 +196,10 @@ body {
     }
 }
 
+.table td, .table th {
+    padding: .75rem !important;
+}
+
 @media (max-width: 970px) {
 
     .back-51 {
@@ -215,6 +220,7 @@ body {
         }
         .mat-cell {
             text-align: center;
+            vertical-align: middle;
         }
     }
 }

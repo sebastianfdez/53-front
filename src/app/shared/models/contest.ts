@@ -6,6 +6,8 @@ export class Contest {
     judges: string[];
     speaker: string;
     type: string;
+    date: number;
+    place: string;
 }
 
 export const emptyContest: Contest = {
@@ -16,4 +18,6 @@ export const emptyContest: Contest = {
     judges: [],
     speaker: '',
     type: '',
+    date: 0,
+    place: '',
 };

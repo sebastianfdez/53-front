@@ -18,6 +18,7 @@ export class AuthFormComponent implements ControlValueAccessor, OnInit, AfterCon
 
   @Input() authFormGroup: FormGroup;
   @Input() types: string[] = [];
+  minDate = new Date();
 
   constructor(
     private injector: Injector,

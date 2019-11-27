@@ -9,6 +9,7 @@ import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@pr
 import * as XLSX from 'xlsx';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-categorie',
@@ -54,6 +55,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private warningService: WarningService,
     private firebaseService: FirebaseService,
     private contestService: ContestsService,
+    private snackBarService: SnackBarService,
   ) {
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
       this.isSpeaker = true;
@@ -124,10 +126,11 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.categorie.pools.splice(j, 1);
   }
 
-  async save() {
+  save() {
     this.loadingSave = true;
     this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
+      this.categorie.contest = this.contestId;
       this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
         this.contestService.addNewCategorie( this.contestId, doc.id );
@@ -136,6 +139,11 @@ export class CategorieComponent implements OnInit, OnDestroy {
       });
     } else {
       this.firebaseService.updateCategorie(this.categorie)
+      .catch((error) => {
+        console.log(error);
+        this.loadingSave = false;
+        this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+      })
       .then(() => {
         this.authService.isAdmin ? this.router.navigate(['/portal/admin']) : this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
@@ -172,12 +180,16 @@ export class CategorieComponent implements OnInit, OnDestroy {
         vote.note = this.votesRecord[`${player.id}`];
       });
     });
-    this.subscription.push(
-      from(this.firebaseService.updateCategorie(this.categorie)).subscribe(() => {
-        this.router.navigate(['/portal/contests']);
-        this.loadingSave = false;
-      })
-    );
+    this.firebaseService.updateCategorie(this.categorie)
+    .then(() => {
+      this.router.navigate(['/portal/contests']);
+      this.loadingSave = false;
+    })
+    .catch((error) => {
+      console.log(error);
+      this.loadingSave = false;
+      this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+    });
   }
 
   goToScores() {
