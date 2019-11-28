@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
 import { Observable, of, combineLatest, from } from 'rxjs';
 import { Categorie, Judge } from '../../contests/models/categorie';
-import { take, switchMap, map } from 'rxjs/operators';
+import { take, switchMap, map, tap } from 'rxjs/operators';
 import { Contest } from '../models/contest';
 import { Store } from '../../store';
 import { User } from '../models/user';
@@ -57,8 +57,8 @@ export class FirebaseService {
         return this.database.collection<Contest>('contests').doc<Contest>(idContest).valueChanges();
     }
 
-    createJudge(userId: string, judge: Judge) {
-        return from(this.database.collection<Judge>('users').doc<Judge>(userId).set(judge));
+    createJudge(userId: string, judge: Judge): Promise<void> {
+        return this.database.collection<Judge>('users').doc<Judge>(userId).set(judge);
     }
 
     deleteJudge(judgeid: string) {
@@ -79,5 +79,17 @@ export class FirebaseService {
 
     createUser(user: User) {
         return from(this.database.collection<User>('users').doc<User>(user.id).set(user));
+    }
+
+    getJudgeWithMailAndDelete(mail: string): Observable<Judge> {
+        return this.database.collection<Judge>('users').doc<Judge>(mail).snapshotChanges().pipe(
+            switchMap((data) => {
+                return of(data.payload.data());
+            }),
+            take(1),
+            tap((judge) => {
+                return this.deleteJudge(judge.mail);
+            })
+        );
     }
 }

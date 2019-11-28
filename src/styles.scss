@@ -72,19 +72,11 @@ body {
 
 .container-51 {
     display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: fit-content;
-    max-height: 100%;
 }
 
 .block-51 {

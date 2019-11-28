@@ -9,6 +9,18 @@
     background-repeat: no-repeat;
 }
 
+.judges-container {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: initial;
+}
+
 .block-51 {
 
     .icon {
@@ -58,5 +70,5 @@
     font-size: 1.5em;
     margin: 10px 0;
     min-width: fit-content;
-    max-width: 600px;
+    max-width: 300px;
 }
