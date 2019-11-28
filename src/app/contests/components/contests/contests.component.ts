@@ -6,10 +6,10 @@ import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { switchMap, take, filter, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../../../shared/models/user';
 import { Contest } from '../../../shared/models/contest';
-import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { ContestsService } from '../../services/contest.service';
 import { FirebaseService } from '../../../shared/services/firebase.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-contests',
@@ -41,7 +41,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
     private router: Router,
     private contestService: ContestsService,
     private authService: AuthService,
-    private warningService: WarningService,
+    private snackBarService: SnackBarService,
     private firebaseService: FirebaseService,
   ) {
     this.loading = true;
@@ -96,6 +96,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
     } else {
       if (this.time > 20) {
         this.deleteCategories[categorie.id] = true;
+        this.time = 0;
       } else {
         return this.goTo(categorie);
       }
@@ -117,15 +118,15 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
-      this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
-      .afterClosed().subscribe((result: WarningReponse) => {
-        if (result.accept) {
-          this.firebaseService.deleteCategorie(categorie.id);
-          this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
-          this.contestService.deleteCategorie(this.contest.id, categorie.id);
-        }
+      this.snackBarService.showMessage('Vous êtes sûr que vous voulez supprimer cette catégorie?', 'Oui')
+      .onAction().subscribe(() => {
+        this.firebaseService.deleteCategorie(categorie.id);
+        this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
+        this.categories = this.categories.filter(cat => cat.id !== categorie.id);
+        this.contestService.deleteCategorie(this.contest.id, categorie.id);
       })
     );
+    this.deleteCategories[categorie.id] = false;
   }
 
 }
