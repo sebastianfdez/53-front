@@ -8,7 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from '@progress/kendo-angular-grid';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
+import { Store } from './store';
 
 const routes: Routes = [
   { path: 'portal', loadChildren: './contests/contests.module#ContestsModule' },
@@ -27,10 +29,14 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    AuthModule,
     SharedModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
+  ],
+  providers: [
+    Store,
   ],
   bootstrap: [AppComponent]
 })

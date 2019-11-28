@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription, from, of, combineLatest } from 'rxjs';
 import { Categorie } from '../../models/categorie';
-import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { switchMap } from 'rxjs/operators';
-import { User } from '../../models/user';
-import { Contest } from '../../models/contest';
-import { WarningService } from 'src/app/shared/warning/warning.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth-form/services/auth.service';
+import { switchMap, take, filter, distinctUntilChanged } from 'rxjs/operators';
+import { User } from '../../../shared/models/user';
+import { Contest } from '../../../shared/models/contest';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
+import { ContestsService } from '../../services/contest.service';
+import { FirebaseService } from '../../../shared/services/firebase.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-contests',
@@ -37,55 +38,40 @@ export class ContestsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(
-    private db: AngularFirestore,
     private router: Router,
-    private route: ActivatedRoute,
+    private contestService: ContestsService,
     private authService: AuthService,
-    private warningService: WarningService,
+    private snackBarService: SnackBarService,
+    private firebaseService: FirebaseService,
   ) {
     this.loading = true;
   }
 
   ngOnInit() {
     this.subscriptions.push(
-      this.authService.authenticated.pipe(
-        switchMap((value) => {
-          this.isJudge = this.authService.authStateUser.role === 'judge';
-          this.isAdmin = this.authService.authStateUser.role === 'admin';
-          return this.db.collection('users').doc<User>(this.authService.authStateUser.id).snapshotChanges();
-        }),
+      this.authService.getAuthenticatedUser().pipe(
+        filter(user => user !== null && user !== undefined),
+        take(1),
         switchMap(
           (user) => {
-            this.judge = user.payload.data();
-            return this.db.collection<Contest>('contests').doc<Contest>(this.judge.contest).snapshotChanges();
+            this.isJudge = user.role === 'judge';
+            this.isAdmin = user.role === 'admin';
+            this.judge = user;
+            return this.contestService.getContest(this.judge.contest);
           }
         ),
+        distinctUntilChanged(),
         switchMap((contest) => {
-          this.contest = {id: contest.payload.id, ...contest.payload.data()};
-          if (this.contest.newCategorie !== '') {
-            this.contest.categories.push(this.contest.newCategorie);
-            this.contest.newCategorie = '';
-            return from(this.db.collection('contests').doc<Contest>(this.contest.id).update(this.contest));
-          } else {
-            return of(null);
-          }
-        }),
-        switchMap(() => {
-          return combineLatest(
+          this.contest = contest;
+          return this.contest.categories.length ? combineLatest(
             this.contest.categories
-            .map(categorie => this.db.collection<Categorie>('categories').doc<Categorie>(categorie).snapshotChanges())
-          );
-        })
-      ).subscribe((actions: Action<DocumentSnapshot<Categorie>>[]) => {
-        this.categories = actions.map((action) => {
-          if (action.payload.data()) {
-            const categorie: Categorie = action.payload.data();
-            categorie.id = action.payload.id;
-            return categorie;
-          } else {
-            return null;
-          }
-        }).filter(cat => cat);
+            .map((categorie) => {
+              return this.contestService.getCategorie(categorie);
+            })
+          ) : of([]);
+        }),
+      ).subscribe((categories: Categorie[]) => {
+        this.categories = categories.filter(cat => cat);
         this.loading = false;
         this.categories.forEach(categorie => this.deleteCategories[categorie.id] = false);
       })
@@ -110,6 +96,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
     } else {
       if (this.time > 20) {
         this.deleteCategories[categorie.id] = true;
+        this.time = 0;
       } else {
         return this.goTo(categorie);
       }
@@ -131,15 +118,15 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
-      this.warningService.showWarning('Vous êtes sûr que vous voulez supprimer cette catégorie?', true)
-      .afterClosed().subscribe((result: WarningReponse) => {
-        if (result.accept) {
-          this.db.collection('categories').doc(categorie.id).delete();
-          this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
-          this.db.collection('contests').doc(this.contest.id).update({categories: this.contest.categories});
-        }
+      this.snackBarService.showMessage('Vous êtes sûr que vous voulez supprimer cette catégorie?', 'Oui')
+      .onAction().subscribe(() => {
+        this.firebaseService.deleteCategorie(categorie.id);
+        this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
+        this.categories = this.categories.filter(cat => cat.id !== categorie.id);
+        this.contestService.deleteCategorie(this.contest.id, categorie.id);
       })
     );
+    this.deleteCategories[categorie.id] = false;
   }
 
 }

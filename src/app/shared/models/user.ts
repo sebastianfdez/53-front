@@ -5,6 +5,7 @@ export class User {
     id: string;
     name: string;
     lastName: string;
+    autenticated: boolean;
 }
 
 export const emptyUser: User = {
@@ -14,4 +15,5 @@ export const emptyUser: User = {
     id: '',
     name: '',
     lastName: '',
+    autenticated: false,
 };

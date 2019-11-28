@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { AuthService } from './auth.service';
-import { switchMap } from 'rxjs/operators';
+import { AuthService } from '../../auth/auth-form/services/auth.service';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AdminAuthGuardService implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-        return this.auth.isAdmin.pipe(
-            switchMap((value) => {
-                if (value) {
-                    return of(true);
-                } else {
-                    this.router.navigate(['admin']);
-                    return of(false);
+        return this.authService.isAdmin().pipe(
+            tap((isAdmin) => {
+                if (!isAdmin) {
+                    this.router.navigate(['portal/admin']);
                 }
             })
         );
@@ -26,18 +23,15 @@ export class AdminAuthGuardService implements CanActivate {
 
 @Injectable()
 export class JudgeAuthGuardService implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-        return this.auth.isJudge.pipe(
-            switchMap((value) => {
-                if (value) {
-                    return of(true);
-                } else {
-                    this.router.navigate(['admin']);
-                    return of(false);
+        return this.authService.isJudge().pipe(
+            tap((isJudge) => {
+                if (!isJudge) {
+                    this.router.navigate(['portal/admin']);
                 }
             })
         );

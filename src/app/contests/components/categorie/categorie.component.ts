@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { from, Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
 import * as XLSX from 'xlsx';
+import { FirebaseService } from '../../../shared/services/firebase.service';
+import { ContestsService } from '../../services/contest.service';
+import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-categorie',
@@ -48,15 +50,13 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private database: AngularFirestore,
     private authService: AuthService,
     private router: Router,
     private warningService: WarningService,
+    private firebaseService: FirebaseService,
+    private contestService: ContestsService,
+    private snackBarService: SnackBarService,
   ) {
-    this.isAdmin = this.authService.authStateUser ? this.authService.authStateUser.role === 'admin' : false;
-    this.isJudge = this.authService.authStateUser ? this.authService.authStateUser.role === 'judge' : false;
-    this.judgeCode = this.authService.authStateUser.id;
-    this.judgeName = `${this.authService.authStateUser.name} ${this.authService.authStateUser.lastName}`;
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
       this.isSpeaker = true;
     }
@@ -65,6 +65,12 @@ export class CategorieComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.contestId = localStorage.getItem('contestId');
     this.subscription.push(
+      this.authService.isAdmin().subscribe(isAdmin => this.isAdmin = isAdmin),
+      this.authService.isJudge().subscribe(isJudge => this.isJudge = isJudge),
+      this.authService.getAuthenticatedUser().subscribe((user) => {
+        this.judgeCode = user.id;
+        this.judgeName = `${user.name} ${user.lastName}`;
+      }),
       this.route.data.subscribe((categorie: {categorie: Categorie}) => {
         if (!categorie.categorie) {
           this.categorie = emptyCategorie;
@@ -124,14 +130,20 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.loadingSave = true;
     this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
-      this.database.collection('categories').add(this.categorie)
+      this.categorie.contest = this.contestId;
+      this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
-        this.database.collection('contests').doc(this.contestId).update({ newCategorie: doc.id });
+        this.contestService.addNewCategorie( this.contestId, doc.id );
         this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       });
     } else {
-      this.database.collection('categories').doc(this.categorie.id).update(this.categorie)
+      this.firebaseService.updateCategorie(this.categorie)
+      .catch((error) => {
+        console.log(error);
+        this.loadingSave = false;
+        this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+      })
       .then(() => {
         this.authService.isAdmin ? this.router.navigate(['/portal/admin']) : this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
@@ -168,12 +180,16 @@ export class CategorieComponent implements OnInit, OnDestroy {
         vote.note = this.votesRecord[`${player.id}`];
       });
     });
-    this.subscription.push(
-      from(this.database.collection('categories').doc(this.categorie.id).update(this.categorie)).subscribe(() => {
-        this.router.navigate(['/portal/contests']);
-        this.loadingSave = false;
-      })
-    );
+    this.firebaseService.updateCategorie(this.categorie)
+    .then(() => {
+      this.router.navigate(['/portal/contests']);
+      this.loadingSave = false;
+    })
+    .catch((error) => {
+      console.log(error);
+      this.loadingSave = false;
+      this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+    });
   }
 
   goToScores() {

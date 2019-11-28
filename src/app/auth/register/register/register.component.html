@@ -1,0 +1,26 @@
+<div class="login-container flex-div column">
+  <app-auth-form [authFormGroup]="registerForm" [types]="types">
+    <div class="error" *ngIf="error">
+      *{{error}}
+    </div>
+    <button mat-flat-button color="primary" class="button" (click)="register()" [disabled]="disableButton">
+      Registrez-vous
+    </button>
+    <div class="error" *ngIf="emailFormat">
+      *Email invalid
+    </div>
+    <div class="error" *ngIf="passwordInvalid">
+      *Mot de pass manquant
+    </div>
+    <div class="error" *ngIf="confirmPasswordInvalid">
+      *Mots de passe différents
+    </div>
+    <div class="error" *ngIf="nameInvalid">
+      *Saisir votre nom et prenom
+    </div>
+    <div class="error" *ngIf="missingName">
+      *Nombre du contest manquant
+    </div>
+    <a routerLink="/auth/login">Vous avez déjà une account?</a>
+  </app-auth-form>
+</div>

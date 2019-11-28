@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription, of, from, combineLatest } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Contest } from '../../models/contest';
+import { Contest } from '../../../shared/models/contest';
 import { Speaker, emptySpeaker } from '../../models/speaker';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { Router } from '@angular/router';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 

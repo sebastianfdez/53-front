@@ -1,0 +1,53 @@
+
+
+<img src="../../../../assets/Logo-53.png">
+
+<div class="example-form" [formGroup]="authFormGroup" *ngIf="authFormGroup">
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('name')">
+    <input matInput placeholder="Votre prenom" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('lastName')">
+    <input matInput placeholder="Votre nom" formControlName="lastName">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Utilisateur" formControlName="user">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Mot de passe" formControlName="pass" type="password">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('passconf')">
+    <input matInput placeholder="Répétez mot de passe" formControlName="passconf" type="password">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="authFormGroup.contains('type')">
+    <mat-label>Type de contest</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let type of types" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('contestName')">
+    <input matInput placeholder="Nombre du contest" formControlName="contestName">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('place')">
+    <input matInput placeholder="Ville, Pays" formControlName="place">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('date')">
+    <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+
+<ng-content select="div.error"></ng-content>
+<ng-content select="button"></ng-content>
+<ng-content select="a"></ng-content>

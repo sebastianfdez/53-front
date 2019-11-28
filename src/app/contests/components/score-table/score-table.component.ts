@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Categorie, Judge, Participant, emptyCategorie } from '../../models/categorie';
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
 import { of, combineLatest, Subscription } from 'rxjs';
-import { Contest } from '../../models/contest';
+import { Contest } from '../../../shared/models/contest';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
+import { FirebaseService } from '../../../shared/services/firebase.service';
+import { ContestsService } from '../../services/contest.service';
 
 export interface ScoreElement {
   pool: string;
@@ -38,9 +39,10 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private database: AngularFirestore,
     private warningService: WarningService,
     private router: Router,
+    private firebaseService: FirebaseService,
+    private contestService: ContestsService,
   ) {}
 
   ngOnInit() {
@@ -189,7 +191,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
             });
             pools.push({ participants: pool });
             newCategorie.pools = pools;
-            return this.database.collection('categories').add(newCategorie);
+            return this.firebaseService.addCategorie(newCategorie);
           } else {
             return of(null);
           }
@@ -197,7 +199,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       )
       .subscribe((doc) => {
         if (doc) {
-          this.database.collection('contests').doc<Contest>(this.categorie.contest).update({newCategorie : doc.id});
+          this.contestService.addNewCategorie(this.categorie.contest, doc.id );
           this.router.navigate(['portal/contests']);
         }
       })

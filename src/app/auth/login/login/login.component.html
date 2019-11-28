@@ -1,0 +1,15 @@
+<div class="login-container flex-div column" (keyup.enter)="login()">
+  <app-auth-form [authFormGroup]="loginForm">
+    <button mat-flat-button color="primary" class="button" (click)="login()" *ngIf="!loging">
+      Connectez-vous
+    </button>
+    <div class="error" *ngIf="emailFormat">
+      *Email invalid
+    </div>
+    <div class="error" *ngIf="passwordInvalid">
+      *Mot de pass manquant
+    </div>
+    <a routerLink="/auth/register" *ngIf="!loging">Pas enregistré?</a>
+  </app-auth-form>
+  <mat-spinner *ngIf="loging" [diameter]="40"></mat-spinner>
+</div>

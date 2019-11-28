@@ -24,7 +24,7 @@
         Sauvegarder la categorie
       </button>
   
-      <button mat-flat-button *ngIf="isJudge && !loadingSave" color="primary" class="button save" (click)="saveVotes()">
+      <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button save" (click)="saveVotes()">
         Sauvegarder les notes
       </button>
   
@@ -46,7 +46,7 @@
       </kendo-upload>
   
       <div class="button" *ngIf="loadingSave">
-        <mat-spinner></mat-spinner>
+        <mat-spinner [diameter]="50"></mat-spinner>
       </div>
   
       <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of categorie.pools; let j = index;">

@@ -73,7 +73,14 @@
     }
 }
 
-@media (max-width: 930px) {
+@media (max-width: 1120px) {
+
+    .grid {
+        max-width: 903px !important;
+    }
+}
+
+@media (max-width: 940px) {
 
     .grid {
         max-width: 720px !important;
@@ -91,7 +98,7 @@
 
     .categories {
         overflow: scroll;
-        margin-top: 50px;
+        padding-top: 50px;
         max-height: calc(100% - 50px);
     }
     .grid {
