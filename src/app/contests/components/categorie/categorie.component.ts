@@ -10,6 +10,8 @@ import * as XLSX from 'xlsx';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { Store } from '../../../store';
+import { Contest } from '../../../shared/models/contest';
 
 @Component({
   selector: 'app-categorie',
@@ -20,7 +22,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   public createNew = false;
   public categorie: Categorie = JSON.parse(JSON.stringify(emptyCategorie));
-  public contestId = '';
 
   public loading = false;
   public loadingSave = false;
@@ -57,6 +58,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private firebaseService: FirebaseService,
     private contestService: ContestsService,
     private snackBarService: SnackBarService,
+    private store: Store,
   ) {
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
       this.isSpeaker = true;
@@ -64,7 +66,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.contestId = localStorage.getItem('contestId');
     this.subscription.push(
       this.authService.isAdmin().subscribe(isAdmin => this.isAdmin = isAdmin),
       this.authService.isJudge().subscribe(isJudge => this.isJudge = isJudge),
@@ -73,6 +74,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.judgeName = `${user.name} ${user.lastName}`;
       }),
       this.route.data.subscribe((categorie: {categorie: Categorie}) => {
+        console.log(categorie);
         if (!categorie.categorie) {
           this.categorie = emptyCategorie;
           this.createNew = true;
@@ -104,6 +106,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   addPool() {
+    console.log(this.store.value);
     if (!this.categorie.pools.length || this.categorie.pools[this.categorie.pools.length - 1].participants.length > 0 &&
       this.categorie.pools[this.categorie.pools.length - 1].participants[0].name !== '') {
       this.categorie.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
@@ -130,10 +133,12 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.loadingSave = true;
     this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
-      this.categorie.contest = this.contestId;
+      this.categorie.contest = this.store.value.contest.id;
       this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
-        this.contestService.addNewCategorie( this.contestId, doc.id );
+        console.log(doc.id);
+        console.log(this.categorie.contest);
+        this.contestService.addNewCategorie(this.categorie.contest, doc.id );
         this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       });

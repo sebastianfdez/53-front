@@ -133,7 +133,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
     return this.categories.filter(c => !c.final);
   }
 
-  get categoriesFinal() {
+  get categoriesFinal(): Categorie[] {
     return this.categories.filter(c => c.final);
   }
 

@@ -39,7 +39,9 @@ const routes: Routes = [
     categorie: CategorieResolve,
     judges: JudgeResolve,
   }},
-  { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService] },
+  { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService], resolve: {
+    categorie: CategorieResolve,
+  } },
 ];
 
 @NgModule({

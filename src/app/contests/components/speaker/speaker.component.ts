@@ -74,25 +74,28 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     isSaveDisabled(): boolean {
         return this.addSpeaker ? this.speaker.name.length < 5 || this.speaker.lastName.length < 5 ||
-        this.speaker.mail.length < 5 || this.speaker.password.length < 5 : false;
+        this.speaker.mail.length < 5 : false;
     }
 
     saveSpeaker() {
-        this.loadingSave = true;
-        try {
-            this.createSpeakerUser();
-            this.snackBarService.showMessage(`Profile juge crée pour ${this.speaker.mail}.
-                Envoyez le lien de connection à ${this.speaker.name} ${this.speaker.lastName}`);
-        } catch (err) {
-            console.log(err);
-            this.snackBarService.showError('Une erreur est survenue');
-            this.loadingSave = false;
+        if (this.noSpeaker && !this.addSpeaker) {
+            this.addSpeaker = true;
+        } else {
+            this.loadingSave = true;
+            try {
+                this.createSpeakerUser();
+                this.snackBarService.showMessage(`Profile juge crée pour ${this.speaker.mail}.
+                    Envoyez le lien de connection à ${this.speaker.name} ${this.speaker.lastName}`);
+            } catch (err) {
+                console.log(err);
+                this.snackBarService.showError('Une erreur est survenue');
+                this.loadingSave = false;
+            }
         }
     }
 
     createSpeakerUser() {
-        this.speaker = this.store.value.speaker;
-        this.speaker.contest = this.contestId;
+        this.speaker.contest = this.contest.id;
         this.subscriptions.push(
             this.firebaseService.updateContest(this.contestId, {speaker: this.speaker.mail}).pipe(
                 tap(() => {

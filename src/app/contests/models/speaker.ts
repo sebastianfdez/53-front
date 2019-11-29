@@ -5,7 +5,6 @@ export class Speaker {
     id: string;
     name: string;
     lastName: string;
-    password: string;
 }
 
 export const emptySpeaker: Speaker = {
@@ -15,5 +14,4 @@ export const emptySpeaker: Speaker = {
     id: '',
     name: '',
     lastName: '',
-    password: '',
 };
