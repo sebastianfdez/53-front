@@ -7,10 +7,10 @@
       Registrez-vous
     </button>
     <div class="error" *ngIf="emailFormat">
-      *Email invalid
+      *E-mail incorrecte
     </div>
     <div class="error" *ngIf="passwordInvalid">
-      *Mot de pass manquant
+      *Mot de passe manquant
     </div>
     <div class="error" *ngIf="confirmPasswordInvalid">
       *Mots de passe différents
@@ -19,8 +19,8 @@
       *Saisir votre nom et prenom
     </div>
     <div class="error" *ngIf="missingName">
-      *Nombre du contest manquant
+      *Nom du contest manquant
     </div>
-    <a routerLink="/auth/login">Vous avez déjà une account?</a>
+    <a routerLink="/auth/login">Vous avez déjà une compte?</a>
   </app-auth-form>
 </div>

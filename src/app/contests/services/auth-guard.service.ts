@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | boolean {
         return this.auth.authenticated.pipe(
             switchMap((value) => {
-                console.log('value: ', value);
+                console.log(value);
                 if (value) {
                     return of(true);
                 } else {

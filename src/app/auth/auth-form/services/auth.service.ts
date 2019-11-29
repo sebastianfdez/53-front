@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User, emptyUser } from '../../../shared/models/user';
 import { Store } from '../../../store';
+import { AngularFireModule } from '@angular/fire';
+import { firebaseKeys } from '../../../../firebase-keys';
 
 @Injectable()
 export class AuthService {
@@ -20,10 +22,8 @@ export class AuthService {
             user.mail = user_.email;
             user.id = user_.uid;
             user.role = 'admin';
-            return this.getLoggedUserInfo(user.id);
+            return this.getLoggedUserInfo(user.id, user.mail);
         })).subscribe();
-    private adminPassword = '';
-    private adminMail = '';
 
     constructor(
         private afAuth: AngularFireAuth,
@@ -31,8 +31,15 @@ export class AuthService {
         private store: Store,
     ) {}
 
-    getLoggedUserInfo(uid: string): Observable<boolean> {
+    getLoggedUserInfo(uid: string, mail: string): Observable<boolean> {
         return this.db.doc<User>(`users/${uid}`).snapshotChanges().pipe(
+            switchMap((user_) => {
+                if (user_ && user_.payload.data()) {
+                    return of(user_);
+                } else {
+                    return this.db.doc<User>(`users/${mail}`).snapshotChanges();
+                }
+            }),
             switchMap((user_) => {
                 if (user_) {
                     this.store.set('user', {
@@ -48,7 +55,7 @@ export class AuthService {
                 } else {
                     return of(false);
                 }
-            }),
+            })
         );
     }
 
@@ -83,8 +90,6 @@ export class AuthService {
     }
 
     signIn(user: string, pass: string): Observable<firebase.auth.UserCredential> {
-        this.adminMail = user;
-        this.adminPassword = pass;
         return from(this.afAuth.auth.signInWithEmailAndPassword(user, pass));
     }
 
@@ -92,15 +97,28 @@ export class AuthService {
         return this.afAuth.auth.createUserWithEmailAndPassword(mail, password);
     }
 
-    hasPassword(): boolean {
-        return this.adminPassword !== '';
-    }
-
-    relog() {
-        return this.afAuth.auth.signInWithEmailAndPassword(this.adminMail, this.adminPassword);
-    }
-
     logOut() {
         return this.afAuth.auth.signOut();
+    }
+
+    // Sign in with email link
+    confirmSignIn(url: string): boolean {
+        if (this.afAuth.auth.isSignInWithEmailLink(url)) {
+            return true;
+        }
+        return false;
+    }
+
+    sendLogInLink(mail: string) {
+        const actionCodeSettings: firebase.auth.ActionCodeSettings = {
+            url: `http://localhost:4200/auth/inscription`,
+            handleCodeInApp: true,
+        };
+        window.localStorage.setItem('emailForSignIn', mail);
+        return this.afAuth.auth.sendSignInLinkToEmail(mail, actionCodeSettings);
+    }
+
+    signInWithLink(mail: string, url: string) {
+        return this.afAuth.auth.signInWithEmailLink(mail, url);
     }
 }

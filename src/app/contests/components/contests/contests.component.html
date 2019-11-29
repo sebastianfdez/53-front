@@ -7,36 +7,55 @@
     {{"<"}}
   </button>
 </div>
+<div class="container-51 scrollbar-53">
+      
+  <div class="categories">
+
+    <p class="title-small" *ngIf="!loading">{{contest?.name}}</p>
+    
+    <p class="title-small" *ngIf="!loading">
+      {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
+    </p>
   
-<div class="categories scrollbar-53">
-
-  <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
+    <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
   
-  <span class="title-51" *ngIf="!loading">
-    {{isAdmin ? 'Admin:' : isJudge ? 'Judge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
-  </span>
-
-
-  <div class="grid">
-    <div class="categorie mat-elevation-z3" [class.final]="categorie.final"
-    (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categories">
-      <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
-        <mat-icon>close</mat-icon>
+  
+    <div class="grid">
+      <div class="categorie mat-elevation-z3"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesNotFinal">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+          <mat-icon>close</mat-icon>
+        </div>
+        <span class="name"> {{categorie.name}} </span>
+        <span class="pool"> {{categorie.pools.length}} poules </span>
       </div>
-      <span class="name"> {{categorie.name}} </span>
-      <span class="pool"> {{categorie.pools.length}} poules </span>
+      <div class="scrollable" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div class="categorie new" *ngIf="isAdmin" (click)="goToNew()" >
+        <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
+        <span class="pool">New Categorie</span>
+      </div>
     </div>
-    <div class="scrollable" *ngIf="loading">
-      <mat-spinner></mat-spinner>
+    <span class="title-51" *ngIf="!loading2">Liste de Catégories Finales</span>
+    <div class="grid">
+      <div class="categorie mat-elevation-z3 final"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+          <mat-icon>close</mat-icon>
+        </div>
+        <span class="name"> {{categorie.name}} </span>
+        <span class="pool"> {{categorie.pools.length}} poules </span>
+      </div>
+      <div class="scrollable" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+      </div>
     </div>
-    <div class="categorie new" *ngIf="isAdmin" (click)="goToNew()" >
-      <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
-      <span class="pool">New Categorie</span>
+  
+    <div class="footer-image">
+        <img src="../../../assets/Logo-53.png">
     </div>
-  </div>
-
-  <div class="footer-image">
-      <img src="../../../assets/Logo-53.png">
+  
   </div>
 
 </div>

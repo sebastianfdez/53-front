@@ -6,6 +6,7 @@ const state: State = {
   user: undefined,
   contest: undefined,
   judges: undefined,
+  speaker: undefined,
 };
 
 export class Store {

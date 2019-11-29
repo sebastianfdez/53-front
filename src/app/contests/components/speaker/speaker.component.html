@@ -1,4 +1,4 @@
-<div class="container-51">
+<div class="container-51 scrollbar-53">
 
   <div class="back-51" *ngIf="!loading">
     <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
@@ -12,31 +12,31 @@
   <div class="scrollable-51">
 
     <span class="title-51" *ngIf="!loading">{{contest?.name}}</span>
-    <span class="title-51" *ngIf="!loading">Modifier Speaker</span>
+    <span class="title-51" *ngIf="!loading">Speaker</span>
   
     <div class="pool block-51 mat-elevation-z2">
+      <mat-icon class="icon">person</mat-icon>
       <div class="speaker-cont" *ngIf="addSpeaker && speaker">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Prenom" [(ngModel)]="speaker.name" [ngModelOptions]="{standalone: true}">
+          <input matInput placeholder="Prenom" [(ngModel)]="speaker.name" [ngModelOptions]="{standalone: true}"
+          [disabled]="!noSpeaker">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Nom" [(ngModel)]="speaker.lastName" [ngModelOptions]="{standalone: true}">
+          <input matInput placeholder="Nom" [(ngModel)]="speaker.lastName" [ngModelOptions]="{standalone: true}"
+          [disabled]="!noSpeaker">
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Mail" [(ngModel)]="speaker.mail" [ngModelOptions]="{standalone: true}"
           [disabled]="!noSpeaker">
         </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Mot de pass" [(ngModel)]="speaker.password" [ngModelOptions]="{standalone: true}"
-          [disabled]="!noSpeaker">
-        </mat-form-field>
       </div>
+      <mat-icon class="icon" (click)="copyLink()" style="cursor: pointer">link</mat-icon>
       <div class="speaker-cont" *ngIf="!addSpeaker || !speaker">
         <span>Aucun speaker ajoutee</span>
       </div>
     </div>
   
-    <button mat-flat-button color="primary" class="button save" (click)="saveSpeaker()" *ngIf="!loadingSave"
+    <button mat-flat-button color="primary" class="button save" (click)="saveSpeaker()" *ngIf="noSpeaker && !loadingSave"
       [disabled]="isSaveDisabled()">
       {{!noSpeaker ? 'Sauvegarder speaker' : 'Ajouter Speaker'}}
     </button>

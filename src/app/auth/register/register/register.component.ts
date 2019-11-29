@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
     registerForm: FormGroup;
     error: string;
-    types: string[] = ['Skate', 'Roller', 'BMX', 'Trotinette', 'Autre'];
+    types: string[] = ['Skate', 'Roller', 'BMX', 'Autre'];
 
     constructor(
         private fb: FormBuilder,

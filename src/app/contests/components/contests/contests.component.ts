@@ -129,4 +129,12 @@ export class ContestsComponent implements OnInit, OnDestroy {
     this.deleteCategories[categorie.id] = false;
   }
 
+  get categoriesNotFinal() {
+    return this.categories.filter(c => !c.final);
+  }
+
+  get categoriesFinal() {
+    return this.categories.filter(c => c.final);
+  }
+
 }

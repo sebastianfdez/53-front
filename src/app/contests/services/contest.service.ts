@@ -5,6 +5,7 @@ import { Contest } from '../../shared/models/contest';
 import { switchMap, take, catchError } from 'rxjs/operators';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { Categorie } from '../models/categorie';
+import { Speaker } from '../models/speaker';
 
 @Injectable({
     providedIn: 'root'
@@ -57,5 +58,19 @@ import { Categorie } from '../models/categorie';
         const categories: string[] = this.store.value.contest.categories.filter(cat => cat !== categorieId);
         this.store.set('contest', Object.assign(this.store.value.contest, { categories }));
         this.firebaseService.updateContest(contestId, { categories });
+    }
+
+    getSpeaker(): Observable<Speaker> {
+        return this.store.value.speaker ? this.store.select<Speaker>('speaker').pipe(take(1)) :
+        this.store.select<Contest>('contest').pipe(
+            switchMap((contest) => {
+                return this.firebaseService.getSpeaker(contest.speaker);
+            }),
+            switchMap((snapshot) => {
+                const speaker: Speaker = snapshot.payload.data();
+                this.store.set('speaker', speaker);
+                return this.store.select<Speaker>('speaker');
+            })
+        );
     }
 }

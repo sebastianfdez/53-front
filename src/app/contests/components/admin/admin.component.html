@@ -8,7 +8,7 @@
 <div class="categories container-51 scrollbar-53">
   <span class="title-51" *ngIf="!loading">{{contest?.name}}</span>
   <span class="title-51" *ngIf="!loading">
-    {{isAdmin ? 'Admin' : isJudge ? 'Judge' : 'Speaker'}}: {{(admin$ | async)?.name}} {{(admin$ | async)?.lastName}}
+    {{isAdmin ? 'Admin' : isJudge ? 'Juge' : 'Speaker'}}: {{(admin$ | async)?.name}} {{(admin$ | async)?.lastName}}
   </span>
 
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"

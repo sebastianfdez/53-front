@@ -15,7 +15,7 @@
 
     .mat-form-field {
         width: 90%;
-        max-width: 800px;
+        max-width: 460px;
     }
 
     .example-form {
@@ -26,6 +26,7 @@
 
     .pool {
         flex-direction: column;
+        max-width: 630px;    
 
         .poule {
             margin: 15px 0;
@@ -52,12 +53,16 @@
                 align-items: center;
                 flex-direction: column;
                 width: 100%;
+                padding: 20px 0;
+                border-radius: 8px;
+                background-color: #fbfbfb;
+                margin-bottom: 20px;
 
                 .vote-mode {
                     display: flex;
                     width: 100%;
                     flex-wrap: wrap;
-                    margin: 10px 0px;
+                    padding: 0 15px;
 
                     .icon {
                         font-size: 40px;
@@ -73,8 +78,7 @@
                     }
 
                     .vote-input {
-                        margin: 10px 0 20px 0;
-                        font-size: 25px;
+                        font-size: 20px;
                         flex: 0 0 auto;
                         width: 100%;
                     }
@@ -90,19 +94,19 @@
     .button {
         width: 80%;
         font-size: 1.5em;
-        margin: 10px 0;
-        max-width: 500px;
+        max-width: 400px;
         align-items: center;
         place-content: center;
         display: flex;
-
-        &.save {
+        margin-bottom: 10px;
+        &:last-of-type {
+            margin-bottom: 30px;
+        }
+        &:first-of-type {
             margin-top: 30px;
         }
-
         &.scores {
             background-color: #007106;
-            margin-top: 30px;
             color: #ffffff;
         }
     }

@@ -25,6 +25,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
   public loading = false;
   public loadingSave = false;
 
+  // Object that stores connected judge votes
   public votesRecord: { [codeParticipant: string]: number } = {};
 
   // Roles
@@ -81,8 +82,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.categorie.pools = this.categorie.pools.filter(pool => pool.participants.length);
         this.categorie.pools.forEach((pool) => {
           pool.participants.forEach((participant) => {
-            const vote: Votes = participant.votes
-            .find(vote_ => vote_.codeJuge === this.judgeCode);
+            const vote: Votes = participant.votes.find(vote_ => vote_.codeJuge === this.judgeCode);
             this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
           });
         });
@@ -149,6 +149,17 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.loadingSave = false;
       });
     }
+  }
+
+  get saveDisabled() {
+    const nameOrPoolEmpty = this.categorie.name.length < 3 || this.categorie.pools.length < 1;
+    const poolEmpty = this.categorie.pools.filter(p => p.participants.length === 0).length > 0;
+    const playerEmpty = this.categorie.pools.filter(pool => pool.participants.filter(p => this.emptyPlayer(p)).length > 0).length > 0;
+    return nameOrPoolEmpty || poolEmpty || playerEmpty;
+  }
+
+  emptyPlayer(p: Participant): boolean {
+    return (!p.name.length || !p.lastName.length || !p.licence.length || !p.club.length);
   }
 
   valueChange(event: Event, id: string) {
