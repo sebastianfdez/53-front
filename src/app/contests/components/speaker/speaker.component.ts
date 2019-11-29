@@ -1,12 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription, of, from, combineLatest } from 'rxjs';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Contest } from '../../../shared/models/contest';
 import { Speaker, emptySpeaker } from '../../models/speaker';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
-import { Router } from '@angular/router';
-import { WarningService } from 'src/app/shared/warning/warning.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '../../../store';
 import { User } from '../../../shared/models/user';
@@ -51,7 +48,6 @@ export class SpeakerComponent implements OnInit, OnDestroy {
                     return this.contestService.getContest(user.contest);
                 }),
                 switchMap((contest) => {
-                    console.log(contest);
                     this.contest = contest;
                     if (this.contest.speaker !== undefined && this.contest.speaker !== '') {
                         this.noSpeaker = false;
@@ -119,7 +115,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     copyLink() {
         this.componentUtils.copyText(
-          `https://la53.fr/auth/inscription?contestId=${this.store.value.contest.id}&email=${judge.mail}&speaker=true`);
+          `https://la53.fr/auth/inscription?contestId=${this.store.value.contest.id}&email=${this.speaker.mail}&speaker=true`);
     }
 
 }

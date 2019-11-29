@@ -7,7 +7,6 @@ import { Contest } from '../models/contest';
 import { Store } from '../../store';
 import { User } from '../models/user';
 import { Speaker } from '../../contests/models/speaker';
-import undefined = require('firebase/empty-import');
 
 @Injectable({
     providedIn: 'root'
