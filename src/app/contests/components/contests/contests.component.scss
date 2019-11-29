@@ -25,6 +25,14 @@
     overflow: hidden;
     max-height: 100%;
 
+    .title-small {
+        font-size: 1.5em;
+        margin: 0;
+        &:last-of-type {
+            margin-bottom: 30px;
+        }
+    }
+
     .grid {
         margin-top: 20px;
         align-items: center;
@@ -93,14 +101,14 @@
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 765px) {
 
     .grid {
         max-width: 540px !important;
     }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 586px) {
 
     .categories {
         padding-top: 50px;
@@ -111,7 +119,7 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 405px) {
 
     .grid {
         flex-direction: column;

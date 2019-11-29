@@ -25,10 +25,10 @@ export class JudgesComponent implements OnInit, OnDestroy {
     loadingChanges = false;
     addJudge = false;
     newJudge: Judge = {
-        name: 'dddd',
+        name: '',
         id: '',
-        lastName: 'dddd',
-        mail: 'lacinquantetrois@gmail.com',
+        lastName: '',
+        mail: '',
         role: 'judge',
         contest: '',
     };
@@ -81,9 +81,9 @@ export class JudgesComponent implements OnInit, OnDestroy {
     async sendJudge() {
         this.loadingChanges = true;
         try {
-            this.snackBarService.showError(`Profile juge crée pour ${this.newJudge.mail}.
-                Envoyez le lien de connection à ${this.newJudge.name} ${this.newJudge.lastName}`);
             this.createJudgeUser();
+            this.snackBarService.showMessage(`Profile juge crée pour ${this.newJudge.mail}.
+                Envoyez le lien de connection à ${this.newJudge.name} ${this.newJudge.lastName}`);
         } catch (err) {
             console.log(err);
             this.errorMessage = err.message;

@@ -10,17 +10,19 @@
 <div class="container-51 scrollbar-53">
       
   <div class="categories">
+
+    <p class="title-small" *ngIf="!loading">{{contest?.name}}</p>
+    
+    <p class="title-small" *ngIf="!loading">
+      {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
+    </p>
   
     <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
-    
-    <span class="title-51" *ngIf="!loading">
-      {{isAdmin ? 'Admin:' : isJudge ? 'Judge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
-    </span>
   
   
     <div class="grid">
-      <div class="categorie mat-elevation-z3" [class.final]="categorie.final"
-      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categories">
+      <div class="categorie mat-elevation-z3"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesNotFinal">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
           <mat-icon>close</mat-icon>
         </div>
@@ -33,6 +35,20 @@
       <div class="categorie new" *ngIf="isAdmin" (click)="goToNew()" >
         <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
         <span class="pool">New Categorie</span>
+      </div>
+    </div>
+    <span class="title-51" *ngIf="!loading2">Liste de Catégories Finales</span>
+    <div class="grid">
+      <div class="categorie mat-elevation-z3 final"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+          <mat-icon>close</mat-icon>
+        </div>
+        <span class="name"> {{categorie.name}} </span>
+        <span class="pool"> {{categorie.pools.length}} poules </span>
+      </div>
+      <div class="scrollable" *ngIf="loading">
+        <mat-spinner></mat-spinner>
       </div>
     </div>
   

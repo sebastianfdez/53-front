@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, Action, DocumentSnapshot } from '@angular/fire/firestore';
-import { Observable, of, combineLatest, from } from 'rxjs';
+import { Observable, of, combineLatest, from, throwError } from 'rxjs';
 import { Categorie, Judge } from '../../contests/models/categorie';
 import { take, switchMap, map, tap } from 'rxjs/operators';
 import { Contest } from '../models/contest';
 import { Store } from '../../store';
 import { User } from '../models/user';
+import { Speaker } from '../../contests/models/speaker';
+import undefined = require('firebase/empty-import');
 
 @Injectable({
     providedIn: 'root'
@@ -53,6 +55,10 @@ export class FirebaseService {
         );
     }
 
+    getSpeaker(idSpeaker: string): Observable<Action<DocumentSnapshot<Speaker>>> {
+        return this.database.collection('users').doc<Speaker>(idSpeaker).snapshotChanges().pipe(take(1));
+    }
+
     getContest(idContest: string): Observable<Contest> {
         return this.database.collection<Contest>('contests').doc<Contest>(idContest).valueChanges();
     }
@@ -83,6 +89,11 @@ export class FirebaseService {
 
     getJudgeWithMailAndDelete(mail: string): Observable<Judge> {
         return this.database.collection<Judge>('users').doc<Judge>(mail).snapshotChanges().pipe(
+            tap((data) => {
+                if (data === null || data === undefined) {
+                    throwError(new Error('Invalid mail'));
+                }
+            }),
             switchMap((data) => {
                 return of(data.payload.data());
             }),
