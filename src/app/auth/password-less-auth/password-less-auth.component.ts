@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { from, combineLatest, of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { User } from '../../shared/models/user';
 import { AuthService } from '../auth-form/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
-import { from, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
@@ -11,7 +11,6 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '../../../store';
-import { Contest } from '../../../shared/models/contest';
 
 @Component({
   selector: 'app-categorie',
@@ -74,7 +73,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.judgeName = `${user.name} ${user.lastName}`;
       }),
       this.route.data.subscribe((categorie: {categorie: Categorie}) => {
-        console.log(categorie);
         if (!categorie.categorie) {
           this.categorie = emptyCategorie;
           this.createNew = true;
@@ -106,7 +104,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   addPool() {
-    console.log(this.store.value);
     if (!this.categorie.pools.length || this.categorie.pools[this.categorie.pools.length - 1].participants.length > 0 &&
       this.categorie.pools[this.categorie.pools.length - 1].participants[0].name !== '') {
       this.categorie.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
@@ -136,8 +133,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
       this.categorie.contest = this.store.value.contest.id;
       this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
-        console.log(doc.id);
-        console.log(this.categorie.contest);
         this.contestService.addNewCategorie(this.categorie.contest, doc.id );
         this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
