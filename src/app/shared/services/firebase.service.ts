@@ -66,8 +66,8 @@ export class FirebaseService {
         return this.database.collection<Judge>('users').doc<Judge>(userId).set(judge);
     }
 
-    deleteJudge(judgeid: string) {
-        this.database.collection('users').doc(judgeid).delete();
+    deleteJudge(judgeid: string): Promise<void> {
+        return this.database.collection('users').doc(judgeid).delete();
     }
 
     updateJudge(judge: Judge) {
@@ -84,22 +84,5 @@ export class FirebaseService {
 
     createUser(user: User) {
         return from(this.database.collection<User>('users').doc<User>(user.id).set(user));
-    }
-
-    getJudgeWithMailAndDelete(mail: string): Observable<Judge> {
-        return this.database.collection<Judge>('users').doc<Judge>(mail).snapshotChanges().pipe(
-            tap((data) => {
-                if (data === null || data === undefined) {
-                    throwError(new Error('Invalid mail'));
-                }
-            }),
-            switchMap((data) => {
-                return of(data.payload.data());
-            }),
-            take(1),
-            tap((judge) => {
-                return this.deleteJudge(judge.mail);
-            })
-        );
     }
 }

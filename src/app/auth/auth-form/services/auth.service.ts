@@ -111,10 +111,9 @@ export class AuthService {
 
     sendLogInLink(mail: string) {
         const actionCodeSettings: firebase.auth.ActionCodeSettings = {
-            url: `http://localhost:4200/auth/inscription`,
+            url: `https://www.la53.fr/auth/inscription`,
             handleCodeInApp: true,
         };
-        window.localStorage.setItem('emailForSignIn', mail);
         return this.afAuth.auth.sendSignInLinkToEmail(mail, actionCodeSettings);
     }
 

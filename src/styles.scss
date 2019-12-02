@@ -27,6 +27,7 @@ body {
     font-size: 2.5em;
     width: 90%;
     text-align: center;
+    min-width: fit-content;
     &:last-of-type {
         margin-bottom: 20px;
     }
@@ -71,6 +72,7 @@ body {
     overflow: scroll;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
 }
 
 .block-51 {
@@ -107,6 +109,9 @@ body {
 }
 
 // Scroll bar
+.scrollbar-53 {
+    scrollbar-width: thin;
+}
 .scrollbar-53::-webkit-scrollbar {
     width: 6px;
     height: 6px;

@@ -37,7 +37,7 @@
         <span class="pool">New Categorie</span>
       </div>
     </div>
-    <span class="title-51" *ngIf="!loading2">Liste de Catégories Finales</span>
+    <span class="title-51" *ngIf="!loading2 && categoriesFinal.length">Liste de Catégories Finales</span>
     <div class="grid">
       <div class="categorie mat-elevation-z3 final"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">
@@ -46,9 +46,6 @@
         </div>
         <span class="name"> {{categorie.name}} </span>
         <span class="pool"> {{categorie.pools.length}} poules </span>
-      </div>
-      <div class="scrollable" *ngIf="loading">
-        <mat-spinner></mat-spinner>
       </div>
     </div>
   

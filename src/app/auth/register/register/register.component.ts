@@ -76,8 +76,9 @@ export class RegisterComponent implements OnInit {
             autenticated: false,
         };
         await this.firebaseService.createUser(newUser);
+        await this.firebaseService.updateContest(newContest_.id, {id: newContest_.id});
         this.snackBarService.showMessage('Utilisateur et contest crée avec succes');
-        this.router.navigate(['home']);
+        this.router.navigate(['auth/login']);
     }
 
     samePassword(group: FormGroup) {

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
-import { from, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { Store } from '../../../store';
 
 @Component({
   selector: 'app-categorie',
@@ -20,7 +21,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   public createNew = false;
   public categorie: Categorie = JSON.parse(JSON.stringify(emptyCategorie));
-  public contestId = '';
 
   public loading = false;
   public loadingSave = false;
@@ -57,6 +57,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     private firebaseService: FirebaseService,
     private contestService: ContestsService,
     private snackBarService: SnackBarService,
+    private store: Store,
   ) {
     if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
       this.isSpeaker = true;
@@ -64,7 +65,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.contestId = localStorage.getItem('contestId');
     this.subscription.push(
       this.authService.isAdmin().subscribe(isAdmin => this.isAdmin = isAdmin),
       this.authService.isJudge().subscribe(isJudge => this.isJudge = isJudge),
@@ -130,10 +130,10 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.loadingSave = true;
     this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
-      this.categorie.contest = this.contestId;
+      this.categorie.contest = this.store.value.contest.id;
       this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
-        this.contestService.addNewCategorie( this.contestId, doc.id );
+        this.contestService.addNewCategorie(this.categorie.contest, doc.id );
         this.router.navigate(['/portal/contests']);
         this.loadingSave = false;
       });
