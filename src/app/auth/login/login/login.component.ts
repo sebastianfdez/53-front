@@ -4,6 +4,8 @@ import { AuthService } from '../../auth-form/services/auth.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ComponentUtils } from '../../../shared/services/component-utils';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -35,17 +37,27 @@ export class LoginComponent implements OnInit {
     this.loging = true;
     if (this.loginForm.valid) {
       try {
-        this.authService.signIn(this.loginForm.value.user, this.loginForm.value.pass).subscribe((succes) => {
+        this.authService.signIn(this.loginForm.value.user, this.loginForm.value.pass).pipe(
+          catchError((error) => {
+            console.log(error);
+            if (error.code && error.code === 'auth/wrong-password') {
+              this.snackBarService.showError('Utilisateur ou mot de passe incorrect');
+            } else {
+              this.snackBarService.showError('Erreur de connexion');
+            }
+            this.loging = false;
+            return of(null);
+          })
+        ).subscribe((succes) => {
           if (succes) {
             this.router.navigate(['portal/admin']);
-          } else {
-            this.loging = false;
-            this.snackBarService.showError('Erreur de connexion');
           }
         });
       } catch (err) {
         console.log(err);
         this.error = err.message;
+        this.loging = false;
+        this.snackBarService.showError('Erreur de connexion');
       }
     }
   }

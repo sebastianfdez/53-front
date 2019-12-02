@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./assets/styles/mat-override.scss";
+@import "./assets/styles/carrousel-override.scss";
 
 .html {
     height: 100%;
@@ -20,16 +22,6 @@ body {
     background-color: #ffffff66;
     width: 100%;
 }
-
-.body2::after {
-    opacity: 0.5;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
-  }
 
 .title-51 {
     font-size: 2.5em;
@@ -133,37 +125,6 @@ body {
     display: none;
 }
 
-.carousel-inner {
-    height: 100%;
-
-    .carousel-item {
-        height: 100%;
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: opacity(0.5);
-        }
-        .carousel-caption {
-            font-family: Quicksand, Helvetica, Arial, sans-serif;
-            height: fit-content;
-            top: 0;
-            bottom: 0;
-            margin-top: auto;
-            margin-bottom: auto;
-            .carousel-title {
-              font-size: 65px;
-              font-weight: bold;
-            }
-            .carousel-subtitle {
-              font-size: 40px;
-              font-family: Quicksand, Helvetica, Arial, sans-serif;
-
-            }
-        }
-    }
-}
-
 .footer-image {
     display: flex;
     place-content: center;
@@ -182,18 +143,6 @@ body {
     }
 }
 
-.carousel-indicators {
-    li {
-        width: 16px;
-        height: 16px;
-        border-radius: 8px;
-    }
-}
-
-.table td, .table th {
-    padding: .75rem !important;
-}
-
 @media (max-width: 970px) {
 
     .back-51 {
@@ -201,36 +150,6 @@ body {
 
         button {
             width: 90px;
-        }
-    }
-
-    .mat-table {
-        font-size: 1em;
-        .mat-sort-header-container {
-            justify-content: center;
-        }
-        .mat-header-cell {  
-            text-align: center
-        }
-        .mat-cell {
-            text-align: center;
-            vertical-align: middle;
-        }
-    }
-}
-
-@media (max-width: 760px) {
-
-    .carousel-inner {
-        .carousel-item {
-            .carousel-caption {
-                .carousel-title {
-                    font-size: 25px;
-                }
-                .carousel-subtitle {
-                    font-size: 20px;
-                }
-            }
         }
     }
 }
