@@ -4,16 +4,18 @@ import { Categorie, Judge, Participant, emptyCategorie } from '../../models/cate
 import { Sort } from '@angular/material';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
-import { of, combineLatest, Subscription } from 'rxjs';
-import { Contest } from '../../../shared/models/contest';
+import { of, Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
+import { Store } from '../../../store';
 
 export interface ScoreElement {
   pool: string;
   name: string;
+  participantName: string;
+  participantLastName: string;
   licence: string;
   average: string;
   calification: string;
@@ -43,6 +45,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     private router: Router,
     private firebaseService: FirebaseService,
     private contestService: ContestsService,
+    private store: Store,
   ) {}
 
   ngOnInit() {
@@ -52,9 +55,9 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
         this.categorie = data.categorie;
         this.getTableData();
         this.loading = false;
-        this.displayedColumns = ['pool', 'name', 'licence'];
+        this.displayedColumns = ['calification', 'name', 'licence'];
         this.judges.forEach(judge => this.displayedColumns.push(`${judge.name}${judge.lastName}`));
-        this.displayedColumns.push('average', 'calification');
+        this.displayedColumns.push('average', 'pool');
       }),
     );
   }
@@ -70,6 +73,8 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
         const newScore: ScoreElement = {
           pool: `${index}`,
           name: participant.name + ' ' + participant.lastName,
+          participantLastName: participant.lastName,
+          participantName: participant.name,
           licence: participant.licence,
           average: `0`,
           calification: `1`,
@@ -89,7 +94,6 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     });
     this.dataSource = this.dataSource.sort((a, b) =>  this.parseInt(a.average) >  this.parseInt(b.average) ? -1 : 1);
     this.dataSource.forEach((data, index) => data.calification = `${index + 1}`);
-    this.dataSource = this.dataSource.sort((a, b) => this.parseInt(a.pool) > this.parseInt(b.pool) ? 1 : -1);
   }
 
   sortData(sort: Sort) {
@@ -125,6 +129,68 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
   save(component: ExcelExportComponent): void {
     const options = component.workbookOptions();
+    // Add title, date and name of the categorie
+    options.sheets[0].rows.unshift({
+      cells: [{
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: '',
+        fontSize: 20,
+        textAlign: 'left',
+      }, {
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: this.categorie ? this.categorie.final ? 'Finale' : 'Qualifications' : '',
+        fontSize: 20,
+        textAlign: 'left',
+      }, {
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: (new Date()).toLocaleDateString(),
+        fontSize: 20,
+        colSpan: 3,
+        textAlign: 'right',
+      }],
+      height: 30,
+    });
+    options.sheets[0].rows.unshift({
+      cells: [{
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: '',
+        fontSize: 30,
+      }, {
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: this.categorie ? this.categorie.name.replace(' Finale', '') : '',
+        fontSize: 30,
+      }, {
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: this.store.value.contest.place,
+        fontSize: 30,
+        colSpan: 3,
+        textAlign: 'right',
+      }],
+      height: 40,
+    });
+    options.sheets[0].rows.unshift({
+      cells: [{
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: '',
+        fontSize: 40,
+        textAlign: 'center',
+      },{
+        background: '#2c50a5',
+        color: '#FFFFFF',
+        value: this.store.value.contest.name,
+        fontSize: 40,
+        textAlign: 'center',
+        colSpan: 4,
+      }],
+      height: 50,
+    });
     component.save(options);
   }
 
