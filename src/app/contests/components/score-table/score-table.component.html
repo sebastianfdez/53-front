@@ -86,6 +86,7 @@
 </kendo-excelexport>
 
 <kendo-excelexport [data]="dataSource" fileName="{{getFileName()}}" #excelexportFederation>
+  <kendo-excelexport-column field="calification" title="Classement"></kendo-excelexport-column>
   <kendo-excelexport-column field="participantName" title="Prénom"></kendo-excelexport-column>
   <kendo-excelexport-column field="participantLastName" title="Nom"></kendo-excelexport-column>
   <kendo-excelexport-column field="licence" title="Licence"></kendo-excelexport-column>
@@ -95,5 +96,4 @@
     title="Note {{judge.name}} {{judge.lastName}}"></kendo-excelexport-column>
   </ng-container>
   <kendo-excelexport-column field="average" title="Moyenne"></kendo-excelexport-column>
-  <kendo-excelexport-column field="calification" title="Classement"></kendo-excelexport-column>
 </kendo-excelexport>

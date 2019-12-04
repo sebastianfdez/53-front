@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { Categorie, Pool, Votes, Participant, emptyParticipant, emptyCategorie } from '../../models/categorie';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
-import {  Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FileRestrictions, UploadComponent, SelectEvent, UploadEvent } from '@progress/kendo-angular-upload';
@@ -73,9 +73,9 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.judgeName = `${user.name} ${user.lastName}`;
       }),
       this.route.data.subscribe((categorie: {categorie: Categorie}) => {
-        if (!categorie.categorie) {
-          this.categorie = emptyCategorie;
-          this.createNew = true;
+        this.createNew = !!(this.route.url as BehaviorSubject<UrlSegment[]>).value.filter(urls => urls.path === 'new').length;
+        if (!categorie.categorie || this.createNew) {
+          this.categorie = {...emptyCategorie};
         } else {
           this.categorie = categorie.categorie;
         }
@@ -98,7 +98,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
   addParticipant(pool: Pool) {
     if (pool.participants.length === 0 || pool.participants[pool.participants.length - 1].name !== '') {
       const participant: Participant = JSON.parse(JSON.stringify(emptyParticipant));
-      participant.id = `${(new Date()).getTime()}${Math.random() * 1000}`;
+      participant.id = `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000 )}`;
       pool.participants.push(participant);
     }
   }
@@ -106,7 +106,9 @@ export class CategorieComponent implements OnInit, OnDestroy {
   addPool() {
     if (!this.categorie.pools.length || this.categorie.pools[this.categorie.pools.length - 1].participants.length > 0 &&
       this.categorie.pools[this.categorie.pools.length - 1].participants[0].name !== '') {
-      this.categorie.pools.push({ participants: [JSON.parse(JSON.stringify(emptyParticipant))]});
+        const participant: Participant = JSON.parse(JSON.stringify(emptyParticipant));
+        participant.id = `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000 )}`;
+        this.categorie.pools.push({ participants: [participant]});
     }
   }
 
@@ -226,6 +228,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.uploadComponent.fileList.clear();
   }
 
+  // Import players from Excel
   uploadFile(event: UploadEvent) {
     event.preventDefault();
     this.showUploader = false;
@@ -239,7 +242,9 @@ export class CategorieComponent implements OnInit, OnDestroy {
       const workbook = XLSX.read(bstr, { type: 'binary' });
       const first_sheet_name = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[first_sheet_name];
+      // Create json list of players from excel
       const players: { nom: string; prenom: string; club: string; licence: string; }[] = XLSX.utils.sheet_to_json(worksheet, {raw: true});
+      // Check the columns are well defined
       if (!players[0].nom || !players[0].prenom || !players[0].club || !players[0].licence) {
         let error = `Erreur: Colonnes pas trouvees: `;
         error += !players[0].nom ? 'nom, ' : '';
@@ -248,14 +253,16 @@ export class CategorieComponent implements OnInit, OnDestroy {
         !players[0].licence ? error += 'licence' : error.slice(0, error.length - 3);
         this.warningService.showWarning(error, false);
       } else {
+        // If there is any pool already created we make the first one
         if (!this.categorie.pools.length) {
           this.categorie.pools.push({ participants: []});
         }
+        // We sort randomly the players
         players.sort((a , b) => 0.5 - Math.random());
         players.forEach((player) => {
           if (this.categorie.pools[this.categorie.pools.length - 1].participants.length < this.playersByPool) {
             this.categorie.pools[this.categorie.pools.length - 1].participants.push({
-              id: `${(new Date()).getTime()}${Math.random() * 1000}`,
+              id: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000 )}`,
               votes: [],
               club: player.club,
               lastName: player.nom,
@@ -264,7 +271,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
             });
           } else {
             this.categorie.pools.push({ participants: [{
-              id: `${(new Date()).getTime()}${Math.random() * 1000}`,
+              id: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000 )}`,
               votes: [],
               club: player.club,
               lastName: player.nom,

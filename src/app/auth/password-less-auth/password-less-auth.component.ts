@@ -75,7 +75,7 @@ export class PasswordLessAuthComponent implements OnInit {
                     }),
                     take(1),
                     switchMap((user) => {
-                        return from(this.firebaseService.createJudge(result.user.uid, judge));
+                        return this.firebaseService.createJudge(result.user.uid, judge);
                     }),
                     switchMap(() => {
                         return from(this.firebaseService.deleteJudge(this.emailUrl));
@@ -97,8 +97,9 @@ export class PasswordLessAuthComponent implements OnInit {
                     if (this.speaker) {
                         this.firebaseService.updateContest(this.contestId, {speaker: judge.id});
                     } else {
-                        const judges: string[] = contest.judges.filter(judge_ => judge_ !== judge.mail);
+                        let judges: string[] = contest.judges.filter(judge_ => judge_ !== judge.mail);
                         judges.push(judge.id);
+                        judges = Array.from(new Set(judges));
                         this.firebaseService.updateContest(this.contestId, {judges});
                     }
                 });

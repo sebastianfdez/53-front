@@ -127,6 +127,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
+  // Exporter excel
   save(component: ExcelExportComponent): void {
     const options = component.workbookOptions();
     // Add title, date and name of the categorie
