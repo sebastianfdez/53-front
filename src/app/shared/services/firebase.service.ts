@@ -62,8 +62,16 @@ export class FirebaseService {
         return this.database.collection<Contest>('contests').doc<Contest>(idContest).valueChanges();
     }
 
-    createJudge(userId: string, judge: Judge): Promise<void> {
-        return this.database.collection<Judge>('users').doc<Judge>(userId).set(judge);
+    createJudge(userId: string, judge: Judge): Observable<any> {
+        return this.database.collection('users').doc<Judge>(userId).valueChanges().pipe(
+            switchMap((judge_) => {
+                if (!judge_) {
+                    return this.database.collection<Judge>('users').doc<Judge>(userId).set(judge);
+                } else {
+                    return of(judge_);
+                }
+            })
+        );
     }
 
     deleteJudge(judgeid: string): Promise<void> {

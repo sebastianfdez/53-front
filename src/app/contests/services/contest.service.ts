@@ -55,6 +55,7 @@ import { Speaker } from '../models/speaker';
     }
 
     deleteCategorie(contestId: string, categorieId: string) {
+        this.firebaseService.deleteCategorie(categorieId);
         const categories: string[] = this.store.value.contest.categories.filter(cat => cat !== categorieId);
         this.store.set('contest', Object.assign(this.store.value.contest, { categories }));
         this.firebaseService.updateContest(contestId, { categories });

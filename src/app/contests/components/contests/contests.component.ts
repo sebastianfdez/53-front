@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription, from, of, combineLatest } from 'rxjs';
+import { Observable, Subscription, of, combineLatest } from 'rxjs';
 import { Categorie } from '../../models/categorie';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { switchMap, take, filter, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../../../shared/models/user';
 import { Contest } from '../../../shared/models/contest';
-import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { ContestsService } from '../../services/contest.service';
-import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
@@ -42,7 +40,6 @@ export class ContestsComponent implements OnInit, OnDestroy {
     private contestService: ContestsService,
     private authService: AuthService,
     private snackBarService: SnackBarService,
-    private firebaseService: FirebaseService,
   ) {
     this.loading = true;
   }
@@ -96,14 +93,13 @@ export class ContestsComponent implements OnInit, OnDestroy {
     } else {
       if (this.time > 20) {
         this.deleteCategories[categorie.id] = true;
-        this.time = 0;
       } else {
         return this.goTo(categorie);
       }
-      clearInterval(this.timeoutHandler);
     }
     this.timeoutHandler = null;
     this.time = 0;
+    clearInterval(this.timeoutHandler);
   }
 
   goToNew() {
@@ -120,10 +116,12 @@ export class ContestsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.snackBarService.showMessage('Êtes-vous sûr de vouloir supprimer cette catégorie?', 'Oui')
       .onAction().subscribe(() => {
-        this.firebaseService.deleteCategorie(categorie.id);
         this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
         this.categories = this.categories.filter(cat => cat.id !== categorie.id);
         this.contestService.deleteCategorie(this.contest.id, categorie.id);
+        this.timeoutHandler = null;
+        this.time = 0;
+        clearInterval(this.timeoutHandler);
       })
     );
     this.deleteCategories[categorie.id] = false;
