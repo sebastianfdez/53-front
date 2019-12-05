@@ -114,7 +114,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
-      this.snackBarService.showMessage('Vous êtes de vouloir supprimer cette catégorie?', 'Oui')
+      this.snackBarService.showMessage('Êtes-vous sûr de vouloir supprimer cette catégorie?', 'Oui')
       .onAction().subscribe(() => {
         this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
         this.categories = this.categories.filter(cat => cat.id !== categorie.id);

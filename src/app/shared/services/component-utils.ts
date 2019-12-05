@@ -64,6 +64,6 @@ export class ComponentUtils {
       selBox.select();
       document.execCommand('copy');
       document.body.removeChild(selBox);
-      this.snackBarService.showMessage('Lien copié dans le Presse-papiers');
+      this.snackBarService.showMessage('Lien copié dans le presse-papiers');
     }
 }

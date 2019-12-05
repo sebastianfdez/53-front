@@ -84,8 +84,8 @@ export class SpeakerComponent implements OnInit, OnDestroy {
             this.loadingSave = true;
             try {
                 this.createSpeakerUser();
-                this.snackBarService.showMessage(`Profile juge crée pour ${this.speaker.mail}.
-                    Envoyez le lien de connection à ${this.speaker.name} ${this.speaker.lastName}`);
+                this.snackBarService.showMessage(`Profile juge créé pour ${this.speaker.mail}.
+                    Envoyez le lien de connexion à ${this.speaker.name} ${this.speaker.lastName}`);
             } catch (err) {
                 console.log(err);
                 this.snackBarService.showError('Une erreur est survenue');
@@ -107,7 +107,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
                     return from(this.firebaseService.createJudge(this.speaker.mail, this.speaker));
                 }),
                 catchError(() => {
-                    this.snackBarService.showMessage(`Le mail ${this.speaker.mail} est déjà utilisé`);
+                    this.snackBarService.showMessage(`L'e-mail ${this.speaker.mail} est déjà utilisé`);
                     this.addSpeaker = false;
                     this.loadingSave = false;
                     return of(null);

@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
         };
         await this.firebaseService.createUser(newUser);
         await this.firebaseService.updateContest(newContest_.id, {id: newContest_.id});
-        this.snackBarService.showMessage('Utilisateur et contest crée avec succes');
+        this.snackBarService.showMessage('Utilisateur et contest créé avec succès');
         this.router.navigate(['auth/login']);
     }
 

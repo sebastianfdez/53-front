@@ -82,8 +82,8 @@ export class JudgesComponent implements OnInit, OnDestroy {
         this.loadingChanges = true;
         try {
             this.createJudgeUser();
-            this.snackBarService.showMessage(`Profile juge crée pour ${this.newJudge.mail}.
-                Envoyez le lien de connection à ${this.newJudge.name} ${this.newJudge.lastName}`);
+            this.snackBarService.showMessage(`Profil juge créé pour le mail ${this.newJudge.mail}.
+                Envoyez le lien de connexion à ${this.newJudge.name} ${this.newJudge.lastName}`);
         } catch (err) {
             console.log(err);
             this.errorMessage = err.message;
@@ -107,7 +107,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
                     return from(this.firebaseService.createJudge(this.newJudge.mail, this.newJudge));
                 }),
                 catchError(() => {
-                    this.snackBarService.showMessage(`Le mail ${this.newJudge.mail} est déjà utilisé`);
+                    this.snackBarService.showMessage(`L'e-mail ${this.newJudge.mail} est déjà utilisé`);
                     this.addJudge = false;
                     this.loadingChanges = false;
                     return of(null);

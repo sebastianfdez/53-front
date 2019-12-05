@@ -144,7 +144,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
       .catch((error) => {
         console.log(error);
         this.loadingSave = false;
-        this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+        this.snackBarService.showError('Erreur de sauvegarde de la note');
       })
       .then(() => {
         this.authService.isAdmin ? this.router.navigate(['/portal/admin']) : this.router.navigate(['/portal/contests']);
@@ -201,7 +201,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     .catch((error) => {
       console.log(error);
       this.loadingSave = false;
-      this.snackBarService.showError('Il y a eu une erreur en sauvegarder le score');
+      this.snackBarService.showError('Erreur de sauvegarde de la note');
     });
   }
 

@@ -8,7 +8,7 @@
   </button>
 </div>
 <div class="judges-container container-51 scrollbar-53" *ngIf="!loading">
-  <div class="title-51">Liste de Juges</div>
+  <div class="title-51">Liste des juges</div>
 
   <div class="block-51" *ngFor="let judge of judges">
     <!-- <div class="delete" (click)="deleteJudge(judge)" *ngIf="editing">
@@ -17,7 +17,7 @@
     <mat-icon class="icon">person</mat-icon>
     <div class="form-container">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Prenom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
+        <input matInput placeholder="Prénom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
         [disabled]="!editing">
       </mat-form-field>
 
@@ -27,22 +27,22 @@
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
+        <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
       </mat-form-field>
     </div>
     <mat-icon class="icon" (click)="copyLink(judge)" style="cursor: pointer">link</mat-icon>
   </div>
             
   <button mat-flat-button class="button" color="primary" *ngIf="!editing && !loadingChanges" (click)="editJudges()">
-    Editer Juges
+    Modifier juges
   </button>
             
   <button mat-flat-button class="button" color="primary" *ngIf="editing && !loadingChanges" (click)="saveJudges()">
-    Sauvagarder Changements
+    Sauvegarder changements
   </button>
             
   <button mat-flat-button class="button" *ngIf="!addJudge && !loadingChanges" color="primary" (click)="addJudge = true">
-    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter Juge
+    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
   </button>
 
   <div class="block-51" style="margin-top: 50px !important;" *ngIf="addJudge && !loadingChanges">
@@ -70,7 +70,7 @@
     <mat-spinner></mat-spinner>
   </div>
   <div class="footer-image">
-      <img src="../../../assets/Logo-53.png">
+      <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
   </div>
 
 </div>
