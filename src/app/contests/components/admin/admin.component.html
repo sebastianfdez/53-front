@@ -1,7 +1,7 @@
 
 <div class="back-51 logout" *ngIf="!loading">
   <button mat-flat-button color="primary" (click)="logOut()">
-    {{"Log out"}}
+    {{"Se déconnecter"}}
   </button>
 </div>
 
@@ -25,13 +25,13 @@
   </button>
   <button mat-flat-button color="primary" class="button" style="margin-top: 20px;"
   *ngIf="!loading && isAdmin" disabled>
-    Benevolats (Coming soon)
+    Bénevoles (Bientôt)
   </button>
   <div class="scrollable" *ngIf="loading">
     <mat-spinner></mat-spinner>
   </div>
   <div class="footer-image">
-      <img src="../../../assets/Logo-53.png">
+      <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
   </div>
 
 </div>

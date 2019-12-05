@@ -1,6 +1,6 @@
 
 
-<img src="../../../../assets/Logo-53.png">
+<img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
 
 <div class="example-form" [formGroup]="authFormGroup" *ngIf="authFormGroup">
 
@@ -21,7 +21,7 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('passconf')">
-    <input matInput placeholder="Répétez mot de passe" formControlName="passconf" type="password">
+    <input matInput placeholder="Confirmez le mot de passe" formControlName="passconf" type="password">
   </mat-form-field>
 
   <mat-form-field *ngIf="authFormGroup.contains('type')">
@@ -34,7 +34,7 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('contestName')">
-    <input matInput placeholder="Nombre du contest" formControlName="contestName">
+    <input matInput placeholder="Nom du contest" formControlName="contestName">
   </mat-form-field>
 
   <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('place')">
@@ -42,7 +42,7 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width" *ngIf="authFormGroup.contains('date')">
-    <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+    <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Date" formControlName="date">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>

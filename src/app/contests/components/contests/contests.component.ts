@@ -118,7 +118,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
-      this.snackBarService.showMessage('Vous êtes sûr que vous voulez supprimer cette catégorie?', 'Oui')
+      this.snackBarService.showMessage('Êtes-vous sûr de vouloir supprimer cette catégorie?', 'Oui')
       .onAction().subscribe(() => {
         this.firebaseService.deleteCategorie(categorie.id);
         this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);

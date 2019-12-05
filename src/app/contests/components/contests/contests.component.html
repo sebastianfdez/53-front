@@ -17,7 +17,7 @@
       {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
     </p>
   
-    <span class="title-51" *ngIf="!loading2">Liste de Catégories</span>
+    <span class="title-51" *ngIf="!loading2">Liste des catégories</span>
   
   
     <div class="grid">
@@ -34,10 +34,10 @@
       </div>
       <div class="categorie new" *ngIf="isAdmin" (click)="goToNew()" >
         <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
-        <span class="pool">New Categorie</span>
+        <span class="pool">Ajouter une catégorie</span>
       </div>
     </div>
-    <span class="title-51" *ngIf="!loading2 && categoriesFinal.length">Liste de Catégories Finales</span>
+    <span class="title-51" *ngIf="!loading2 && categoriesFinal.length">Liste des catégories de finales</span>
     <div class="grid">
       <div class="categorie mat-elevation-z3 final"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">

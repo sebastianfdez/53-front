@@ -210,7 +210,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     let limit = 0;
     this.subscriptions.push(
       this.warningService
-      .showWarning('Es-tu sûr de vouloir générer la finale ?', true, 'Combien de riders sont qualifiés pour la finale?')
+      .showWarning(null, true, 'Combien de riders sont qualifiés pour la finale?')
       .afterClosed()
       .pipe(
         switchMap((response: WarningReponse) => {

@@ -1,7 +1,7 @@
 <div class="warning-content"
 (keyup.enter)="accept()">
 
-  <div class="warning-title">
+  <div class="warning-title" *ngIf="data.message">
     <span class="title-span">
         {{data.message}}
     </span>
