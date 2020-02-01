@@ -2,8 +2,10 @@
 
     <div class="title" [routerLink]="['']">
       <div class="images">
-        <img [class.show]="bottomMenu2" *ngIf="bottomMenu" class="big" src="../../../assets/Logo-53.png">
-        <img *ngIf="!bottomMenu" class="big show" src="../../../assets/Logo-53.png">
+        <img [class.show]="bottomMenu2" *ngIf="bottomMenu" class="big" id='start-logo'
+        src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
+        <img *ngIf="!bottomMenu" class="big show" id='start-logo'
+        src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
       </div>
     </div>
 

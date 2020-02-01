@@ -246,7 +246,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
       const players: { nom: string; prenom: string; club: string; licence: string; }[] = XLSX.utils.sheet_to_json(worksheet, {raw: true});
       // Check the columns are well defined
       if (!players[0].nom || !players[0].prenom || !players[0].club || !players[0].licence) {
-        let error = `Erreur: Colonnes pas trouvees: `;
+        let error = `Erreur: Il manque les colonnes suivantes: `;
         error += !players[0].nom ? 'nom, ' : '';
         error += !players[0].prenom ? 'prenom, ' : '';
         error += !players[0].club ? 'club, ' : '';

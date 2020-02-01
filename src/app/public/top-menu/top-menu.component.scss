@@ -16,7 +16,7 @@
 
     .start {
         flex: 0 0 auto;
-        width: 65px;
+        width: 120px;
         display: flex;
         cursor: pointer;
 
@@ -48,6 +48,7 @@
                 opacity: 0;
                 transition: visibility 0s, opacity 0.5s linear;
                 &.show {
+                    border-style: unset !important;
                     visibility: visible;
                     opacity: 1;
                 }
