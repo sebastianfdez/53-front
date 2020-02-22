@@ -12,16 +12,6 @@ export class TopMenuComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    setTimeout(() => {
-      const el = document.getElementById('start-logo');
-      console.log(el);
-      if (el && el as HTMLElement) {
-        console.log((el as any).inert);
-        (el as any).inert = true;
-        console.log((el as any).inert);
-      }
-    }, 1000);
-  }
+  ngOnInit() {}
 
 }

@@ -1,20 +1,18 @@
 <div class="header-nav-container">
 
-    <div class="title" [routerLink]="['']">
-      <div class="images">
-        <img [class.show]="bottomMenu2" *ngIf="bottomMenu" class="big" id='start-logo'
-        src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
-        <img *ngIf="!bottomMenu" class="big show" id='start-logo'
-        src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
-      </div>
+    <div class="title">
+      <a class="images" id='start-logo' href="" aria-label="homepage" focus>
+        <img [class.show]="!bottomMenu || bottomMenu2" class="big" alt="Logo 53" [class.hide]="bottomMenu && !bottomMenu2"
+        src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=e3ac886f-720d-4183-a9c4-78a60dc3ba64">
+	  </a>
     </div>
 
     <!-- <div class="start">
       <span [class.bottom-menu]="bottomMenu" class="button" >La 53 News!</span>
     </div> -->
   
-    <div class="start" title="Proposer un projet">
-        <span [class.bottom-menu]="bottomMenu" class="button" routerLink="/auth/login">
+    <a class="start" title="Log in" aria-label="login" routerLink="/auth">
+        <span [class.bottom-menu]="bottomMenu" class="button">
         <mat-icon>person</mat-icon>Se connecter</span>
-    </div>
+    </a>
   </div>

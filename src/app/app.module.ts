@@ -1,5 +1,5 @@
 
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -7,14 +7,20 @@ import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthModule } from './auth/auth.module';
-import { SharedModule } from './shared/shared.module';
 import { Store } from './store';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { PublicModule } from './public/public.module';
 
 const routes: Routes = [
-  { path: 'portal', loadChildren: './contests/contests.module#ContestsModule' },
-  { path: 'home', loadChildren: './public/public.module#PublicModule' },
+  {
+    path: 'auth',
+    loadChildren: './auth/auth.module#AuthModule',
+  },
+  {
+    path: 'portal',
+    loadChildren: './contests/contests.module#ContestsModule',
+  },
   { path: '**', redirectTo: 'home' },
 ];
 
@@ -28,12 +34,8 @@ const routes: Routes = [
     UploadModule,
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    AuthModule,
-    SharedModule
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
+    PublicModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Store,

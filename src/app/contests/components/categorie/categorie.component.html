@@ -16,7 +16,7 @@
       </span>
       <span class="title-51">Catégorie: {{categorie.name}} </span>
   
-      <form class="example-form" *ngIf="isAdmin" >
+      <form class="example-form flex-div column full-width" *ngIf="isAdmin" >
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Nom de la catégorie" [(ngModel)]="categorie.name" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
@@ -52,10 +52,11 @@
         <mat-spinner [diameter]="50"></mat-spinner>
       </div>
   
-      <div class="pool block-51 mat-elevation-z2" *ngFor="let pool of categorie.pools; let j = index;">
+      <div class="pool block-51 mat-elevation-z2 flex-div column" *ngFor="let pool of categorie.pools; let j = index;"
+          tabindex="0" role="link" (keydown.enter)="focusPool(j)" [id]="'pool' + j">
         <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
-        <div class="participants">
-          <div class="participants-cont mat-elevation-z1" *ngFor="let participant of pool.participants; let i = index;">
+        <div class="participants flex-div column full-width">
+          <div class="participants-cont flex-div column full-width mat-elevation-z1" *ngFor="let participant of pool.participants; let i = index;">
             <ng-container *ngIf="isAdmin">
             
               <mat-form-field class="example-full-width">
@@ -77,7 +78,7 @@
             </ng-container>
             <div class="vote-mode" *ngIf="!isAdmin">
                 <mat-icon class="icon">person</mat-icon>
-                <div class="info">
+                <div class="info flex-div column">
                   <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{participant.name}} </span></span>
                   <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{participant.lastName}} </span></span>
                   <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{participant.licence}} </span></span>
@@ -101,7 +102,7 @@
         </div>
       </div>
   
-      <div class="pool block-51 mat-elevation-z2" *ngIf="isAdmin">
+      <div class="pool block-51 mat-elevation-z2 flex-div column" *ngIf="isAdmin">
         <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPool()">
           + Ajouter une poule
         </button>
@@ -113,8 +114,7 @@
     </div>
 
     <div class="footer-image">
-        <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
+        <img async src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=0e4c91d7-b332-44b7-af94-9ffc81345ec9">
     </div>
-  
   </div>
   

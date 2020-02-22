@@ -23,25 +23,30 @@ import { ContestsService } from './services/contest.service';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'admin' },
-  { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService] },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
-  { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService], resolve: {
-    judges: JudgeResolve,
-  }},
-  { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService] },
-  { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService] },
-  { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService] },
-  { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService], resolve: {
-    categorie: CategorieResolve,
-  }},
-  { path: 'categorie/:id/scores', component: ScoreTableComponent, canActivate: [JudgeAuthGuardService], resolve: {
-    categorie: CategorieResolve,
-    judges: JudgeResolve,
-  }},
-  { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService], resolve: {
-    categorie: CategorieResolve,
-  } },
+  {
+    path: '',
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'admin' },
+      { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService] },
+      { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService] },
+      { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService], resolve: {
+        judges: JudgeResolve,
+      }},
+      { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService] },
+      { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService] },
+      { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService] },
+      { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService], resolve: {
+        categorie: CategorieResolve,
+      }},
+      { path: 'categorie/:id/scores', component: ScoreTableComponent, canActivate: [JudgeAuthGuardService], resolve: {
+        categorie: CategorieResolve,
+        judges: JudgeResolve,
+      }},
+      { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService], resolve: {
+        categorie: CategorieResolve,
+      } },
+    ]
+  },
 ];
 
 @NgModule({
@@ -69,6 +74,9 @@ const routes: Routes = [
     CategorieResolve,
     JudgeResolve,
     ContestsService
+  ],
+  exports: [
+    RouterModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

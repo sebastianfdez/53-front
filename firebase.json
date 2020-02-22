@@ -1,6 +1,6 @@
 {
     "hosting": {
-      "public": "dist/lyon-roller-open",
+      "public": "dist/la-53",
       "ignore": [
         "firebase.json",
         "**/node_modules/**"

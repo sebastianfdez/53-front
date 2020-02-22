@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatSelectModule, MatTableModule, MatSortModule,
-  MatDialogModule, MatSnackBarModule, MatDatepickerModule, MatNativeDateModule,
+  MatInputModule, MatButtonModule, MatIconModule, MatSelectModule, MatTableModule, MatSortModule,
+  MatDialogModule, MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule,
 } from '@angular/material';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { SnackBarService } from './services/snack-bar.service';
 import { ComponentUtils } from './services/component-utils';
 import { FirebaseService } from './services/firebase.service';
+import { A11yModule } from '@angular/cdk/a11y';
 
 const materialModules = [
   MatInputModule,
@@ -44,6 +45,7 @@ const materialModules = [
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     AngularFireDatabaseModule,
     ReactiveFormsModule,
+    A11yModule,
   ],
   declarations: [
     WarningComponent,
@@ -55,6 +57,7 @@ const materialModules = [
     FormsModule,
     WarningComponent,
     ReactiveFormsModule,
+    A11yModule,
     ...materialModules,
   ],
   providers: [

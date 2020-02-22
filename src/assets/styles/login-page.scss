@@ -1,0 +1,47 @@
+app-register, app-login {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    place-content: center;
+    background: url('assets/figures/Fond.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    .login-container {
+        overflow: auto;
+        padding: 5% 0;
+        max-height: 100%;
+        img {
+            max-width: 800px;
+            width: 60%;
+            margin: 17px 0;
+        }
+        .link {
+            padding: 10px;
+        }
+        .example-form {
+            width: 450px;
+            max-width: 90%;
+        }
+        .button {
+            width: 300px;
+            font-size: 1.5em;
+        }
+        .error{
+            margin: 5px 0;
+            color: #ff0000;
+        }
+    }
+    @media (max-width: 500px) {
+        .login-container {
+            max-width: 92%;
+            .example-form {
+                max-width: 75%;
+            }
+            .button {
+                width: 240px;
+                font-size: 1em;
+            }
+        }
+    }
+}

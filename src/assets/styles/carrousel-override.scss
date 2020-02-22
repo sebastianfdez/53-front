@@ -10,7 +10,7 @@
             filter: opacity(0.5);
         }
         .carousel-caption {
-            font-family: Quicksand, Helvetica, Arial, sans-serif;
+            font-family: Roboto, "Helvetica Neue", Arial, sans-serif;;
             height: fit-content;
             top: 0;
             bottom: 0;
@@ -22,7 +22,7 @@
             }
             .carousel-subtitle {
               font-size: 40px;
-              font-family: Quicksand, Helvetica, Arial, sans-serif;
+              font-family: Roboto, "Helvetica Neue", Arial, sans-serif;;
 
             }
         }
@@ -34,6 +34,12 @@
         width: 16px;
         height: 16px;
         border-radius: 8px;
+    }
+}
+
+.carousel-control-prev {
+    &:focus {
+        outline: auto;
     }
 }
 

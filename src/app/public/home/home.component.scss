@@ -11,28 +11,30 @@
 
 .carrousel-cont {
     padding-top: 11vh;
-    width: 100%;
     height: fit-content;
     color: #ffffff;
     flex: 0 0 auto;
     font-size: 100px;
-    display: flex;
     place-content: center;
-    align-items: center;
     position: relative;
 	height: 89vh;
-
     .header {
-        width: 100%;
         z-index: 2;
 		top: 0;
 		position: absolute;
-
+        transition: visibility 0s, opacity 0.5s linear;
         &.sticky {
 			position: fixed;
         }
+        &.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        &.close {
+            opacity: 0;
+            visibility: hidden;
+        }
     }
-
     &.sticky {
         position: initial;
     }
@@ -41,13 +43,11 @@
 .contacts-cont {
     min-height: 100vh;
     place-content: flex-end;
-    width: 100%;
     .title {
         font-size: 50px;
         letter-spacing: 13px;
     }
     .contacts {
-        width: 100%;
         background-color: #ffffff9f;
         min-height: 40vh;
         font-size: 28px;

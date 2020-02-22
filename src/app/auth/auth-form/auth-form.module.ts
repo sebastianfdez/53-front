@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AuthFormComponent } from './auth-form.component';
 import { SharedModule } from '../../shared/shared.module';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -14,7 +13,6 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   exports: [
     AuthFormComponent,
-    SharedModule,
   ]
 })
 export class AuthFormModule {}

@@ -2,6 +2,8 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "./assets/styles/mat-override.scss";
 @import "./assets/styles/carrousel-override.scss";
+@import "./assets/styles/login-page.scss";
+@import "./assets/styles/contests.scss";
 
 .html {
     height: 100%;
@@ -11,9 +13,17 @@ body {
     height: 100vh;
     display: flex;
     margin: 0;
-    font-family: Quicksand, Helvetica, Arial, sans-serif;
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     background-size: cover;
     place-content: center;
+}
+
+*[role="link"] {
+    color: blue;
+    cursor: pointer;
+    &:focus {
+        outline: 1px solid rgb(36, 69, 255);
+    }
 }
 
 .background-cont {
@@ -40,15 +50,9 @@ body {
         flex-direction: column;
     }
 }
-
-*:focus {
-    outline:0;
-}
-
-.full-heigth {
+.full-height {
     height: 100%;
 }
-
 .full-width {
     width: 100%;
 }

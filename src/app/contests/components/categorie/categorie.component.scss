@@ -1,82 +1,43 @@
-:host {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: url("../../../../assets/figures/Fond.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
 .categorie-container {
-
     overflow: scroll;
-
     .mat-form-field {
         width: 90%;
         max-width: 460px;
     }
-
-    .example-form {
-        width: 100%;
-        display: flex;
-        place-content: center;
-    }
-
     .pool {
-        flex-direction: column;
-        max-width: 630px;    
-
+        max-width: 630px;
+        color: #000000;
         .poule {
             margin: 15px 0;
         }
-
         .add-pool {
             background-color: transparent;
             color: black;
         }
-
         .participants {
-            width: 100%;
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-
             .delete {
                 width: 40%;
                 min-width: fit-content;
             }
-
             .participants-cont {
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                width: 100%;
                 padding: 20px 0;
                 border-radius: 8px;
                 background-color: #fbfbfb;
                 margin-bottom: 20px;
-
                 .vote-mode {
                     display: flex;
                     width: 100%;
                     flex-wrap: wrap;
                     padding: 0 15px;
-
                     .icon {
                         font-size: 40px;
                         flex: 0 0 auto;
                         width: 40px;
                     }
-
                     .info {
-                        display: flex;
-                        flex-direction: column;
                         flex: 1;
                         margin: 0 10px;
                     }
-
                     .vote-input {
                         font-size: 20px;
                         flex: 0 0 auto;
@@ -84,13 +45,11 @@
                     }
                 }
             }
-
             .button {
                 font-size: 1em;
             }
         }
     }
-
     .button {
         width: 80%;
         font-size: 1.5em;
@@ -113,9 +72,7 @@
 }
 
 @media (max-width: 800px) {
-
     .categorie-container {
-
         .button {
             &.excel {
                 display: none;
@@ -131,7 +88,6 @@
 }
 
 @media (max-width: 570px) {
-
     .categorie-container {
         .pool {
             .participants {
@@ -140,7 +96,6 @@
                 }
             }
         }
-
         .button {
             font-size: 1em;
             padding: 0 1px;

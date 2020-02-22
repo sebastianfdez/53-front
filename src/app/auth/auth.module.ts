@@ -7,7 +7,7 @@ import { PasswordLessAuthComponent } from './password-less-auth/password-less-au
 
 export const ROUTES: Routes = [
     {
-        path: 'auth',
+        path: '',
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'login' },
             { path: 'login', loadChildren: './login/login.module#LoginModule' },
@@ -18,16 +18,22 @@ export const ROUTES: Routes = [
 ];
 
 @NgModule({
+    imports: [RouterModule.forChild(ROUTES)],
+    exports: [RouterModule]
+})
+export class AuthRoutingModule { }
+
+@NgModule({
     declarations: [
         PasswordLessAuthComponent
     ],
     imports: [
+        AuthRoutingModule,
         CommonModule,
-        RouterModule.forChild(ROUTES),
         SharedModule
     ],
     providers: [
         AuthService,
-    ]
+    ],
 })
 export class AuthModule {}

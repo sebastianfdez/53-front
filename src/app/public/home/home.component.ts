@@ -1,26 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  animations: [
-    trigger('openClose', [
-      // ...
-      state('open', style({
-        transform: 'translate(0, 0)',
-      })),
-      state('closed', style({
-        transform: 'translate(0, -100%)',
-      })),
-      transition('open => closed', [
-        animate('0.2s')
-      ]),
-      transition('closed => open', [
-        animate('0.2s')
-      ]),
-    ]),
-  ],
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {

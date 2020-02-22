@@ -1,5 +1,5 @@
 {
-  "name": "lyon-roller-open",
+  "name": "la-53",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -22,7 +22,9 @@
     "@angular/material": "^7.3.4",
     "@angular/platform-browser": "^7.2.12",
     "@angular/platform-browser-dynamic": "^7.2.12",
+    "@angular/pwa": "^0.12.4",
     "@angular/router": "^7.2.12",
+    "@angular/service-worker": "^7.2.12",
     "@ng-bootstrap/ng-bootstrap": "^4.1.2",
     "@progress/kendo-angular-buttons": "^4.0.0",
     "@progress/kendo-angular-dateinputs": "2 - 3",
