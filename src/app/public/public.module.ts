@@ -36,7 +36,6 @@ const routes: Routes = [
     DescriptionOverviewResolve,
   ],
   exports: [
-    HomeComponent,
     RouterModule,
   ],
   schemas: [

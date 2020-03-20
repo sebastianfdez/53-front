@@ -11,6 +11,7 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '../../../store';
+import { CustomInput } from './custom-input';
 
 @Component({
   selector: 'app-categorie',
@@ -86,6 +87,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
             this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
           });
         });
+        // window.customElements.define('mat-form-field', CustomInput);
+        // window.customElements.define('input', CustomInput);
         this.loading = false;
       })
     );
@@ -215,7 +218,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   openUploeader() {
     this.warningService
-    .showWarning(`Le tableau excel doit comporter des colonnes avec exactement les noms suivantes: 'nom', 'prenom', 'licence', 'club'`,
+    .showWarning(`Le tableau Excel doit comporter exactement les colonnes suivantes: 'nom', 'prenom', 'licence', 'club'`,
     true,
     'Combien de riders par poule?').afterClosed()
     .subscribe((response: WarningReponse) => {
@@ -226,6 +229,12 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   fileSelected(event: SelectEvent) {
     this.uploadComponent.fileList.clear();
+  }
+
+  focusPool(index: number) {
+    console.log(index);
+    const el = document.getElementById('pool' + index);
+    console.log(el);
   }
 
   // Import players from Excel

@@ -30,7 +30,7 @@ const materialModules = [
   MatDialogModule,
   MatSnackBarModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
 ];
 
 @NgModule({

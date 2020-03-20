@@ -11,6 +11,7 @@ import { Store } from './store';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     UploadModule,
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     PublicModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

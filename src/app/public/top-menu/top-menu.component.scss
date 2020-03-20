@@ -18,6 +18,7 @@
         flex: 0 0 auto;
         width: 120px;
         display: flex;
+        text-decoration: none;
         cursor: pointer;
 
         .button {
@@ -26,6 +27,10 @@
             display: flex;
             width: 100%;
             border-radius: 31px;
+            text-decoration: none;
+        }
+        &:focus {
+            outline: auto;
         }
     }
 
@@ -43,7 +48,6 @@
             height: 90px;
             display: flex;
             max-height: 11vh;
-            visibility: hidden;
             img {
                 opacity: 0;
                 transition: visibility 0s, opacity 0.5s linear;
@@ -52,13 +56,16 @@
                     visibility: visible;
                     opacity: 1;
                 }
+                &.hide {
+                    visibility: hidden;
+                }
             }
             .big {
                 height: 90px;
                 max-height: 11vh;
             }
             &:focus {
-                outline: none;
+                outline: auto;
             }
         }
     }
