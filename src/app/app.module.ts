@@ -16,11 +16,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
     path: 'portal',
-    loadChildren: './contests/contests.module#ContestsModule',
+    loadChildren: () => import('./contests/contests.module').then(m => m.ContestsModule),
   },
   { path: '**', redirectTo: 'home' },
 ];

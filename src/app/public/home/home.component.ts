@@ -11,8 +11,8 @@ export class HomeComponent implements OnInit {
   bottomMenu = false;
   bottomMenu2 = false;
 
-  @ViewChild('header') header: ElementRef;
-  @ViewChild('carrousel') carrousel: ElementRef;
+  @ViewChild('header', { static: true }) header: ElementRef;
+  @ViewChild('carrousel', { static: true }) carrousel: ElementRef;
 
   constructor() { }
 
