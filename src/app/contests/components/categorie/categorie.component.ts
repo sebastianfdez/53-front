@@ -42,7 +42,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
   };
   showUploader = false;
   playersByPool = 1;
-  @ViewChild('UploadComponent') uploadComponent: UploadComponent;
+  @ViewChild('UploadComponent', { static: false }) uploadComponent: UploadComponent;
 
   deletedPlayers: string[] = [];
 

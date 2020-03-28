@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,10 @@ export class HomeComponent implements OnInit {
   bottomMenu = false;
   bottomMenu2 = false;
 
-  @ViewChild('header') header: ElementRef;
-  @ViewChild('carrousel') carrousel: ElementRef;
+  @ViewChild('header', { static: true }) header: ElementRef;
+  @ViewChild('carrousel', { static: true }) carrousel: ElementRef;
+
+  public version: string = environment.version;
 
   constructor() { }
 
