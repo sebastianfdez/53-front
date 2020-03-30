@@ -1,12 +1,10 @@
-import { of, Observable, from, BehaviorSubject } from 'rxjs';
+import { of, Observable, from } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap, map, tap, filter, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, map, filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User, emptyUser } from '../../../shared/models/user';
 import { Store } from '../../../store';
-import { AngularFireModule } from '@angular/fire';
-import { firebaseKeys } from '../../../../firebase-keys';
 
 @Injectable()
 export class AuthService {
@@ -89,20 +87,20 @@ export class AuthService {
     }
 
     signIn(user: string, pass: string): Observable<firebase.auth.UserCredential> {
-        return from(this.afAuth.auth.signInWithEmailAndPassword(user, pass));
+        return from(this.afAuth.signInWithEmailAndPassword(user, pass));
     }
 
-    createUser(mail: string, password: string) {
-        return this.afAuth.auth.createUserWithEmailAndPassword(mail, password);
+    createUser(mail: string, password: string): Promise<firebase.auth.UserCredential> {
+        return this.afAuth.createUserWithEmailAndPassword(mail, password);
     }
 
     logOut() {
-        return this.afAuth.auth.signOut();
+        return this.afAuth.signOut();
     }
 
     // Sign in with email link
     confirmSignIn(url: string): boolean {
-        if (this.afAuth.auth.isSignInWithEmailLink(url)) {
+        if (this.afAuth.isSignInWithEmailLink(url)) {
             return true;
         }
         return false;
@@ -113,10 +111,10 @@ export class AuthService {
             url: `https://www.la53.fr/auth/inscription`,
             handleCodeInApp: true,
         };
-        return this.afAuth.auth.sendSignInLinkToEmail(mail, actionCodeSettings);
+        return this.afAuth.sendSignInLinkToEmail(mail, actionCodeSettings);
     }
 
     signInWithLink(mail: string, url: string) {
-        return this.afAuth.auth.signInWithEmailLink(mail, url);
+        return this.afAuth.signInWithEmailLink(mail, url);
     }
 }

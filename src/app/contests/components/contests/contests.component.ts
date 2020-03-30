@@ -84,7 +84,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
     this.router.navigate([`/portal/categorie/${categorie.id}`]) : this.router.navigate([`/portal/categorie/${categorie.id}/speaker`]);
   }
 
-  public mouseup(categorie: Categorie, event: MouseEvent) {
+  public mouseup(categorie: Categorie, event: any) {
     if (!this.isAdmin) {
       return this.goTo(categorie);
     }
