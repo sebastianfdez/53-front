@@ -17,7 +17,7 @@ export class ComponentUtils {
         if (formControl) {
             return formControl;
         } else {
-            const controlContainer = injector.get<ControlContainer>(ControlContainer as Type<ControlContainer>);
+            const controlContainer = injector.get<ControlContainer>(ControlContainer);
             const formControlNameDir = injector.get(FormControlName, null);
             if (formControlNameDir && controlContainer instanceof FormGroupDirective) {
                 return controlContainer.getControl(formControlNameDir);

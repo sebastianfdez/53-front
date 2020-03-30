@@ -1,8 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   MatInputModule, MatButtonModule, MatIconModule, MatSelectModule, MatTableModule, MatSortModule,
-  MatDialogModule, MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule,
+  MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule,
 } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -48,9 +49,6 @@ const materialModules = [
     A11yModule,
   ],
   declarations: [
-    WarningComponent,
-  ],
-  entryComponents: [
     WarningComponent,
   ],
   exports : [
