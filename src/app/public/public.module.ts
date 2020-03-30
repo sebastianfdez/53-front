@@ -8,7 +8,8 @@ import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
 import { CommonModule } from '@angular/common';
-import { MatIconModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },

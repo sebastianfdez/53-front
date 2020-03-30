@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Categorie, Judge, Participant, emptyCategorie } from '../../models/categorie';
-import { Sort } from '@angular/material';
+import { Sort } from '@angular/material/sort';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
