@@ -11,8 +11,7 @@ import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-contests',
-  templateUrl: './contests.component.html',
-  styleUrls: ['./contests.component.scss']
+  templateUrl: './contests.component.html'
 })
 export class ContestsComponent implements OnInit, OnDestroy {
 
@@ -51,15 +50,15 @@ export class ContestsComponent implements OnInit, OnDestroy {
         take(1),
         switchMap(
           (user) => {
-            this.isJudge = user.role === 'judge';
-            this.isAdmin = user.role === 'admin';
             this.judge = user;
-            return this.contestService.getContest(this.judge.contest);
+            return this.contestService.getSelectedContest();
           }
         ),
         distinctUntilChanged(),
         switchMap((contest) => {
           this.contest = contest;
+          this.isJudge = this.judge.role[contest.id] === 'judge';
+          this.isAdmin = this.judge.role[contest.id] === 'admin';
           return this.contest.categories.length ? combineLatest(
             this.contest.categories
             .map((categorie) => {

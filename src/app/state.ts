@@ -5,8 +5,11 @@ import { Speaker } from './contests/models/speaker';
 
 export interface State {
     user: User;
-    contest: Contest;
+    selectedContest: Contest;
     judges: Judge[];
     speaker: Speaker;
+    contests: {
+        [id: string]: Contest;
+    };
     [key: string]: any;
 }

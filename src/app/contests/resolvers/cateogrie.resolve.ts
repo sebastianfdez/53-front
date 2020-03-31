@@ -20,7 +20,7 @@ export class CategorieResolve implements Resolve<Categorie> {
         return this.store.value[`categorie${categorieId}`] ? this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1)) :
             this.store.select<User>('user').pipe(
                 switchMap((user) => {
-                    return this.contestService.getContest(user.contest);
+                    return this.contestService.getSelectedContest();
                 }),
                 take(1),
                 switchMap((contest) => {

@@ -4,7 +4,8 @@ import { pluck, distinctUntilChanged } from 'rxjs/operators';
 
 const state: State = {
   user: undefined,
-  contest: undefined,
+  selectedContest: undefined,
+  contests: {},
   judges: undefined,
   speaker: undefined,
 };

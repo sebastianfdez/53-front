@@ -19,7 +19,7 @@ export class JudgeResolve implements Resolve<Judge[]> {
         return this.store.value.judges ? this.store.select<Judge[]>('judges').pipe(take(1)) :
         this.store.select<User>('user').pipe(
             switchMap((user) => {
-                return this.contestService.getContest(user.contest);
+                return this.contestService.getSelectedContest();
             }),
             take(1),
             switchMap((contest) => {

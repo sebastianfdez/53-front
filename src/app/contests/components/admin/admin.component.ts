@@ -20,6 +20,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   isAdmin = false;
   isJudge = false;
+  user: User = null;
 
   public loading = false;
 
@@ -37,12 +38,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.admin$.pipe(
         filter(user => user !== null),
         switchMap((user) => {
-          this.isJudge = user.role === 'judge';
-          this.isAdmin = user.role === 'admin';
-          return this.contestService.getContest(user.contest);
+          this.user = user;
+          return this.contestService.getSelectedContest();
         }),
         map((contest) => {
           this.contest = contest;
+          this.isJudge = this.user.role[contest.id] === 'judge';
+          this.isAdmin = this.user.role[contest.id] === 'admin';
           localStorage.setItem('contestId', this.contest.id);
           this.loading = false;
         }),
@@ -60,11 +62,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   goToContest() {
     this.isAdmin || this.isJudge ? this.router.navigate([`portal/contests`]) : this.router.navigate(['portal/speaker']);
-  }
-
-  async logOut() {
-    await this.authService.logOut();
-    this.router.navigate(['home']);
   }
 
 }

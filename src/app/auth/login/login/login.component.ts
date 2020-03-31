@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
           })
         ).subscribe((succes) => {
           if (succes) {
-            this.router.navigate(['portal/admin']);
+            this.router.navigate(['portal/portal']);
           }
         });
       } catch (err) {

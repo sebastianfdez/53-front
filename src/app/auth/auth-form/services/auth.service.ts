@@ -19,7 +19,7 @@ export class AuthService {
             user.id = user_.uid;
             user.mail = user_.email;
             user.id = user_.uid;
-            user.role = 'admin';
+            user.role[this.store.value.selectedContest ? this.store.value.selectedContest.id : ''] = 'admin';
             return this.getLoggedUserInfo(user.id, user.mail);
         })).subscribe();
 
@@ -72,8 +72,8 @@ export class AuthService {
         return this.store.select<User>('user').pipe(
             filter(user => user !== null && user !== undefined),
             switchMap((user) => {
-                return of(user.role === 'admin');
-            })
+                return of(user.role[this.store.value.selectedContest.id] === 'admin');
+            }),
         );
     }
 
@@ -81,7 +81,15 @@ export class AuthService {
         return this.store.select<User>('user').pipe(
             filter(user => user !== null && user !== undefined),
             switchMap((user) => {
-                return of(user.role === 'judge' || user.role === 'admin');
+                return of(
+                    user.role[
+                        this.store.value.selectedContest ?
+                        this.store.value.selectedContest.id :
+                        window.localStorage.getItem('selectedContest')] === 'judge' ||
+                    user.role[
+                        this.store.value.selectedContest ?
+                        this.store.value.selectedContest.id :
+                        window.localStorage.getItem('selectedContest')] === 'admin');
             })
         );
     }

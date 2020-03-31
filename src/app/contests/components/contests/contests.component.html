@@ -8,15 +8,15 @@
   </button>
 </div>
 <div class="container-51 scrollbar-53">
-  <div class="categories flex-div column">
+  <div class="grid-53-container flex-div column">
     <p class="title-small" *ngIf="!loading">{{contest?.name}}</p>
     <p class="title-small" *ngIf="!loading">
       {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
     </p>
     <span class="title-51" *ngIf="!loading2">Liste des catégories</span>
   
-    <div class="grid flex-div">
-      <div class="categorie flex-div column mat-elevation-z3" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
+    <div class="grid-53 flex-div">
+      <div class="grid-53-item flex-div column mat-elevation-z3" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesNotFinal">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
           <mat-icon>close</mat-icon>
@@ -27,15 +27,15 @@
       <div class="scrollable" *ngIf="loading">
         <mat-spinner></mat-spinner>
       </div>
-      <div class="categorie flex-div column new" *ngIf="isAdmin" (click)="goToNew()" tabindex="0" role="link"
+      <div class="grid-53-item flex-div column new" *ngIf="isAdmin" (click)="goToNew()" tabindex="0" role="link"
       (keydown.enter)="goToNew()">
         <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
         <span class="pool">Ajouter une catégorie</span>
       </div>
     </div>
     <span class="title-51" *ngIf="!loading2 && categoriesFinal.length">Liste des catégories de finales</span>
-    <div class="grid flex-div">
-      <div class="categorie flex-div column mat-elevation-z3 final" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
+    <div class="grid-53 flex-div">
+      <div class="grid-53-item flex-div column mat-elevation-z3 final" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
           <mat-icon>close</mat-icon>

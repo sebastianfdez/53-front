@@ -70,10 +70,11 @@ export class RegisterComponent implements OnInit {
             mail: user.user.email,
             name: this.registerForm.value.name,
             lastName: this.registerForm.value.lastName,
-            role: 'admin',
-            contest: newContest_.id,
+            role: {},
+            contest: [newContest_.id],
             autenticated: false,
         };
+        newUser.role[newContest_.id] = 'admin';
         await this.firebaseService.createUser(newUser);
         await this.firebaseService.updateContest(newContest_.id, {id: newContest_.id});
         this.snackBarService.showMessage('Utilisateur et contest créé avec succès');
