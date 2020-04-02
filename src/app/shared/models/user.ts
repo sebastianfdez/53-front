@@ -1,7 +1,9 @@
 export class User {
-    role: string;
+    role: {
+        [contestId: string]: string;
+    };
     mail: string;
-    contest: string;
+    contest: string[];
     id: string;
     name: string;
     lastName: string;
@@ -9,9 +11,9 @@ export class User {
 }
 
 export const emptyUser: User = {
-    role: '',
+    role: {},
     mail: '',
-    contest: '',
+    contest: [],
     id: '',
     name: '',
     lastName: '',

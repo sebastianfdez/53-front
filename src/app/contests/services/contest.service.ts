@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '../../store';
 import { Observable, of } from 'rxjs';
 import { Contest } from '../../shared/models/contest';
-import { switchMap, take, catchError } from 'rxjs/operators';
+import { switchMap, take, catchError, map } from 'rxjs/operators';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { Categorie } from '../models/categorie';
 import { Speaker } from '../models/speaker';
@@ -17,15 +17,37 @@ import { Speaker } from '../models/speaker';
         private firebaseService: FirebaseService,
     ) { }
 
+    selectContest(contest: Contest) {
+        this.store.set('selectedContest', contest);
+    }
+
+    getSelectedContest(): Observable<Contest> {
+        return this.store.value.selectedContest ? this.store.select<Contest>('selectedContest') :
+            this.getContest(window.localStorage.getItem('selectedContest')).pipe(
+                switchMap((contest) => {
+                    this.selectContest(contest);
+                    return this.store.select<Contest>('selectedContest');
+                })
+            );
+    }
+
     getContest(idContest: string): Observable<Contest> {
-        return this.store.value.contest ? this.store.select<Contest>('contest') :
+        let contest$: Observable<{[id: string]: Contest}> = null;
+        contest$ = this.store.value.contests[idContest] ? this.store.select<{[id: string]: Contest}>('contests') :
         this.firebaseService.getContest(idContest).pipe(
             switchMap((contest) => {
+                const contests = this.store.value.contests;
                 const contest_ = {id: idContest, ...contest};
-                this.store.set('contest', contest_);
-                return this.store.select<Contest>('contest');
+                contests[idContest] = contest_;
+                this.store.set('contests', contests);
+                return this.store.select<{[id: string]: Contest}>('contests');
             })
         );
+        return contest$.pipe(
+            map((contests) => {
+                return contests[idContest];
+            })
+        )
     }
 
     getCategorie(categorieId: string): Observable<Categorie> {

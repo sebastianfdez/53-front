@@ -1,7 +1,9 @@
-
-<div class="back-51 logout" *ngIf="!loading">
-  <button mat-flat-button color="primary" (click)="logOut()">
-    {{"Se déconnecter"}}
+<div class="back-51" *ngIf="!loading">
+  <button mat-flat-button class="big" color="primary" routerLink="/portal/portal">
+    {{"< Retour"}}
+  </button>
+  <button mat-flat-button class="small" color="primary" routerLink="/portal/portal">
+    {{"<"}}
   </button>
 </div>
 

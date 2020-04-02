@@ -45,7 +45,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.authService.getAuthenticatedUser().pipe(
                 switchMap((user) => {
-                    return this.contestService.getContest(user.contest);
+                    return this.contestService.getSelectedContest();
                 }),
                 switchMap((contest) => {
                     this.contest = contest;
