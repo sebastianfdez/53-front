@@ -1,25 +1,31 @@
-<div class="back-51 logout">
-  <button mat-flat-button color="primary" (click)="logOut()">
-    {{"Se déconnecter"}}
-  </button>
+<div class="back-53 logout">
+    <button mat-flat-button color="primary" (click)="logOut()">
+        {{"Se déconnecter"}}
+    </button>
 </div>
 
-<div class="container-51 scrollbar-53">
-  <div class="grid-53-container flex-div column">
-    <p class="title-small" *ngIf="user">
-      {{user?.name}} {{user?.lastName}}
-    </p>
-    <span class="title-51" *ngIf="!loading">Liste des contests</span>
-    <div class="grid-53 flex-div" *ngIf="contests$ | async as contests">
-      <div class="grid-53-item flex-div column mat-elevation-z3" tabindex="0" role="link"
-      (keydown.enter)="goTo(contest)" (click)="goTo(contest)"
-      *ngFor="let contest of contests">
-        <span class="name"> {{contest.name}} </span>
-        <span class="info"> Role: {{user.role[contest.id]}} </span>
-      </div>
+<div class="container-53 scrollbar-53">
+    <div class="grid-53-container flex-div column">
+        <h1 class="title-small" *ngIf="user">
+            Bienvenue sur la53 !
+        </h1>
+        <h1 class="title-small" *ngIf="user">
+            {{user?.name}} {{user?.lastName}}
+        </h1>
+        <h3 class="title-53" *ngIf="!loading">Liste des contests</h3>
+        <ul class="grid-53 flex-div" *ngIf="contests$ | async as contests">
+            <li class="grid-53-item flex-div column mat-elevation-z3" tabindex="0" role="link"
+            (keydown.enter)="goTo(contest)" (click)="goTo(contest)"
+            *ngFor="let contest of contests">
+                <span class="name"> {{contest.name}} </span>
+                <span class="info"> Role: {{user.role[contest.id]}} </span>
+            </li>
+        </ul>
+        <div *ngIf="loading">
+            <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
     </div>
-    <div *ngIf="loading">
-      <mat-spinner [diameter]="50"></mat-spinner>
+    <div class="footer-image">
+        <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=e3ac886f-720d-4183-a9c4-78a60dc3ba64">
     </div>
-  </div>
 </div>
