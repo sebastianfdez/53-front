@@ -3,28 +3,36 @@ import { Observable, Subscription, of, combineLatest } from 'rxjs';
 import { Categorie } from '../../models/categorie';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
-import { switchMap, take, filter, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
 import { User } from '../../../shared/models/user';
 import { Contest } from '../../../shared/models/contest';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 
+export abstract class ContestViewService {
+  getSelectedContest: () => Observable<Contest>;
+  getCategorie: (categorieId: string) => Observable<Categorie>;
+  deleteCategorie: (contestId: string, categorieId: string) => void
+}
+
 @Component({
   selector: 'app-contests',
+  providers: [
+    { provide: ContestViewService, useExisting: ContestsService }
+  ],
   templateUrl: './contests.component.html'
 })
 export class ContestsComponent implements OnInit, OnDestroy {
 
   items: Observable<any[]>;
 
-  categories: Categorie[] = [];
-  judge: User = null;
-  contest: Contest = null;
+  categories$: Observable<Categorie[]> = null;
+  judge$: Observable<User> = null;
+  contest$: Observable<Contest> = null;
 
   public loading = false;
-  public loading2 = false;
-  public isJudge = false;
-  public isAdmin = false;
+  public isJudge: Observable<boolean> = null;
+  public isAdmin: Observable<boolean> = null;
 
   timeoutHandler: any;
   time = 0;
@@ -36,7 +44,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private contestService: ContestsService,
+    private contestService: ContestViewService,
     private authService: AuthService,
     private snackBarService: SnackBarService,
   ) {
@@ -44,33 +52,26 @@ export class ContestsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.authService.getAuthenticatedUser().pipe(
-        filter(user => user !== null && user !== undefined),
-        take(1),
-        switchMap(
-          (user) => {
-            this.judge = user;
-            return this.contestService.getSelectedContest();
-          }
-        ),
-        distinctUntilChanged(),
-        switchMap((contest) => {
-          this.contest = contest;
-          this.isJudge = this.judge.role[contest.id] === 'judge';
-          this.isAdmin = this.judge.role[contest.id] === 'admin';
-          return this.contest.categories.length ? combineLatest(
-            this.contest.categories
-            .map((categorie) => {
-              return this.contestService.getCategorie(categorie);
-            })
-          ) : of([]);
-        }),
-      ).subscribe((categories: Categorie[]) => {
-        this.categories = categories.filter(cat => cat);
+    this.isAdmin = this.authService.isAdmin();
+    this.isJudge = this.authService.isJudge();
+    this.judge$ = this.authService.getAuthenticatedUser();
+    this.contest$ = this.contestService.getSelectedContest();
+    this.categories$ = this.contestService.getSelectedContest().pipe(
+      tap(() => this.loading = true),
+      switchMap((contest) => {
+        return contest.categories.length ? combineLatest(
+          contest.categories
+          .map((categorie) => {
+            return this.contestService.getCategorie(categorie);
+          })
+        ) : of([]);
+      }),
+      tap((categories: Categorie[]) => {
         this.loading = false;
-        this.categories.forEach(categorie => this.deleteCategories[categorie.id] = false);
-      })
+        return categories
+          .filter(cat => cat)
+          .forEach(categorie => this.deleteCategories[categorie.id] = false);
+      }),
     );
   }
 
@@ -114,10 +115,12 @@ export class ContestsComponent implements OnInit, OnDestroy {
   deleteCategorie(categorie: Categorie) {
     this.subscriptions.push(
       this.snackBarService.showMessage('Êtes-vous sûr de vouloir supprimer cette catégorie?', 'Oui')
-      .onAction().subscribe(() => {
-        this.contest.categories = this.contest.categories.filter(cat => cat !== categorie.id);
-        this.categories = this.categories.filter(cat => cat.id !== categorie.id);
-        this.contestService.deleteCategorie(this.contest.id, categorie.id);
+      .onAction().pipe(
+        switchMap(() => this.contest$),
+        distinctUntilChanged(),
+      ).subscribe((contest) => {
+        contest.categories = contest.categories.filter(cat => cat !== categorie.id);
+        this.contestService.deleteCategorie(contest.id, categorie.id);
         this.timeoutHandler = null;
         this.time = 0;
         clearInterval(this.timeoutHandler);
@@ -126,12 +129,8 @@ export class ContestsComponent implements OnInit, OnDestroy {
     this.deleteCategories[categorie.id] = false;
   }
 
-  get categoriesNotFinal() {
-    return this.categories.filter(c => !c.final);
-  }
-
-  get categoriesFinal(): Categorie[] {
-    return this.categories.filter(c => c.final);
+  categoriesFinal(categories: Categorie[], final: boolean): Categorie[] {
+    return categories.filter(c => final ? c.final : !c.final);
   }
 
 }

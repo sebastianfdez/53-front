@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { Judge } from '../../models/categorie';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Contest } from '../../../shared/models/contest';
-import { combineLatest, Subscription, from, of } from 'rxjs';
+import { Subscription, from, of } from 'rxjs';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 @Component({
     selector: 'app-judges',
@@ -93,7 +92,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     createJudgeUser() {
-        const judges: string[] = this.store.value.contest.judges;
+        const judges: string[] = this.store.value.selectedContest.judges;
         judges.push(this.newJudge.mail);
         this.newJudge.contest = this.contestId;
         this.subscriptions.push(
@@ -123,7 +122,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     copyLink(judge: Judge) {
-        this.componentUtils.copyText(`https://la53.fr/auth/inscription?contestId=${this.store.value.contest.id}&email=${judge.mail}`);
+        this.componentUtils.copyText(`https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`);
     }
 
 }

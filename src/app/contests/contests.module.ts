@@ -14,7 +14,7 @@ import { PortalComponent } from './components/portal/portal.component';
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
 import { JudgeAuthGuardService, AdminAuthGuardService } from './services/admin-guard.service';
-import { CategorieResolve } from './resolvers/cateogrie.resolve';
+import { CategorieResolve } from './resolvers/categorie.resolve';
 import { JudgeResolve } from './resolvers/judge.resolve';
 import { CommonModule } from '@angular/common';
 import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
@@ -30,21 +30,39 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'portal' },
       { path: 'portal', component: PortalComponent, canActivate: [AuthGuardService] },
-      { path: 'contests', component: ContestsComponent, canActivate: [JudgeAuthGuardService, SelectedContestGuardService] },
+      { 
+        path: 'contests',
+        component: ContestsComponent,
+        canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+      },
       { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
-      { path: 'judges', component: JudgesComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService], resolve: {
-        judges: JudgeResolve,
-      }},
+      { 
+        path: 'judges',
+        component: JudgesComponent,
+        canActivate: [AdminAuthGuardService, SelectedContestGuardService],
+        resolve: {
+          judges: JudgeResolve,
+        }
+      },
       { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
       { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
       { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
-      { path: 'categorie/:id', component: CategorieComponent, canActivate: [JudgeAuthGuardService, SelectedContestGuardService], resolve: {
-        categorie: CategorieResolve,
-      }},
-      { path: 'categorie/:id/scores', component: ScoreTableComponent, canActivate: [JudgeAuthGuardService, SelectedContestGuardService], resolve: {
-        categorie: CategorieResolve,
-        judges: JudgeResolve,
-      }},
+      { 
+        path: 'categorie/:id',
+        component: CategorieComponent,
+        canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+        resolve: {
+          categorie: CategorieResolve,
+        }
+      },
+      { 
+        path: 'categorie/:id/scores', component: ScoreTableComponent,
+        canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+        resolve: {
+          categorie: CategorieResolve,
+          judges: JudgeResolve,
+        }
+      },
       { path: 'categorie/:id/speaker', component: CategorieComponent, canActivate: [AuthGuardService, SelectedContestGuardService], resolve: {
         categorie: CategorieResolve,
       } },
@@ -78,7 +96,7 @@ const routes: Routes = [
     SelectedContestGuardService,
     CategorieResolve,
     JudgeResolve,
-    ContestsService
+    ContestsService,
   ],
   exports: [
     RouterModule,

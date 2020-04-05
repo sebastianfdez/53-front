@@ -4,11 +4,12 @@
     max-width: calc(100% - 40px);
     margin: 20px;
     flex-wrap: wrap;
+    padding: 0;
     .grid-53-item {
         width: calc(100% - 20px);
         margin: 10px;
-        width: 10em;
-        height: 6em;
+        width: 10rem;
+        height: 6rem;
         border-radius: 20px;
         background-color: #ED2790;
         color: #ffffff;
@@ -80,7 +81,6 @@
     max-height: 100%;
 
     .title-small {
-        font-size: 1.5em;
         margin: 0;
         &:last-of-type {
             margin-bottom: 30px;

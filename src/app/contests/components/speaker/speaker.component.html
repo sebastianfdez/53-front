@@ -1,6 +1,6 @@
-<div class="container-51 scrollbar-53">
+<div class="container-53 scrollbar-53">
 
-  <div class="back-51" *ngIf="!loading">
+  <div class="back-53" *ngIf="!loading">
     <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
       {{"< Retour"}}
     </button>
@@ -9,12 +9,12 @@
     </button>
   </div>
 
-  <div class="scrollable-51">
+  <div class="scrollable-53">
 
-    <span class="title-51" *ngIf="!loading">{{contest?.name}}</span>
-    <span class="title-51" *ngIf="!loading">Speaker</span>
+    <span class="title-53" *ngIf="!loading">{{contest?.name}}</span>
+    <span class="title-53" *ngIf="!loading">Speaker</span>
   
-    <div class="pool block-51 mat-elevation-z2">
+    <div class="pool block-53 mat-elevation-z2">
       <mat-icon class="icon" *ngIf="!noSpeaker">person</mat-icon>
       <div class="speaker-cont" *ngIf="addSpeaker && speaker">
         <mat-form-field class="example-full-width">
@@ -46,7 +46,7 @@
 
   </div>
 
-  <div class="scrollable-51" *ngIf="loading">
+  <div class="scrollable-53" *ngIf="loading">
     <mat-spinner></mat-spinner>
   </div>
   <div class="footer-image">

@@ -9,7 +9,7 @@ import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 export interface ScoreElement {
   pool: string;
@@ -168,7 +168,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       }, {
         background: '#2c50a5',
         color: '#FFFFFF',
-        value: this.store.value.contest.place,
+        value: this.store.value.selectedContest.place,
         fontSize: 30,
         colSpan: 3,
         textAlign: 'right',
@@ -185,7 +185,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       },{
         background: '#2c50a5',
         color: '#FFFFFF',
-        value: this.store.value.contest.name,
+        value: this.store.value.selectedContest.name,
         fontSize: 40,
         textAlign: 'center',
         colSpan: 4,

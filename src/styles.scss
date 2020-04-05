@@ -34,8 +34,7 @@ body {
     width: 100%;
 }
 
-.title-51 {
-    font-size: 2.5em;
+.title-53 {
     width: 90%;
     text-align: center;
     min-width: fit-content;
@@ -58,7 +57,7 @@ body {
     width: 100%;
 }
 
-.scrollable-51 {
+.scrollable-53 {
     align-items: center;
     width: 90%;
     display: flex;
@@ -70,7 +69,7 @@ body {
     min-height: fit-content;
 }
 
-.container-51 {
+.container-53 {
     display: flex;
     height: 100%;
     width: 100%;
@@ -80,7 +79,7 @@ body {
     overflow-x: hidden;
 }
 
-.block-51 {
+.block-53 {
     width: 90%;
     display: flex;
     align-items: center;
@@ -92,7 +91,7 @@ body {
     position: relative;
 }
 
-.back-51 {
+.back-53 {
     position: absolute;
     left: 30px;
     top: 50px;
@@ -155,7 +154,7 @@ body {
 
 @media (max-width: 970px) {
 
-    .back-51 {
+    .back-53 {
         top: 30px;
 
         button {
@@ -166,26 +165,26 @@ body {
 
 @media (max-width: 580px) {
 
-    .title-51 {
-        font-size: 1.5em;
+    .title-53 {
+        font-size: 1.5rem;
         margin: 5px 0;
     }
 
-    .back-51 {
+    .back-53 {
         top: 10px;
 
         button {
             width: 90px;
         }
     }
-    .container-51 {
+    .container-53 {
         overflow: scroll;
     }
 }
 
 @media (max-width: 490px) {
 
-    .back-51 {
+    .back-53 {
         top: 10px;
 
         button {

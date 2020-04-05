@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Categorie } from '../models/categorie';
 import { Observable } from 'rxjs';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { switchMap, take } from 'rxjs/operators';
 import { ContestsService } from '../services/contest.service';
 import { User } from '../../shared/models/user';
@@ -24,13 +24,12 @@ export class CategorieResolve implements Resolve<Categorie> {
                 }),
                 take(1),
                 switchMap((contest) => {
-                    return this.firebaseService.getCategorie(categorieId).pipe(
-                        switchMap((categorie) => {
-                            categorie.id = categorieId;
-                            this.store.set(`categorie${categorieId}`, categorie);
-                            return this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1));
-                        })
-                    );
+                    return this.firebaseService.getCategorie(categorieId);
+                }),
+                switchMap((categorie) => {
+                    categorie.id = categorieId;
+                    this.store.set(`categorie${categorieId}`, categorie);
+                    return this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1));
                 })
             );
     }

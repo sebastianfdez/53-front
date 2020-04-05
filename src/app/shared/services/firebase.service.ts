@@ -4,7 +4,7 @@ import { Observable, of, combineLatest, from, throwError } from 'rxjs';
 import { Categorie, Judge } from '../../contests/models/categorie';
 import { take, switchMap, map, tap } from 'rxjs/operators';
 import { Contest } from '../models/contest';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { User } from '../models/user';
 import { Speaker } from '../../contests/models/speaker';
 
@@ -83,7 +83,10 @@ export class FirebaseService {
     }
 
     updateContest(contestId: string, contest: Partial<Contest>) {
-        return from(this.database.collection('contests').doc<Contest>(contestId).update(contest));
+        return from(
+            this.database.collection('contests').doc<Contest>(contestId).update(contest)
+            .catch((err) => console.log(err))
+        );
     }
 
     createContest(contest: Contest) {

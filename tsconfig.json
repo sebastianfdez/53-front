@@ -19,6 +19,9 @@
       "es2017",
       "dom"
     ],
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "store": ["./src/app/store.ts"],
+    }
   }
 }

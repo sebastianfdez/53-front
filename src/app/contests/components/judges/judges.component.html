@@ -1,5 +1,5 @@
 
-<div class="back-51">
+<div class="back-53">
   <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
     {{"< Retour"}}
   </button>
@@ -7,10 +7,10 @@
     {{"<"}}
   </button>
 </div>
-<div class="judges-container container-51 scrollbar-53" *ngIf="!loading">
-  <div class="title-51">Liste des juges</div>
+<div class="judges-container container-53 scrollbar-53" *ngIf="!loading">
+  <div class="title-53">Liste des juges</div>
 
-  <div class="block-51" *ngFor="let judge of judges">
+  <div class="block-53" *ngFor="let judge of judges">
     <!-- <div class="delete" (click)="deleteJudge(judge)" *ngIf="editing">
       <mat-icon>close</mat-icon>
     </div> -->
@@ -45,7 +45,7 @@
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
   </button>
 
-  <div class="block-51" style="margin-top: 50px !important;" *ngIf="addJudge && !loadingChanges">
+  <div class="block-53" style="margin-top: 50px !important;" *ngIf="addJudge && !loadingChanges">
     <mat-icon class="icon">person_add</mat-icon>
     <div class="form-container">
       <mat-form-field class="example-full-width">
@@ -75,6 +75,6 @@
 
 </div>
 
-<div class="container-51" *ngIf="loading">
+<div class="container-53" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
