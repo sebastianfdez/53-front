@@ -168,7 +168,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       }, {
         background: '#2c50a5',
         color: '#FFFFFF',
-        value: this.store.value.contest.place,
+        value: this.store.value.selectedContest.place,
         fontSize: 30,
         colSpan: 3,
         textAlign: 'right',
@@ -185,7 +185,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
       },{
         background: '#2c50a5',
         color: '#FFFFFF',
-        value: this.store.value.contest.name,
+        value: this.store.value.selectedContest.name,
         fontSize: 40,
         textAlign: 'center',
         colSpan: 4,

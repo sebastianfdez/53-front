@@ -1,5 +1,5 @@
 
-<div class="back-51" *ngIf="!loading">
+<div class="back-51">
   <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
     {{"< Retour"}}
   </button>
@@ -8,17 +8,17 @@
   </button>
 </div>
 <div class="container-51 scrollbar-53">
-  <div class="grid-53-container flex-div column">
-    <p class="title-small" *ngIf="!loading">{{contest?.name}}</p>
-    <p class="title-small" *ngIf="!loading">
-      {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
+  <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
+    <p class="title-small" *ngIf="!loading">{{(contest$ | async)?.name}}</p>
+    <p class="title-small" *ngIf="!loading && judge$ | async as judge">
+      {{(isAdmin | async) ? 'Admin:' : (isJudge | async) ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
     </p>
-    <span class="title-51" *ngIf="!loading2">Liste des catégories</span>
+    <span class="title-51" *ngIf="!loading">Liste des catégories</span>
   
     <div class="grid-53 flex-div">
       <div class="grid-53-item flex-div column mat-elevation-z3" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
-      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesNotFinal">
-        <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, false)">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
         </div>
         <span class="name"> {{categorie.name}} </span>
@@ -27,17 +27,19 @@
       <div class="scrollable" *ngIf="loading">
         <mat-spinner></mat-spinner>
       </div>
-      <div class="grid-53-item flex-div column new" *ngIf="isAdmin" (click)="goToNew()" tabindex="0" role="link"
+      <div class="grid-53-item flex-div column new" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="link"
       (keydown.enter)="goToNew()">
         <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
         <span class="pool">Ajouter une catégorie</span>
       </div>
     </div>
-    <span class="title-51" *ngIf="!loading2 && categoriesFinal.length">Liste des catégories de finales</span>
+  </div>
+  <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
+    <span class="title-51" *ngIf="!loading && categoriesFinal.length">Liste des catégories de finales</span>
     <div class="grid-53 flex-div">
       <div class="grid-53-item flex-div column mat-elevation-z3 final" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
-      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal">
-        <div class="delete" *ngIf="deleteCategories[categorie.id] && isAdmin">
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, true)">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
         </div>
         <span class="name"> {{categorie.name}} </span>

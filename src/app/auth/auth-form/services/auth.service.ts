@@ -1,6 +1,6 @@
 import { of, Observable, from } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap, map, filter } from 'rxjs/operators';
+import { switchMap, map, filter, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User, emptyUser } from '../../../shared/models/user';
@@ -72,7 +72,10 @@ export class AuthService {
         return this.store.select<User>('user').pipe(
             filter(user => user !== null && user !== undefined),
             switchMap((user) => {
-                return of(user.role[this.store.value.selectedContest.id] === 'admin');
+                return of(user.role[
+                    this.store.value.selectedContest ?
+                    this.store.value.selectedContest.id :
+                    window.localStorage.getItem('selectedContest')] === 'admin');
             }),
         );
     }
@@ -90,7 +93,7 @@ export class AuthService {
                         this.store.value.selectedContest ?
                         this.store.value.selectedContest.id :
                         window.localStorage.getItem('selectedContest')] === 'admin');
-            })
+            }),
         );
     }
 

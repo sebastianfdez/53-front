@@ -24,13 +24,12 @@ export class CategorieResolve implements Resolve<Categorie> {
                 }),
                 take(1),
                 switchMap((contest) => {
-                    return this.firebaseService.getCategorie(categorieId).pipe(
-                        switchMap((categorie) => {
-                            categorie.id = categorieId;
-                            this.store.set(`categorie${categorieId}`, categorie);
-                            return this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1));
-                        })
-                    );
+                    return this.firebaseService.getCategorie(categorieId);
+                }),
+                switchMap((categorie) => {
+                    categorie.id = categorieId;
+                    this.store.set(`categorie${categorieId}`, categorie);
+                    return this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1));
                 })
             );
     }

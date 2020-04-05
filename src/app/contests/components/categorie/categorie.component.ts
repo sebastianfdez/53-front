@@ -11,7 +11,6 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { Store } from '../../../store';
-import { CustomInput } from './custom-input';
 
 @Component({
   selector: 'app-categorie',
@@ -112,6 +111,10 @@ export class CategorieComponent implements OnInit, OnDestroy {
         const participant: Participant = JSON.parse(JSON.stringify(emptyParticipant));
         participant.id = `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000 )}`;
         this.categorie.pools.push({ participants: [participant]});
+        setTimeout(() => {
+          const inputs = document.getElementsByClassName('name-focus');
+          (inputs[inputs.length -1] as HTMLInputElement).focus();
+        }, 10);
     }
   }
 
@@ -135,7 +138,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.loadingSave = true;
     this.subscription.forEach(s => s.unsubscribe());
     if (this.createNew) {
-      this.categorie.contest = this.store.value.contest.id;
+      this.categorie.contest = this.store.value.selectedContest.id;
       this.firebaseService.addCategorie(this.categorie)
       .then((doc) => {
         this.contestService.addNewCategorie(this.categorie.contest, doc.id );

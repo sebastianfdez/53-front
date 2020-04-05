@@ -93,7 +93,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     createJudgeUser() {
-        const judges: string[] = this.store.value.contest.judges;
+        const judges: string[] = this.store.value.selectedContest.judges;
         judges.push(this.newJudge.mail);
         this.newJudge.contest = this.contestId;
         this.subscriptions.push(
@@ -123,7 +123,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     copyLink(judge: Judge) {
-        this.componentUtils.copyText(`https://la53.fr/auth/inscription?contestId=${this.store.value.contest.id}&email=${judge.mail}`);
+        this.componentUtils.copyText(`https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`);
     }
 
 }

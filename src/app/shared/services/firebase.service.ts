@@ -83,7 +83,10 @@ export class FirebaseService {
     }
 
     updateContest(contestId: string, contest: Partial<Contest>) {
-        return from(this.database.collection('contests').doc<Contest>(contestId).update(contest));
+        return from(
+            this.database.collection('contests').doc<Contest>(contestId).update(contest)
+            .catch((err) => console.log(err))
+        );
     }
 
     createContest(contest: Contest) {

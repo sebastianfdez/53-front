@@ -60,7 +60,7 @@
             <ng-container *ngIf="isAdmin">
             
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Prénom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
+                <input class="name-focus" matInput placeholder="Prénom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Nom" [(ngModel)]="participant.lastName" [ngModelOptions]="{standalone: true}">

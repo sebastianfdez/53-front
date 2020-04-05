@@ -118,7 +118,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     copyLink() {
         this.componentUtils.copyText(
-          `https://la53.fr/auth/inscription?contestId=${this.store.value.contest.id}&email=${this.speaker.mail}&speaker=true`);
+          `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${this.speaker.mail}&speaker=true`);
     }
 
 }
