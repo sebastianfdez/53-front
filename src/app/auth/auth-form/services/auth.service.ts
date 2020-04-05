@@ -4,7 +4,7 @@ import { switchMap, map, filter, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User, emptyUser } from '../../../shared/models/user';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 @Injectable()
 export class AuthService {

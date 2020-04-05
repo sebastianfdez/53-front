@@ -7,7 +7,7 @@ import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { Store } from './store';
+import { Store } from 'store';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';

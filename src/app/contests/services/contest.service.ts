@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { Observable, of } from 'rxjs';
 import { Contest } from '../../shared/models/contest';
 import { switchMap, take, catchError, map, tap, distinctUntilChanged } from 'rxjs/operators';
@@ -15,9 +15,7 @@ import { Speaker } from '../models/speaker';
     constructor(
         private store: Store,
         private firebaseService: FirebaseService,
-    ) {
-        console.log('creo instancia');
-    }
+    ) {}
 
     selectContest(contest: Contest): void {
         this.store.set('selectedContest', contest);

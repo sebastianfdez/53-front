@@ -5,7 +5,7 @@ import { Contest } from '../../../shared/models/contest';
 import { Speaker, emptySpeaker } from '../../models/speaker';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { Store } from '../../../store';
+import { Store } from 'store';
 import { User } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';

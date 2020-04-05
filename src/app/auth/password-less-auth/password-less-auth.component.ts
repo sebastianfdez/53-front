@@ -3,7 +3,7 @@ import { from, of } from 'rxjs';
 import { User } from '../../shared/models/user';
 import { AuthService } from '../auth-form/services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { tap, take, switchMap, filter, catchError } from 'rxjs/operators';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { Judge } from '../../contests/models/categorie';

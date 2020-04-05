@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Categorie } from '../models/categorie';
 import { Observable } from 'rxjs';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { switchMap, take } from 'rxjs/operators';
 import { ContestsService } from '../services/contest.service';
 import { User } from '../../shared/models/user';

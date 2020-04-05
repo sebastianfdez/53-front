@@ -4,7 +4,7 @@ import { Observable, of, combineLatest, from, throwError } from 'rxjs';
 import { Categorie, Judge } from '../../contests/models/categorie';
 import { take, switchMap, map, tap } from 'rxjs/operators';
 import { Contest } from '../models/contest';
-import { Store } from '../../store';
+import { Store } from 'store';
 import { User } from '../models/user';
 import { Speaker } from '../../contests/models/speaker';
 

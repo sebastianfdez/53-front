@@ -10,7 +10,7 @@ import * as XLSX from 'xlsx';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 @Component({
     selector: 'app-categorie',

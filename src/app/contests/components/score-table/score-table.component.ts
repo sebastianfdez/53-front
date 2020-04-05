@@ -9,7 +9,7 @@ import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 export interface ScoreElement {
   pool: string;

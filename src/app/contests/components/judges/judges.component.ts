@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { Judge } from '../../models/categorie';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Contest } from '../../../shared/models/contest';
-import { combineLatest, Subscription, from, of } from 'rxjs';
+import { Subscription, from, of } from 'rxjs';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
-import { Store } from '../../../store';
+import { Store } from 'store';
 
 @Component({
     selector: 'app-judges',
