@@ -1,7 +1,7 @@
 import {
     Injectable, Injector, Type
 } from '@angular/core';
-import { ControlContainer, FormControl, FormControlName, FormGroupDirective, FormGroupName, FormGroup } from '@angular/forms';
+import { ControlContainer, FormControl, FormControlName, FormGroupDirective, FormGroupName, FormGroup, NgForm } from '@angular/forms';
 import { SnackBarService } from './snack-bar.service';
 
 @Injectable()
@@ -33,7 +33,8 @@ export class ComponentUtils {
 
     getFormGroup(injector: Injector): FormGroup {
         const formGroupName: FormGroupName = injector.get<FormGroupName>(FormGroupName, null);
-        return formGroupName ? formGroupName.control : new FormGroup({});
+        const formGroup: NgForm = injector.get<NgForm>(NgForm, null);
+        return formGroupName ? formGroupName.control : formGroup ? formGroup.control : new FormGroup({});
     }
 
     isObjectEmpty(obj: any) {

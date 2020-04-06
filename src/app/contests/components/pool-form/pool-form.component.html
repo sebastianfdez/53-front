@@ -1,0 +1,49 @@
+<ng-container *ngIf="poolForm" [formGroup]="poolForm">
+    <ng-container formArrayName="participants">
+        <div class="participants flex-div column full-width" *ngFor="let participant_ of participants?.controls; index as i;">
+            <div class="participants-cont flex-div column full-width mat-elevation-z1"
+                [formGroupName]="i">
+                <ng-container *ngIf="disabled else form">
+                    <div class="flex-div vote-mode">
+                        <mat-icon class="icon">person</mat-icon>
+                        <div class="info flex-div column">
+                        <h4>Prenom: <strong style="font-weight: bold; margin-left: 10px">{{participant_.value.name}} </strong></h4>
+                        <h4>Nom: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.value.lastName}} </strong></h4>
+                        <h4 *ngIf="isJudge">Licence: <strong> {{participant_.value.licence}} </strong></h4>
+                        <h4 *ngIf="isSpeaker">Ville/Club: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.value.club}} </strong></h4>
+                        </div>
+                        <mat-form-field class="vote-input" *ngIf="isJudge">
+                            <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant_.value.id]" 
+                            [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant_.value.id)" required>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <ng-template #form>
+                    <mat-form-field class="example-full-width">
+                        <input class="name-focus" matInput placeholder="Prénom" formControlName="name">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Nom" formControlName="lastName">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Licence" formControlName="licence">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Ville/Club" formControlName="club">
+                    </mat-form-field>
+                    <button mat-stroked-button class="delete" (click)="deleteParticipant(i)">
+                        - Supprimer ce rider
+                    </button>
+                </ng-template>
+            </div>
+        </div>
+        <button mat-stroked-button class="button" (click)="addParticipant()">
+            + Ajouter un rider
+        </button>
+
+        <button mat-raised-button color="warn" class="button" (click)="deletePool()">
+            - Supprimer la poule
+        </button>
+    </ng-container>
+</ng-container>
+  

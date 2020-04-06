@@ -8,107 +8,68 @@
             {{"<"}}
         </button>
     </div>
-  
     <div class="scrollable-53" *ngIf="!loading">
-  
         <h1 class="title-53" *ngIf="isJudge && (judgeName !== '')">
             {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judgeName}}
         </h1>
-        <h1 class="title-53">Catégorie: {{categorie.name}} </h1>
-    
-        <form class="example-form flex-div column full-width" *ngIf="isAdmin" >
+        <form class="flex-div column full-width" [formGroup]="categorieForm">
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nom de la catégorie" [(ngModel)]="categorie.name" [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Nom de la catégorie" formControlName="name">
             </mat-form-field>
-        </form>
-  
-        <button mat-flat-button *ngIf="isAdmin && !loadingSave" color="primary" class="button" (click)="save()"
-        [disabled]="saveDisabled">
-            Sauvegarder la categorie
-        </button>
-    
-        <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button" (click)="saveVotes()">
-            Sauvegarder les notes
-        </button>
-    
-        <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" color="#007106" class="button scores" (click)="goToScores()">
-            Classement et finale
-        </button>
-    
-        <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button excel" (click)="openUploeader()">
-            Importer depuis excel
-        </button>
-    
-        <kendo-upload
-            #UploadComponent
-            [autoUpload]="false"
-            [restrictions]="myRestrictions"
-            (select)="fileSelected($event)"
-            (upload)="uploadFile($event)"
-            *ngIf="showUploader">
-        </kendo-upload>
-    
-        <div class="button" *ngIf="loadingSave">
-            <mat-spinner [diameter]="50"></mat-spinner>
-        </div>
-    
-        <div class="pool block-53 mat-elevation-z2 flex-div column" *ngFor="let pool of categorie.pools; let j = index;"
-            tabindex="0" role="link" (keydown.enter)="focusPool(j)" [id]="'pool' + j">
-            <span class="poule" style="font-size: 1.5em">Poule {{j + 1}}:</span>
-            <div class="participants flex-div column full-width">
-            <div class="participants-cont flex-div column full-width mat-elevation-z1" *ngFor="let participant of pool.participants; let i = index;">
-                <ng-container *ngIf="isAdmin">
-                
-                <mat-form-field class="example-full-width">
-                    <input class="name-focus" matInput placeholder="Prénom" [(ngModel)]="participant.name" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Nom" [(ngModel)]="participant.lastName" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Licence" [(ngModel)]="participant.licence" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Ville/Club" [(ngModel)]="participant.club" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                
-                <button mat-stroked-button *ngIf="isAdmin" class="delete" (click)="deleteParticipant(pool, i)">
-                    - Supprimer ce rider
-                </button>
-                </ng-container>
-                <div class="vote-mode" *ngIf="!isAdmin">
-                    <mat-icon class="icon">person</mat-icon>
-                    <div class="info flex-div column">
-                    <span>Prenom: <span style="font-weight: bold; margin-left: 10px">{{participant.name}} </span></span>
-                    <span>Nom: <span style="font-weight: bold; margin-left: 10px"> {{participant.lastName}} </span></span>
-                    <span *ngIf="isJudge">Licence: <span style="font-weight: bold; margin-left: 10px"> {{participant.licence}} </span></span>
-                    <span *ngIf="isSpeaker">Ville/Club: <span style="font-weight: bold; margin-left: 10px"> {{participant.club}} </span></span>
-                    </div>
-                    <mat-form-field class="vote-input" *ngIf="isJudge">
-                    <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant.id]" 
-                        [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant.id)" required>
-                    </mat-form-field>
+            <button mat-flat-button *ngIf="isAdmin && !loadingSave" color="primary" class="button" (click)="save()"
+            [disabled]="saveDisabled">
+                Sauvegarder la categorie
+            </button>
+        
+            <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button" (click)="saveVotes()">
+                Sauvegarder les notes
+            </button>
+        
+            <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" color="#007106" class="button scores" (click)="goToScores()">
+                Classement et finale
+            </button>
+        
+            <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button excel" (click)="openUploeader()">
+                Importer depuis excel
+            </button>
+
+            <kendo-upload
+                #UploadComponent
+                [autoUpload]="false"
+                [restrictions]="myRestrictions"
+                (select)="fileSelected($event)"
+                (upload)="uploadFile($event)"
+                *ngIf="showUploader">
+            </kendo-upload>
+        
+            <div class="button" *ngIf="loadingSave">
+                <mat-spinner [diameter]="50"></mat-spinner>
+            </div>
+
+            <div class="container-53" formArrayName="pools">
+                <div class="pool block-53 mat-elevation-z2 flex-div column" *ngFor="let poolForm of pools?.controls; index as i;">
+                    <h2 class="poule">Poule {{i + 1}}</h2>
+                    <app-pool-form
+                        class="flex-div column full-width"
+                        [formGroupName]="i"
+                        [poolForm]="poolForm"
+                        (deletePoolOut)="deletePool(i)"
+                        (addParticipantOut)="addParticipant(i)"
+                        [isJudge]="isJudge" [isSpeaker]="isSpeaker"
+                        [votesRecord]="votesRecord"
+                    ></app-pool-form>
                 </div>
-                
+          
+                <div class="pool block-53 mat-elevation-z2 flex-div column" *ngIf="isAdmin">
+                    <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPoolForm()">
+                        + Ajouter une poule
+                    </button>
+                </div>
             </div>
-    
-            <button mat-stroked-button *ngIf="isAdmin" class="button" (click)="addParticipant(pool)">
-                + Ajouter un rider
-            </button>
-    
-            <button mat-raised-button color="warn" *ngIf="isAdmin" class="button" (click)="deletePool(j)">
-                - Supprimer la poule
-            </button>
-            </div>
-        </div>
-  
-        <div class="pool block-53 mat-elevation-z2 flex-div column" *ngIf="isAdmin">
-            <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPool()">
-                + Ajouter une poule
-            </button>
-        </div>
+
+        </form>
     </div>
-  
+    
     <div class="scrollable-53" *ngIf="loading">
         <mat-spinner></mat-spinner>
     </div>
