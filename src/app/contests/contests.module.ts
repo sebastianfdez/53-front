@@ -10,6 +10,8 @@ import { ScoreTableComponent } from './components/score-table/score-table.compon
 import { JudgesComponent } from './components/judges/judges.component';
 import { SpeakerComponent } from './components/speaker/speaker.component';
 import { PortalComponent } from './components/portal/portal.component';
+import { PoolFormComponent } from '././components/pool-form/pool-form.component';
+import { PlayerFormComponent } from './components/player-form/player-form.component';
 
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
@@ -88,6 +90,8 @@ const routes: Routes = [
     JudgesComponent,
     SpeakerComponent,
     PortalComponent,
+    PoolFormComponent,
+    PlayerFormComponent,
   ],
   providers: [
     AuthGuardService,

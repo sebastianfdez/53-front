@@ -122,7 +122,9 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     copyLink(judge: Judge) {
-        this.componentUtils.copyText(`https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`);
+        this.componentUtils.copyText(
+            `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`);
     }
+
 
 }

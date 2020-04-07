@@ -1,0 +1,29 @@
+.participants {
+    margin-bottom: 10px;
+    .delete {
+        width: 40%;
+        min-width: fit-content;
+    }
+    .button {
+        font-size: 1rem;
+    }
+}
+.button {
+    width: 80%;
+    font-size: 1.5rem;
+    max-width: 400px;
+    align-items: center;
+    place-content: center;
+    display: flex;
+    margin-bottom: 10px;
+    &:last-of-type {
+        margin-bottom: 30px;
+    }
+    &:first-of-type {
+        margin-top: 30px;
+    }
+    &.scores {
+        background-color: #007106;
+        color: #ffffff;
+    }
+}
