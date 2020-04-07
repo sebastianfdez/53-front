@@ -10,7 +10,7 @@ import { ComponentUtils } from 'src/app/shared/services/component-utils';
         provide: NG_VALUE_ACCESSOR, 
         useExisting: forwardRef(() => PoolFormComponent),
         multi: true     
-    }]
+    }],
 })
 export class PoolFormComponent implements ControlValueAccessor, AfterContentInit {
 
@@ -46,7 +46,19 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
     setDisabledState?(isDisabled: boolean): void {}
 
     addParticipant() {
-        this.addParticipantOut.emit(true);
+        this.participants.insert(
+            this.participants.length,
+            this.formBuilder.group({
+                name: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+                id: '',
+                votes: [],
+                club: this.formBuilder.control('', Validators.required),
+                lastName: this.formBuilder.control('', Validators.required),
+                licence: this.formBuilder.control('', Validators.required),
+            }),
+        );
+        this.propagateChange(this.poolForm.value);
+        this.poolForm.updateValueAndValidity();
     }
 
     deletePool() {
@@ -54,7 +66,7 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
     }
 
     deleteParticipant(i: number) {
-        (this.poolForm.get('participants') as FormArray).controls.splice(i, 1);
+        (this.poolForm.get('participants') as FormArray).removeAt(i);
     }
 
     get disabled(): boolean {
@@ -64,16 +76,5 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
     get participants(): FormArray {
         const array = this.poolForm.get('participants') as FormArray;
         return array;
-    }
-
-    valueChange(event: Event, id: string) {
-        const value: number = (event.target as HTMLInputElement).value as any as number;
-        if (value > 100) {
-            this.votesRecord[id] = 100;
-        } else if (value < 0) {
-            this.votesRecord[id] = 0;
-        } else if ((value * 100) % 1 !== 0) {
-            this.votesRecord[id] = Math.floor(value * 100) / 100 ? Math.floor(value * 100) / 100 : 0;
-        }
     }
 };

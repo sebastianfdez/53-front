@@ -29,7 +29,7 @@
                 Classement et finale
             </button>
         
-            <button mat-flat-button *ngIf="isAdmin && !categorie.final" color="primary" class="button excel" (click)="openUploeader()">
+            <button mat-flat-button *ngIf="isAdmin && !categorie.final && !loadingSave" color="primary" class="button excel" (click)="openUploeader()">
                 Importer depuis excel
             </button>
 
@@ -78,4 +78,3 @@
         <img async src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=e3ac886f-720d-4183-a9c4-78a60dc3ba64">
     </div>
 </div>
-  

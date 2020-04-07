@@ -1,0 +1,32 @@
+<div class="participants-cont flex-div column full-width mat-elevation-z1"
+    [formGroup]="playerForm">
+    <ng-container *ngIf="disabled else form">
+        <div class="flex-div vote-mode">
+            <mat-icon class="icon">person</mat-icon>
+            <div class="info flex-div column">
+            <h4>Prenom: <strong style="font-weight: bold; margin-left: 10px">{{participant_.name}} </strong></h4>
+            <h4>Nom: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.lastName}} </strong></h4>
+            <h4 *ngIf="isJudge">Licence: <strong> {{participant_.licence}} </strong></h4>
+            <h4 *ngIf="isSpeaker">Ville/Club: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.club}} </strong></h4>
+            </div>
+            <mat-form-field class="vote-input" *ngIf="isJudge">
+                <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant_.id]" 
+                [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant_.id)" required>
+            </mat-form-field>
+        </div>
+    </ng-container>
+    <ng-template #form>
+        <mat-form-field class="example-full-width">
+            <input class="name-focus" matInput placeholder="Prénom" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nom" formControlName="lastName">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Licence" formControlName="licence">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Ville/Club" formControlName="club">
+        </mat-form-field>
+    </ng-template>
+</div>

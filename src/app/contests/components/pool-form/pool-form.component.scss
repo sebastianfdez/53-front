@@ -1,38 +1,8 @@
 .participants {
+    margin-bottom: 10px;
     .delete {
         width: 40%;
         min-width: fit-content;
-    }
-    .participants-cont {
-        padding: 20px 0;
-        border-radius: 8px;
-        background-color: #fbfbfb;
-        margin-bottom: 20px;
-        .mat-form-field {
-            width: 90%;
-            max-width: 460px;
-        }
-        .vote-mode {
-            width: 100%;
-            flex-wrap: wrap;
-            padding: 0 15px;
-            justify-content: center;
-            .icon {
-                font-size: 40px;
-                flex: 0 0 auto;
-                width: 40px;
-                height: fit-content;
-            }
-            .info {
-                flex: 1;
-                margin: 0 10px;
-            }
-            .vote-input {
-                font-size: 20px;
-                flex: 0 0 auto;
-                width: 100%;
-            }
-        }
     }
     .button {
         font-size: 1rem;
