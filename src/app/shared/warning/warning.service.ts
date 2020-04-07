@@ -3,22 +3,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { WarningComponent } from './warning.component';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class WarningService {
+    constructor(
+        private dialog: MatDialog,
+    ) {}
 
-  constructor(
-    private dialog: MatDialog,
-  ) { }
-
-  showWarning(message: string, cancel: boolean, input?: string) {
-    return this.dialog.open(WarningComponent, {
-      width: '600px',
-      data: {
-        message,
-        cancel,
-        input,
-      },
-    });
-  }
+    showWarning(message: string, cancel: boolean, input?: string) {
+        return this.dialog.open(WarningComponent, {
+            width: '600px',
+            data: {
+                message,
+                cancel,
+                input,
+            },
+        });
+    }
 }

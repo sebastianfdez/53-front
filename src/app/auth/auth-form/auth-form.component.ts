@@ -1,49 +1,55 @@
-import { Component, OnInit, AfterContentInit, Injector, forwardRef, Input } from '@angular/core';
-import { ComponentUtils } from '../../shared/services/component-utils';
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+    Component, AfterContentInit, Injector, forwardRef, Input,
+} from '@angular/core';
 import { FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ComponentUtils } from '../../shared/services/component-utils';
 
 @Component({
-  selector: 'app-auth-form',
-  templateUrl: './auth-form.component.html',
-  styleUrls: ['./auth-form.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => AuthFormComponent),
-    }
-  ]
+    selector: 'app-auth-form',
+    templateUrl: './auth-form.component.html',
+    styleUrls: ['./auth-form.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            // eslint-disable-next-line no-use-before-define
+            useExisting: forwardRef(() => AuthFormComponent),
+        },
+    ],
 })
-export class AuthFormComponent implements ControlValueAccessor, OnInit, AfterContentInit {
+export class AuthFormComponent implements ControlValueAccessor, AfterContentInit {
+    @Input() authFormGroup: FormGroup;
 
-  @Input() authFormGroup: FormGroup;
-  @Input() types: string[] = [];
-  minDate = new Date();
+    @Input() types: string[] = [];
 
-  constructor(
-    private injector: Injector,
-    private componentUtils: ComponentUtils,
-  ) { }
+    minDate = new Date();
 
-  ngOnInit() {
-  }
+    constructor(
+        private injector: Injector,
+        private componentUtils: ComponentUtils,
+    ) { }
 
-  ngAfterContentInit() {
-    if (!this.authFormGroup) {
-      this.authFormGroup = (this.componentUtils.getFormGroup(this.injector).controls.projectMainInfo as FormGroup);
+    ngAfterContentInit() {
+        if (!this.authFormGroup) {
+            this.authFormGroup = (
+                this.componentUtils
+                    .getFormGroup(this.injector).controls.projectMainInfo as FormGroup
+            );
+        }
     }
-  }
 
-  propagateChange = (_: any) => {};
+    propagateChange = (_: any) => {};
 
-  registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
+    registerOnChange(fn) {
+        this.propagateChange = fn;
+    }
 
-  registerOnTouched() {}
+    registerOnTouched() {}
 
-  writeValue(value: string): void {}
+    writeValue(value: string): void {}
 
-  setDisabledState?(isDisabled: boolean): void {}
-
+    setDisabledState?(isDisabled: boolean): void {}
 }

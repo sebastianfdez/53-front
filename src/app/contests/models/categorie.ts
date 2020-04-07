@@ -30,7 +30,7 @@ export interface Pool {
 export interface Categorie {
     contest: string;
     name: string;
-    pools: { participants: Participant[] }[];
+    pools: { participants: Participant[]; }[];
     id: string;
     final: boolean;
 }

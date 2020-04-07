@@ -4,15 +4,15 @@ import { AuthFormComponent } from './auth-form.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-  ],
-  declarations: [
-    AuthFormComponent
-  ],
-  exports: [
-    AuthFormComponent,
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+    ],
+    declarations: [
+        AuthFormComponent,
+    ],
+    exports: [
+        AuthFormComponent,
+    ],
 })
 export class AuthFormModule {}

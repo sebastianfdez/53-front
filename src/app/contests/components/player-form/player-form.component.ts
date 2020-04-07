@@ -1,4 +1,9 @@
-import { Component, forwardRef, AfterContentInit, Input, Injector } from "@angular/core";
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+    Component, forwardRef, AfterContentInit, Input, Injector,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
 import { ComponentUtils } from 'src/app/shared/services/component-utils';
 import { Participant } from '../../models/categorie';
@@ -8,17 +13,22 @@ import { Participant } from '../../models/categorie';
     templateUrl: './player-form.component.html',
     styleUrls: ['./player-form.component.scss'],
     providers: [{
-        provide: NG_VALUE_ACCESSOR, 
+        provide: NG_VALUE_ACCESSOR,
+        // eslint-disable-next-line no-use-before-define
         useExisting: forwardRef(() => PlayerFormComponent),
-        multi: true     
+        multi: true,
     }],
 })
 export class PlayerFormComponent implements ControlValueAccessor, AfterContentInit {
     @Input() playerForm: FormGroup;
+
     @Input() isSpeaker: Boolean = false;
+
     @Input() isJudge: Boolean = false;
+
     participant_: Participant = null;
-    @Input() votesRecord: { [codeParticipant: string]: number } = {};
+
+    @Input() votesRecord: { [codeParticipant: string]: number; } = {};
 
     constructor(
         private componentUtils: ComponentUtils,
@@ -55,7 +65,8 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
         } else if (value < 0) {
             this.votesRecord[id] = 0;
         } else if ((value * 100) % 1 !== 0) {
-            this.votesRecord[id] = Math.floor(value * 100) / 100 ? Math.floor(value * 100) / 100 : 0;
+            this.votesRecord[id] = Math.floor(value * 100) / 100
+                ? Math.floor(value * 100) / 100 : 0;
         }
     }
 }

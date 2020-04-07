@@ -1,9 +1,14 @@
 export class Speaker {
     role: string;
+
     mail: string;
+
     contest: string;
+
     id: string;
+
     name: string;
+
     lastName: string;
 }
 

@@ -1,14 +1,16 @@
+/* eslint-disable no-undef */
 import { of, Observable, from } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap, map, filter, tap } from 'rxjs/operators';
+import {
+    switchMap, map, filter,
+} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User, emptyUser } from '../../../shared/models/user';
 import { Store } from 'store';
+import { User, emptyUser } from '../../../shared/models/user';
 
 @Injectable()
 export class AuthService {
-
     auth$ = this.afAuth.authState.pipe(
         switchMap((user_) => {
             if (!user_) {
@@ -21,7 +23,8 @@ export class AuthService {
             user.id = user_.uid;
             user.role[this.store.value.selectedContest ? this.store.value.selectedContest.id : ''] = 'admin';
             return this.getLoggedUserInfo(user.id, user.mail);
-        })).subscribe();
+        }),
+    ).subscribe();
 
     constructor(
         private afAuth: AngularFireAuth,
@@ -34,9 +37,8 @@ export class AuthService {
             switchMap((user_) => {
                 if (user_ && user_.payload.data()) {
                     return of(user_);
-                } else {
-                    return this.db.doc<User>(`users/${mail}`).snapshotChanges();
                 }
+                return this.db.doc<User>(`users/${mail}`).snapshotChanges();
             }),
             switchMap((user_) => {
                 if (user_) {
@@ -50,10 +52,9 @@ export class AuthService {
                         contest: user_.payload.data().contest,
                     });
                     return of(true);
-                } else {
-                    return of(false);
                 }
-            })
+                return of(false);
+            }),
         );
     }
 
@@ -63,37 +64,34 @@ export class AuthService {
 
     get authenticated(): Observable<boolean> {
         return this.store.select<User>('user').pipe(
-            filter(user => user !== null && user !== undefined),
-            map((user) => user ? user.autenticated : false)
+            filter((user) => user !== null && user !== undefined),
+            map((user) => (user ? user.autenticated : false)),
         );
     }
 
     isAdmin(): Observable<boolean> {
         return this.store.select<User>('user').pipe(
-            filter(user => user !== null && user !== undefined),
-            switchMap((user) => {
-                return of(user.role[
-                    this.store.value.selectedContest ?
-                    this.store.value.selectedContest.id :
-                    window.localStorage.getItem('selectedContest')] === 'admin');
-            }),
+            filter((user) => user !== null && user !== undefined),
+            switchMap((user) => of(user.role[
+                this.store.value.selectedContest
+                    ? this.store.value.selectedContest.id
+                    : window.localStorage.getItem('selectedContest')] === 'admin')),
         );
     }
 
     isJudge(): Observable<boolean> {
         return this.store.select<User>('user').pipe(
-            filter(user => user !== null && user !== undefined),
-            switchMap((user) => {
-                return of(
-                    user.role[
-                        this.store.value.selectedContest ?
-                        this.store.value.selectedContest.id :
-                        window.localStorage.getItem('selectedContest')] === 'judge' ||
-                    user.role[
-                        this.store.value.selectedContest ?
-                        this.store.value.selectedContest.id :
-                        window.localStorage.getItem('selectedContest')] === 'admin');
-            }),
+            filter((user) => user !== null && user !== undefined),
+            switchMap((user) => of(
+                user.role[
+                    this.store.value.selectedContest
+                        ? this.store.value.selectedContest.id
+                        : window.localStorage.getItem('selectedContest')] === 'judge'
+                    || user.role[
+                        this.store.value.selectedContest
+                            ? this.store.value.selectedContest.id
+                            : window.localStorage.getItem('selectedContest')] === 'admin',
+            )),
         );
     }
 
@@ -119,7 +117,7 @@ export class AuthService {
 
     sendLogInLink(mail: string) {
         const actionCodeSettings: firebase.auth.ActionCodeSettings = {
-            url: `https://www.la53.fr/auth/inscription`,
+            url: 'https://www.la53.fr/auth/inscription',
             handleCodeInApp: true,
         };
         return this.afAuth.sendSignInLinkToEmail(mail, actionCodeSettings);

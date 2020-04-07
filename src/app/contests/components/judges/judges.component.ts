@@ -1,28 +1,34 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Judge } from '../../models/categorie';
 import { switchMap, catchError, tap } from 'rxjs/operators';
-import { Contest } from '../../../shared/models/contest';
 import { Subscription, from, of } from 'rxjs';
+import { Store } from 'store';
+import { Judge } from '../../models/categorie';
+import { Contest } from '../../../shared/models/contest';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
-import { Store } from 'store';
 
 @Component({
     selector: 'app-judges',
     templateUrl: './judges.component.html',
-    styleUrls: ['./judges.component.scss']
+    styleUrls: ['./judges.component.scss'],
 })
 export class JudgesComponent implements OnInit, OnDestroy {
-
     judges: Judge[] = [];
+
     contestId = '';
+
     contest: Contest = null;
+
     editing = false;
+
     loading = false;
+
     loadingChanges = false;
+
     addJudge = false;
+
     newJudge: Judge = {
         name: '',
         id: '',
@@ -46,18 +52,19 @@ export class JudgesComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        // eslint-disable-next-line no-undef
         this.contestId = localStorage.getItem('contestId');
         this.loading = true;
         this.subscriptions.push(
-            this.route.data.subscribe((judges: {judges: Judge[]}) => {
+            this.route.data.subscribe((judges: {judges: Judge[];}) => {
                 this.judges = judges.judges;
                 this.loading = false;
-            })
+            }),
         );
     }
 
     ngOnDestroy() {
-        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     editJudges() {
@@ -69,7 +76,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     saveJudges() {
-        this.judges.forEach(judge => this.firebaseService.updateJudge(judge));
+        this.judges.forEach((judge) => this.firebaseService.updateJudge(judge));
         this.loadingChanges = true;
         setTimeout(() => {
             this.editing = !this.editing;
@@ -92,39 +99,37 @@ export class JudgesComponent implements OnInit, OnDestroy {
     }
 
     createJudgeUser() {
-        const judges: string[] = this.store.value.selectedContest.judges;
+        const { judges } = this.store.value.selectedContest;
         judges.push(this.newJudge.mail);
         this.newJudge.contest = this.contestId;
         this.subscriptions.push(
-            this.firebaseService.updateContest(this.contestId, {judges}).pipe(
+            this.firebaseService.updateContest(this.contestId, { judges }).pipe(
                 tap(() => {
                     this.judges.push(JSON.parse(JSON.stringify(this.newJudge)));
                     this.loadingChanges = false;
                     this.addJudge = false;
                 }),
-                switchMap(() => {
-                    return from(this.firebaseService.createJudge(this.newJudge.mail, this.newJudge));
-                }),
+                switchMap(() => from(this.firebaseService
+                    .createJudge(this.newJudge.mail, this.newJudge))),
                 catchError(() => {
                     this.snackBarService.showMessage(`L'e-mail ${this.newJudge.mail} est déjà utilisé`);
                     this.addJudge = false;
                     this.loadingChanges = false;
                     return of(null);
-                })
-            ).subscribe()
+                }),
+            ).subscribe(),
         );
     }
 
     deleteJudge(judge: Judge) {
-        this.contest.judges = this.contest.judges.filter(j => j !== judge.id);
+        this.contest.judges = this.contest.judges.filter((j) => j !== judge.id);
         this.firebaseService.updateContest(this.contestId, this.contest);
         this.firebaseService.deleteJudge(judge.id);
     }
 
     copyLink(judge: Judge) {
         this.componentUtils.copyText(
-            `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`);
+            `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`,
+        );
     }
-
-
 }

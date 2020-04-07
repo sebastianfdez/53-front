@@ -23,60 +23,60 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import 'firebase/firestore';
 // Custom services
-import { WarningComponent } from './warning/warning.component';
 import { firebaseKeys } from 'src/firebase-keys';
+import { WarningComponent } from './warning/warning.component';
 import { WarningService } from './warning/warning.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ComponentUtils } from './services/component-utils';
 import { FirebaseService } from './services/firebase.service';
 
 const materialModules = [
-  MatInputModule,
-  MatButtonModule,
-  MatIconModule,
-  MatSelectModule,
-  MatProgressSpinnerModule,
-  MatTableModule,
-  MatSortModule,
-  MatDialogModule,
-  MatSnackBarModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 ];
 
 @NgModule({
-  imports: [
-    ...materialModules,
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    AngularFireModule.initializeApp(firebaseKeys),
-    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
-    AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    AngularFireDatabaseModule,
-    ReactiveFormsModule,
-    A11yModule,
-  ],
-  declarations: [
-    WarningComponent,
-  ],
-  exports : [
-    FormsModule,
-    WarningComponent,
-    ReactiveFormsModule,
-    A11yModule,
-    ...materialModules,
-  ],
-  providers: [
-    WarningService,
-    SnackBarService,
-    ComponentUtils,
-    FirebaseService,
-    MatDatepickerModule,
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
-  ],
+    imports: [
+        ...materialModules,
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        AngularFireModule.initializeApp(firebaseKeys),
+        AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+        AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+        AngularFireStorageModule, // imports firebase/storage only needed for storage features
+        AngularFireDatabaseModule,
+        ReactiveFormsModule,
+        A11yModule,
+    ],
+    declarations: [
+        WarningComponent,
+    ],
+    exports: [
+        FormsModule,
+        WarningComponent,
+        ReactiveFormsModule,
+        A11yModule,
+        ...materialModules,
+    ],
+    providers: [
+        WarningService,
+        SnackBarService,
+        ComponentUtils,
+        FirebaseService,
+        MatDatepickerModule,
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+    ],
 })
 export class SharedModule { }

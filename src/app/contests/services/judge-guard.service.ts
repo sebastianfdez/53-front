@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
-import {
-    Router, CanActivate,
-} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AuthService } from '../../auth/auth-form/services/auth.service';
 
 @Injectable()
-export class AdminAuthGuardService implements CanActivate {
+export class JudgeAuthGuardService implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {}
 
     canActivate(): Observable<boolean> | boolean {
-        return this.authService.isAdmin().pipe(
-            tap((isAdmin) => {
-                if (!isAdmin) {
+        return this.authService.isJudge().pipe(
+            tap((isJudge) => {
+                if (!isJudge) {
                     this.router.navigate(['portal/admin']);
                 }
             }),
