@@ -19,7 +19,7 @@
       "es2017",
       "dom"
     ],
-    "types": ["node"],
+    "types": ["jest","node"],
     "paths": {
       "store": ["./src/app/store.ts"],
     }

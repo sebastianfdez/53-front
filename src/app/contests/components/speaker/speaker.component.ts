@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, of, from, combineLatest } from 'rxjs';
+import {
+    Subscription, of, from,
+} from 'rxjs';
 import { switchMap, catchError, tap } from 'rxjs/operators';
+import { Store } from 'store';
 import { Contest } from '../../../shared/models/contest';
 import { Speaker, emptySpeaker } from '../../models/speaker';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { Store } from 'store';
 import { User } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
@@ -14,18 +16,23 @@ import { ComponentUtils } from '../../../shared/services/component-utils';
 @Component({
     selector: 'app-speaker',
     templateUrl: './speaker.component.html',
-    styleUrls: ['./speaker.component.scss']
+    styleUrls: ['./speaker.component.scss'],
 })
 export class SpeakerComponent implements OnInit, OnDestroy {
-
     contest: Contest = null;
+
     user: User = null;
+
     contestId = '';
+
     speaker: Speaker = null;
+
     noSpeaker = true;
+
     addSpeaker = false;
 
     public loading = false;
+
     public loadingSave = false;
 
     subscriptions: Subscription[] = [];
@@ -41,12 +48,11 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
+        // eslint-disable-next-line no-undef
         this.contestId = localStorage.getItem('contestId');
         this.subscriptions.push(
             this.authService.getAuthenticatedUser().pipe(
-                switchMap((user) => {
-                    return this.contestService.getSelectedContest();
-                }),
+                switchMap(() => this.contestService.getSelectedContest()),
                 switchMap((contest) => {
                     this.contest = contest;
                     if (this.contest.speaker !== undefined && this.contest.speaker !== '') {
@@ -57,24 +63,24 @@ export class SpeakerComponent implements OnInit, OnDestroy {
                     }
                     this.addSpeaker = false;
                     return of(emptySpeaker);
-                })
+                }),
             ).subscribe(
                 (speaker) => {
                     this.loading = false;
                     this.speaker = speaker;
                     this.speaker.id = this.noSpeaker ? '' : this.contest.id;
-                }
-            )
+                },
+            ),
         );
     }
 
     ngOnDestroy() {
-        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     isSaveDisabled(): boolean {
-        return this.addSpeaker ? this.speaker.name.length < 5 || this.speaker.lastName.length < 5 ||
-        this.speaker.mail.length < 5 : false;
+        return this.addSpeaker ? this.speaker.name.length < 5 || this.speaker.lastName.length < 5
+        || this.speaker.mail.length < 5 : false;
     }
 
     saveSpeaker() {
@@ -97,28 +103,28 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     createSpeakerUser() {
         this.speaker.contest = this.contest.id;
         this.subscriptions.push(
-            this.firebaseService.updateContest(this.contestId, {speaker: this.speaker.mail}).pipe(
+            this.firebaseService.updateContest(this.contestId, { speaker: this.speaker.mail }).pipe(
                 tap(() => {
                     this.loadingSave = false;
                     this.noSpeaker = false;
                     this.addSpeaker = false;
                 }),
-                switchMap(() => {
-                    return from(this.firebaseService.createJudge(this.speaker.mail, this.speaker));
-                }),
+                switchMap(
+                    () => from(this.firebaseService.createJudge(this.speaker.mail, this.speaker)),
+                ),
                 catchError(() => {
                     this.snackBarService.showMessage(`L'e-mail ${this.speaker.mail} est déjà utilisé`);
                     this.addSpeaker = false;
                     this.loadingSave = false;
                     return of(null);
-                })
-            ).subscribe()
+                }),
+            ).subscribe(),
         );
     }
 
     copyLink() {
         this.componentUtils.copyText(
-          `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${this.speaker.mail}&speaker=true`);
+            `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${this.speaker.mail}&speaker=true`,
+        );
     }
-
 }

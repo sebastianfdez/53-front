@@ -47,7 +47,8 @@
             </div>
 
             <div class="container-53" formArrayName="pools">
-                <div class="pool block-53 mat-elevation-z2 flex-div column" *ngFor="let poolForm of pools?.controls; index as i;">
+                <div class="pool block-53 mat-elevation-z2 flex-div column" *ngFor="let poolForm of pools?.controls; index as i;"
+                [class.error]="poolForm.invalid">
                     <h2 class="poule">Poule {{i + 1}}</h2>
                     <app-pool-form
                         class="flex-div column full-width"

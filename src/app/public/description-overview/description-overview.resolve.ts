@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { of } from 'rxjs';
 
 @Injectable()
 export class DescriptionOverviewResolve implements Resolve<string> {
-  constructor() {}
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return of(route.params.type);
-  }
+    // eslint-disable-next-line class-methods-use-this
+    resolve(route: ActivatedRouteSnapshot) {
+        return of(route.params.type);
+    }
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import {
+    CanActivate, Router,
+} from '@angular/router';
 import { Observable } from 'rxjs';
-import { ContestsService } from './contest.service';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
+import { ContestsService } from './contest.service';
 
 @Injectable()
 export class SelectedContestGuardService implements CanActivate {
@@ -13,20 +15,16 @@ export class SelectedContestGuardService implements CanActivate {
         private auth: AuthService,
     ) {}
 
-    canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot): Observable<boolean> | boolean {
+    canActivate(): Observable<boolean> | boolean {
         return this.auth.authenticated.pipe(
-            switchMap((auth) => {
-                return this.contestService.getSelectedContest();
-            }),
+            switchMap(() => this.contestService.getSelectedContest()),
             map((contest) => {
                 if (contest === undefined || !contest) {
                     this.router.navigate(['portal/portal']);
-                } else {
-                    return true;
+                    return false;
                 }
-            })
+                return true;
+            }),
         );
     }
 }

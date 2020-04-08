@@ -1,21 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import {
+    FormBuilder, FormGroup, Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../auth-form/services/auth.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
 import { Contest } from '../../../shared/models/contest';
 import { User } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-register',
-    templateUrl: './register.component.html'
+    templateUrl: './register.component.html',
 })
 export class RegisterComponent implements OnInit {
-
     registerForm: FormGroup;
+
     error: string;
+
     types: string[] = ['Skate', 'Roller', 'BMX', 'Autre'];
 
     constructor(
@@ -37,14 +40,14 @@ export class RegisterComponent implements OnInit {
             lastName: ['', Validators.required],
             contestName: ['', Validators.required],
             date: [(new Date()).getTime(), Validators.required],
-            place: ['', Validators.required]
+            place: ['', Validators.required],
         }, { validators: this.samePassword });
     }
 
     async register() {
         try {
-            const user: firebase.auth.UserCredential =
-                await this.authService.createUser(this.registerForm.value.user, this.registerForm.value.pass);
+            const user: firebase.auth.UserCredential = await this.authService
+                .createUser(this.registerForm.value.user, this.registerForm.value.pass);
             this.createContestUser(user);
         } catch (err) {
             console.log(err);
@@ -76,29 +79,30 @@ export class RegisterComponent implements OnInit {
         };
         newUser.role[newContest_.id] = 'admin';
         await this.firebaseService.createUser(newUser);
-        await this.firebaseService.updateContest(newContest_.id, {id: newContest_.id});
+        await this.firebaseService.updateContest(newContest_.id, { id: newContest_.id });
         this.snackBarService.showMessage('Utilisateur et contest créé avec succès');
         this.router.navigate(['auth/login']);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     samePassword(group: FormGroup) {
-        const differentPassword = group.controls['pass'].value !== group.controls['passconf'].value;
-        return differentPassword ? {'differentPassword': true } : null;
+        const differentPassword = group.controls.pass.value !== group.controls.passconf.value;
+        return differentPassword ? { differentPassword: true } : null;
     }
 
     get passwordInvalid() {
-      const control = this.registerForm.get('pass');
-      return control.hasError('required') && control.touched;
+        const control = this.registerForm.get('pass');
+        return control.hasError('required') && control.touched;
     }
 
     get emailFormat() {
-      const control = this.registerForm.get('user');
-      return control.touched && (control.hasError('required') || !this.componentUtils.validateEmail(control.value));
+        const control = this.registerForm.get('user');
+        return control.touched && (control.hasError('required') || !this.componentUtils.validateEmail(control.value));
     }
 
     get confirmPasswordInvalid() {
-      const control = this.registerForm.get('passconf');
-      return this.registerForm.hasError('differentPassword') && control.touched;
+        const control = this.registerForm.get('passconf');
+        return this.registerForm.hasError('differentPassword') && control.touched;
     }
 
     get nameInvalid() {

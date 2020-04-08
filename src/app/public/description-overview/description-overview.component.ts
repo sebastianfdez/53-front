@@ -1,24 +1,22 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Route, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/pluck';
 
 @Component({
-  selector: 'app-description-overview',
-  templateUrl: './description-overview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./description-overview.component.scss']
+    selector: 'app-description-overview',
+    templateUrl: './description-overview.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./description-overview.component.scss'],
 })
 export class DescriptionOverviewComponent implements OnInit {
+    type: Observable<string> = this.route.params.pluck('type');
 
-  type: Observable<string> = this.route.params.pluck('type');
+    constructor(
+        private route: ActivatedRoute,
+    ) { }
 
-  constructor(
-    private route: ActivatedRoute,
-  ) { }
-
-  ngOnInit() {
-    console.log(this.type);
-  }
-
+    ngOnInit() {
+        console.log(this.type);
+    }
 }

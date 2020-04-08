@@ -1,5 +1,13 @@
-import { Component, AfterContentInit, Injector, forwardRef, Output, EventEmitter, Input } from '@angular/core';
-import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR, FormArray, FormBuilder, Validators } from '@angular/forms';
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-use-before-define */
+import {
+    Component, AfterContentInit, Injector, forwardRef, Output, EventEmitter, Input,
+} from '@angular/core';
+import {
+    ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR, FormArray, FormBuilder, Validators,
+} from '@angular/forms';
 import { ComponentUtils } from 'src/app/shared/services/component-utils';
 
 @Component({
@@ -7,19 +15,23 @@ import { ComponentUtils } from 'src/app/shared/services/component-utils';
     templateUrl: './pool-form.component.html',
     styleUrls: ['./pool-form.component.scss'],
     providers: [{
-        provide: NG_VALUE_ACCESSOR, 
+        provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => PoolFormComponent),
-        multi: true     
+        multi: true,
     }],
 })
 export class PoolFormComponent implements ControlValueAccessor, AfterContentInit {
-
     @Input() poolForm: FormGroup;
+
     @Output() deletePoolOut: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+
     @Output() addParticipantOut: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+
     @Input() isSpeaker: Boolean = false;
+
     @Input() isJudge: Boolean = false;
-    @Input() votesRecord: { [codeParticipant: string]: number } = {};
+
+    @Input() votesRecord: { [codeParticipant: string]: number; } = {};
 
     constructor(
         private componentUtils: ComponentUtils,
@@ -77,4 +89,4 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
         const array = this.poolForm.get('participants') as FormArray;
         return array;
     }
-};
+}

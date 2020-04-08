@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,27 +11,27 @@ export const ROUTES: Routes = [
         path: '',
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'login' },
-            { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
-            { path: 'register', loadChildren: () => import('./register/register.module').then(m => m.RegisterModule) },
-            { path: 'inscription', component: PasswordLessAuthComponent }
-        ]
-    }
+            { path: 'login', loadChildren: () => import('./login/login.module').then((m) => m.LoginModule) },
+            { path: 'register', loadChildren: () => import('./register/register.module').then((m) => m.RegisterModule) },
+            { path: 'inscription', component: PasswordLessAuthComponent },
+        ],
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(ROUTES)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
 export class AuthRoutingModule { }
 
 @NgModule({
     declarations: [
-        PasswordLessAuthComponent
+        PasswordLessAuthComponent,
     ],
     imports: [
         AuthRoutingModule,
         CommonModule,
-        SharedModule
+        SharedModule,
     ],
     providers: [
         AuthService,
