@@ -9,7 +9,6 @@ import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import {
     FileRestrictions, UploadComponent, UploadEvent,
 } from '@progress/kendo-angular-upload';
-import * as XLSX from 'xlsx';
 import { Store } from 'store';
 import {
     FormBuilder, FormGroup, Validators, FormArray, AbstractControl, ValidationErrors,
@@ -21,6 +20,7 @@ import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import {
     Categorie, Pool, Votes, Participant, emptyCategorie,
 } from '../../models/categorie';
+import { ExcelHelperService } from '../../services/excel-helper.service';
 
 @Component({
     selector: 'app-categorie',
@@ -78,6 +78,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
         private snackBarService: SnackBarService,
         private store: Store,
         private formBuilder: FormBuilder,
+        private excelHelper: ExcelHelperService,
     ) {
         if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
             this.isSpeaker = true;
@@ -104,24 +105,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
                 } else {
                     this.categorie = categorie.categorie;
                 }
-                this.categorie.pools = this.categorie.pools
-                    .filter((pool) => pool.participants.length);
-                this.categorie.pools.forEach((pool) => {
-                    pool.participants.forEach((participant) => {
-                        const vote: Votes = participant.votes
-                            ? participant.votes
-                                .find((vote_) => vote_.codeJuge === this.judgeCode) : null;
-                        this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
-                    });
-                });
+                this.patchValue();
                 this.loading = false;
-                this.categorieForm.patchValue({ name: this.categorie.name });
-                this.categorie.pools.forEach((pool) => {
-                    this.addPoolForm(pool);
-                });
-                if (!this.isAdmin) {
-                    this.categorieForm.disable();
-                }
             }),
         );
     }
@@ -230,70 +215,35 @@ export class CategorieComponent implements OnInit, OnDestroy {
     uploadFile(event: UploadEvent) {
         event.preventDefault();
         this.showUploader = false;
-        const excelFile: File = event.files[0].rawFile;
-        // eslint-disable-next-line no-undef
-        const fr: FileReader = new FileReader();
-        fr.onload = (event_) => {
-            const bstr: ArrayBuffer = ((event_.target as FileReader).result) as ArrayBuffer;
-            const datas = new Uint8Array(bstr);
-            const arr = [];
-            datas.forEach((data) => arr.push(String.fromCharCode(data)));
-            const workbook = XLSX.read(bstr, { type: 'binary' });
-            const firstsheetname = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[firstsheetname];
-            // Create json list of players from excel
-            const players: {
-                nom: string;
-                prenom: string;
-                club: string;
-                licence: string;
-            }[] = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-            // Check the columns are well defined
-            if (!players[0].nom || !players[0].prenom || !players[0].club || !players[0].licence) {
-                let error = 'Erreur: Il manque les colonnes suivantes: ';
-                error += !players[0].nom ? 'nom, ' : '';
-                error += !players[0].prenom ? 'prenom, ' : '';
-                error += !players[0].club ? 'club, ' : '';
-                if (!players[0].licence) {
-                    error += 'licence';
-                } else {
-                    error.slice(0, error.length - 3);
-                }
-                this.warningService.showWarning(error, false);
-            } else {
-                // If there is any pool already created, make the first one
-                if (!this.categorie.pools.length) {
-                    this.categorie.pools.push({ participants: [] });
-                }
-                // Sort randomly the players
-                players.sort(() => 0.5 - Math.random());
-                players.forEach((player) => {
-                    if (this.categorie.pools[this.categorie.pools.length - 1]
-                        .participants.length < this.playersByPool) {
-                        this.categorie.pools[this.categorie.pools.length - 1].participants.push({
-                            id: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
-                            votes: [],
-                            club: player.club,
-                            lastName: player.nom,
-                            name: player.prenom,
-                            licence: player.licence,
-                        });
-                    } else {
-                        this.categorie.pools.push({
-                            participants: [{
-                                id: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
-                                votes: [],
-                                club: player.club,
-                                lastName: player.nom,
-                                name: player.prenom,
-                                licence: player.licence,
-                            }],
-                        });
-                    }
-                });
-            }
-        };
-        fr.readAsBinaryString(excelFile);
+        this.excelHelper.uploadFile(event, this.loadFile.bind(this));
+    }
+
+    loadFile(event_: ProgressEvent<FileReader>) {
+        const categorie = this.excelHelper.loadFile(event_, this.playersByPool, this.categorie);
+        if (categorie) {
+            this.categorie = categorie;
+            this.patchValue();
+        }
+    }
+
+    patchValue() {
+        this.categorie.pools = this.categorie.pools
+            .filter((pool) => pool.participants.length);
+        this.categorie.pools.forEach((pool) => {
+            pool.participants.forEach((participant) => {
+                const vote: Votes = participant.votes
+                    ? participant.votes
+                        .find((vote_) => vote_.codeJuge === this.judgeCode) : null;
+                this.votesRecord[`${participant.id}`] = vote ? vote.note : null;
+            });
+        });
+        this.categorieForm.patchValue({ name: this.categorie.name });
+        this.categorie.pools.forEach((pool) => {
+            this.addPoolForm(pool);
+        });
+        if (!this.isAdmin) {
+            this.categorieForm.disable();
+        }
     }
 
     addPoolForm(pool?: Pool) {

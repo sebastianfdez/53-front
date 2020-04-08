@@ -1,4 +1,5 @@
 <div class="participants-cont flex-div column full-width mat-elevation-z1"
+    [class.error]="playerForm.invalid"
     [formGroup]="playerForm">
     <ng-container *ngIf="disabled else form">
         <div class="flex-div vote-mode">

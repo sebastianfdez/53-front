@@ -49,6 +49,9 @@
                 font-size: 1rem;
             }
         }
+        &.error {
+            border: 1px solid #ff7777;
+        }
     }
     .button {
         width: 80%;

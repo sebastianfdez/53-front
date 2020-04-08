@@ -25,6 +25,7 @@ import { JudgeResolve } from './resolvers/judge.resolve';
 import { AuthModule } from '../auth/auth.module';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
+import { ExcelHelperService } from './services/excel-helper.service';
 
 
 const routes: Routes = [
@@ -108,6 +109,7 @@ const routes: Routes = [
         CategorieResolve,
         JudgeResolve,
         ContestsService,
+        ExcelHelperService,
     ],
     exports: [
         RouterModule,
