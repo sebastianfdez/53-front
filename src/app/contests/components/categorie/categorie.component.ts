@@ -111,17 +111,21 @@ export class CategorieComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
-    deletePool(j: number) {
-        (this.categorieForm.get('poolxs') as FormArray).removeAt(j);
+    deletePool(j: number): void {
+        (this.categorieForm.get('pools') as FormArray).removeAt(j);
     }
 
-    save() {
+    save(): void {
+        if (this.categorieForm.invalid) {
+            return;
+        }
         this.loadingSave = true;
         this.categorie = { ...this.categorie, ...this.categorieForm.value };
+        console.log(this.categorie);
         if (this.createNew) {
             this.categorie.contest = this.store.value.selectedContest.id;
             this.firebaseService.addCategorie(this.categorie)
@@ -145,11 +149,11 @@ export class CategorieComponent implements OnInit, OnDestroy {
         }
     }
 
-    get saveDisabled() {
+    get saveDisabled(): boolean {
         return !this.isValid(this.categorieForm);
     }
 
-    isValid(form: AbstractControl) {
+    isValid(form: AbstractControl): boolean {
         if (!form.valid) {
             return false;
         }
@@ -160,12 +164,13 @@ export class CategorieComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    saveVotes() {
+    saveVotes(): void {
         this.loadingSave = true;
         this.subscriptions.forEach((s) => s.unsubscribe());
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((player) => {
-                let vote: Votes = player.votes.find((vote_) => vote_.codeJuge === this.judgeCode);
+                let vote: Votes = player.votes
+                    ? player.votes.find((vote_) => vote_.codeJuge === this.judgeCode) : null;
                 if (!vote) {
                     vote = {
                         codeJuge: this.judgeCode,
@@ -226,7 +231,13 @@ export class CategorieComponent implements OnInit, OnDestroy {
         }
     }
 
-    patchValue() {
+    resetForm(): void {
+        this.categorieForm.reset({ name: this.categorie.name, pools: [] });
+        this.pools.clear();
+        this.patchPools();
+    }
+
+    patchValue(): void {
         this.categorie.pools = this.categorie.pools
             .filter((pool) => pool.participants.length);
         this.categorie.pools.forEach((pool) => {
@@ -238,6 +249,10 @@ export class CategorieComponent implements OnInit, OnDestroy {
             });
         });
         this.categorieForm.patchValue({ name: this.categorie.name });
+        this.patchPools();
+    }
+
+    patchPools(): void {
         this.categorie.pools.forEach((pool) => {
             this.addPoolForm(pool);
         });

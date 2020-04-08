@@ -12,11 +12,11 @@
                 - Supprimer ce rider
             </button>
         </div>
-        <button mat-stroked-button class="button" (click)="addParticipant()">
+        <button mat-stroked-button *ngIf="!poolForm.disabled" class="button" (click)="addParticipant()">
             + Ajouter un rider
         </button>
 
-        <button mat-raised-button color="warn" class="button" (click)="deletePool()">
+        <button mat-raised-button *ngIf="!poolForm.disabled" color="warn" class="button" (click)="deletePool()">
             - Supprimer la poule
         </button>
     </ng-container>
