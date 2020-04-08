@@ -62,7 +62,7 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
             this.participants.length,
             this.formBuilder.group({
                 name: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-                id: '',
+                id: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
                 votes: [],
                 club: this.formBuilder.control('', Validators.required),
                 lastName: this.formBuilder.control('', Validators.required),
@@ -79,6 +79,7 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
 
     deleteParticipant(i: number) {
         (this.poolForm.get('participants') as FormArray).removeAt(i);
+        this.poolForm.markAsDirty();
     }
 
     get disabled(): boolean {

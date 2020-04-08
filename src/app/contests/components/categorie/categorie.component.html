@@ -12,26 +12,33 @@
         <h1 class="title-53" *ngIf="isJudge && (judgeName !== '')">
             {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judgeName}}
         </h1>
-        <form class="flex-div column full-width" [formGroup]="categorieForm" (ngSubmit)="save()">
+        <form class="flex-div column full-width" [formGroup]="categorieForm">
             <mat-form-field class="example-full-width">
                 <input matInput placeholder="Nom de la catégorie" formControlName="name">
             </mat-form-field>
-            <button mat-flat-button *ngIf="isAdmin && !loadingSave" color="primary" class="button" type="submit"
-            [disabled]="saveDisabled">
-                Sauvegarder la categorie
-            </button>
-        
-            <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button" (click)="saveVotes()">
-                Sauvegarder les notes
-            </button>
-        
-            <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" color="#007106" class="button scores" (click)="goToScores()">
-                Classement et finale
-            </button>
-        
-            <button mat-flat-button *ngIf="isAdmin && !categorie.final && !loadingSave" color="primary" class="button excel" (click)="openUploeader()">
-                Importer depuis excel
-            </button>
+
+            <div class="buttons-container flex-div column full-width">
+                <button mat-flat-button *ngIf="isAdmin && !loadingSave" color="primary" class="button" (click)="save()"
+                    [disabled]="saveDisabled">
+                    Sauvegarder la categorie
+                </button>
+                <button mat-flat-button *ngIf="isAdmin && !loadingSave && categorieForm.dirty"
+                color="warn" class="button" (click)="resetForm()">
+                    Supprimer modifications 
+                </button>
+            
+                <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button" (click)="saveVotes()">
+                    Sauvegarder les notes
+                </button>
+            
+                <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" color="#007106" class="button scores" (click)="goToScores()">
+                    Classement et finale
+                </button>
+            
+                <button mat-flat-button *ngIf="isAdmin && !categorie.final && !loadingSave" color="primary" class="button excel" (click)="openUploeader()">
+                    Importer depuis excel
+                </button>
+            </div>
 
             <kendo-upload
                 #UploadComponent

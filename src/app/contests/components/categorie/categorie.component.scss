@@ -19,32 +19,6 @@
                 width: 40%;
                 min-width: fit-content;
             }
-            .participants-cont {
-                padding: 20px 0;
-                border-radius: 8px;
-                background-color: #fbfbfb;
-                margin-bottom: 20px;
-                .vote-mode {
-                    display: flex;
-                    width: 100%;
-                    flex-wrap: wrap;
-                    padding: 0 15px;
-                    .icon {
-                        font-size: 40px;
-                        flex: 0 0 auto;
-                        width: 40px;
-                    }
-                    .info {
-                        flex: 1;
-                        margin: 0 10px;
-                    }
-                    .vote-input {
-                        font-size: 20px;
-                        flex: 0 0 auto;
-                        width: 100%;
-                    }
-                }
-            }
             .button {
                 font-size: 1rem;
             }
@@ -92,26 +66,9 @@
 
 @media (max-width: 570px) {
     .categorie-container {
-        .pool {
-            .participants {
-                .participants-cont {
-                    margin-top: 10px;
-                }
-            }
-        }
         .button {
             font-size: 1rem;
             padding: 0 1px;
-        }
-    }
-}
-
-@media (max-width: 270px) {
-    .pool {
-        .participants {
-            .icon {
-                display: none;
-            }
         }
     }
 }
