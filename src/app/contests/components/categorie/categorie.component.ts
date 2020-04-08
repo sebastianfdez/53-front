@@ -165,7 +165,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((s) => s.unsubscribe());
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((player) => {
-                let vote: Votes = player.votes.find((vote_) => vote_.codeJuge === this.judgeCode);
+                let vote: Votes = player.votes
+                    ? player.votes.find((vote_) => vote_.codeJuge === this.judgeCode) : null;
                 if (!vote) {
                     vote = {
                         codeJuge: this.judgeCode,
