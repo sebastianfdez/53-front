@@ -5,6 +5,7 @@ import { User } from 'src/app/shared/models/user';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { switchMap, tap, take } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 import { ContestsService } from '../../services/contest.service';
 
 @Component({
@@ -29,9 +30,11 @@ export class PortalComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private cdr: ChangeDetectorRef,
+        private titleService: Title,
     ) {}
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Admin');
         this.contests$ = this.authService.getAuthenticatedUser().pipe(
             take(1),
             tap(() => {

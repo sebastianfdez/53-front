@@ -1,5 +1,5 @@
 <ng-container *ngIf="poolForm" [formGroup]="poolForm">
-    <ng-container formArrayName="participants">
+    <div formArrayName="participants" class="participants-cont flex-div full-width">
         <div class="participants flex-div column full-width" *ngFor="let participant_ of participants?.controls; index as i;">
             <app-player-form
             class="flex-div column full-width"
@@ -12,12 +12,12 @@
                 - Supprimer ce rider
             </button>
         </div>
-        <button mat-stroked-button *ngIf="!poolForm.disabled" class="button" (click)="addParticipant()">
-            + Ajouter un rider
-        </button>
+    </div>
+    <button mat-stroked-button *ngIf="!poolForm.disabled" class="button" (click)="addParticipant()">
+        + Ajouter un rider
+    </button>
 
-        <button mat-raised-button *ngIf="!poolForm.disabled" color="warn" class="button" (click)="deletePool()">
-            - Supprimer la poule
-        </button>
-    </ng-container>
+    <button mat-raised-button *ngIf="!poolForm.disabled" color="warn" class="button" (click)="deletePool()">
+        - Supprimer la poule
+    </button>
 </ng-container>

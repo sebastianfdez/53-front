@@ -13,6 +13,7 @@ import { Store } from 'store';
 import {
     FormBuilder, FormGroup, Validators, FormArray, AbstractControl, ValidationErrors,
 } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
@@ -79,6 +80,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
         private store: Store,
         private formBuilder: FormBuilder,
         private excelHelper: ExcelHelperService,
+        private titleService: Title,
     ) {
         if (this.route.snapshot.routeConfig.path === 'categorie/:id/speaker') {
             this.isSpeaker = true;
@@ -105,6 +107,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
                 } else {
                     this.categorie = categorie.categorie;
                 }
+                this.titleService.setTitle(`La 53 - ${this.categorie.name} - ${this.store.value.selectedContest.name}`);
                 this.patchValue();
                 this.loading = false;
             }),
@@ -116,7 +119,8 @@ export class CategorieComponent implements OnInit, OnDestroy {
     }
 
     deletePool(j: number): void {
-        (this.categorieForm.get('pools') as FormArray).removeAt(j);
+        this.pools.removeAt(j);
+        this.categorieForm.markAsDirty();
     }
 
     save(): void {

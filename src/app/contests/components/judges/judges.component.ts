@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Subscription, from, of } from 'rxjs';
 import { Store } from 'store';
+import { Title } from '@angular/platform-browser';
 import { Judge } from '../../models/categorie';
 import { Contest } from '../../../shared/models/contest';
 import { FirebaseService } from '../../../shared/services/firebase.service';
@@ -48,10 +49,12 @@ export class JudgesComponent implements OnInit, OnDestroy {
         private snackBarService: SnackBarService,
         private componentUtils: ComponentUtils,
         private store: Store,
+        private titleService: Title,
 
     ) { }
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Judges');
         // eslint-disable-next-line no-undef
         this.contestId = localStorage.getItem('contestId');
         this.loading = true;

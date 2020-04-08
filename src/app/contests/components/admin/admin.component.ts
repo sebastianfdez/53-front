@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { switchMap, map, filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { User } from '../../../shared/models/user';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { Contest } from '../../../shared/models/contest';
@@ -32,6 +33,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         private contestService: ContestsService,
         private router: Router,
         private authService: AuthService,
+        private titleService: Title,
     ) {
     }
 
@@ -52,6 +54,7 @@ export class AdminComponent implements OnInit, OnDestroy {
                     // eslint-disable-next-line no-undef
                     localStorage.setItem('contestId', this.contest.id);
                     this.loading = false;
+                    this.titleService.setTitle(`La 53 - ${this.contest.name}`);
                 }),
             ).subscribe(),
         );

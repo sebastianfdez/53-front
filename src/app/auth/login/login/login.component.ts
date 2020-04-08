@@ -5,6 +5,7 @@ import {
 } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../auth-form/services/auth.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
@@ -26,9 +27,11 @@ export class LoginComponent implements OnInit {
         private fb: FormBuilder,
         private componentUtils: ComponentUtils,
         private snackBarService: SnackBarService,
+        private titleService: Title,
     ) {}
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Login');
         this.loginForm = this.fb.group({
             user: ['', Validators.required],
             pass: ['', Validators.required],
