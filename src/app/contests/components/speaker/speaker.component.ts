@@ -5,10 +5,9 @@ import {
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Store } from 'store';
 import { Contest } from '../../../shared/models/contest';
-import { Speaker, emptySpeaker } from '../../models/speaker';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
-import { User } from '../../../shared/models/user';
+import { User, emptyUser } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
@@ -25,7 +24,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     contestId = '';
 
-    speaker: Speaker = null;
+    speaker: User = null;
 
     noSpeaker = true;
 
@@ -57,12 +56,12 @@ export class SpeakerComponent implements OnInit, OnDestroy {
                     this.contest = contest;
                     if (this.contest.speaker !== undefined && this.contest.speaker !== '') {
                         this.noSpeaker = false;
-                        this.speaker = emptySpeaker;
+                        this.speaker = emptyUser;
                         this.addSpeaker = true;
                         return this.contestService.getSpeaker();
                     }
                     this.addSpeaker = false;
-                    return of(emptySpeaker);
+                    return of(emptyUser);
                 }),
             ).subscribe(
                 (speaker) => {
@@ -101,7 +100,9 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     }
 
     createSpeakerUser() {
-        this.speaker.contest = this.contest.id;
+        this.speaker.contest = [this.contest.id];
+        this.speaker.role = {};
+        this.speaker.role[this.contestId] = 'speaker';
         this.subscriptions.push(
             this.firebaseService.updateContest(this.contestId, { speaker: this.speaker.mail }).pipe(
                 tap(() => {
