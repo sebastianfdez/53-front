@@ -52,7 +52,7 @@
     "firebase": "^7.8.2",
     "grpc": "^1.24.2",
     "node-sass": "^4.13.0",
-    "rxjs": "~6.5.4",
+    "rxjs": "~6.5.5",
     "rxjs-compat": "^6.0.0",
     "tslib": "^1.10.0",
     "webdriver-manager": "^12.1.7",
