@@ -1,11 +1,18 @@
-.participants {
-    margin-bottom: 10px;
-    .delete {
-        width: 40%;
-        min-width: fit-content;
-    }
-    .button {
-        font-size: 1rem;
+.participants-cont {
+    flex-wrap: wrap;
+    justify-content: center;
+    .participants {
+        margin-bottom: 10px;
+        margin-bottom: 10px;
+        max-width: 350px;
+        margin: 10px 20px;
+        .delete {
+            width: 40%;
+            min-width: fit-content;
+        }
+        .button {
+            font-size: 1rem;
+        }
     }
 }
 .button {

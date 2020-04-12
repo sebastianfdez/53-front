@@ -3,6 +3,7 @@ import {
     FormBuilder, FormGroup, Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../auth-form/services/auth.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
 import { Contest } from '../../../shared/models/contest';
@@ -28,9 +29,11 @@ export class RegisterComponent implements OnInit {
         private firebaseService: FirebaseService,
         private snackBarService: SnackBarService,
         private router: Router,
+        private titleService: Title,
     ) {}
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Register');
         this.registerForm = this.fb.group({
             user: ['', Validators.required],
             pass: ['', Validators.required],

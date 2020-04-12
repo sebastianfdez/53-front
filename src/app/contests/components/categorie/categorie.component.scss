@@ -5,7 +5,7 @@
         max-width: 460px;
     }
     .pool {
-        max-width: 630px;
+        max-width: 90%;
         color: #000000;
         .poule {
             margin: 15px 0;
@@ -25,6 +25,10 @@
         }
         &.error {
             border: 1px solid #ff7777;
+        }
+
+        @media (max-width: 570px) {
+            width: 75%;
         }
     }
     .button {

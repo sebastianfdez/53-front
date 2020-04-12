@@ -5,6 +5,7 @@ import {
 } from 'rxjs';
 import { Router } from '@angular/router';
 import { switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 import { Categorie } from '../../models/categorie';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { User } from '../../../shared/models/user';
@@ -57,6 +58,7 @@ export class ContestsComponent implements OnInit, OnDestroy {
         private contestService: ContestViewService,
         private authService: AuthService,
         private snackBarService: SnackBarService,
+        private titleService: Title,
     ) {
         this.loading = true;
     }
@@ -65,7 +67,9 @@ export class ContestsComponent implements OnInit, OnDestroy {
         this.isAdmin = this.authService.isAdmin();
         this.isJudge = this.authService.isJudge();
         this.judge$ = this.authService.getAuthenticatedUser();
-        this.contest$ = this.contestService.getSelectedContest();
+        this.contest$ = this.contestService.getSelectedContest().pipe(
+            tap((contest) => this.titleService.setTitle(`La 53 - ${contest.name}`)),
+        );
         this.categories$ = this.contestService.getSelectedContest().pipe(
             tap(() => {
                 this.loading = true;

@@ -3,6 +3,7 @@ import {
     Component, OnInit, ElementRef, ViewChild,
 } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-home',
@@ -10,6 +11,8 @@ import { environment } from 'src/environments/environment';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+    constructor(private titleService: Title) {}
+
     showSticky = true;
 
     bottomMenu = false;
@@ -23,6 +26,7 @@ export class HomeComponent implements OnInit {
     public version: string = environment.version;
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Home');
         this.setHeaderAnimation();
     }
 
