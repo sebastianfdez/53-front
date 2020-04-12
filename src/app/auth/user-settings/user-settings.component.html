@@ -1,0 +1,26 @@
+<div class="back-53 user">
+    <button mat-flat-button color="primary" aria-hidden="false"
+        aria-label="Go back to main menu" [routerLink]="['/portal/portal']"
+        tabindex="0" role="link">
+        Retour
+    </button>
+</div>
+
+<div class="container-53 scrollbar-53 flex-div column" style="justify-content: center;"
+    *ngIf="user$ | async as user">
+    <div class="block-53 flex-div column">
+        <h1>Changer mot de passe</h1>
+        <h2>{{user.mail}}</h2>
+        <p></p>
+        <h3>Pour changer votre mot de passe, cliquez ici et un mail sera envoyé 
+            pour le réinitialiser</h3>
+        <p></p>
+        <button mat-flat-button class="button" color="primary" *ngIf="!loading"
+        (click)="changePassword()" [disabled]="!user.mail">
+            Changer mot de passe
+        </button>
+        <div *ngIf="loading">
+            <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
+    </div> 
+</div>

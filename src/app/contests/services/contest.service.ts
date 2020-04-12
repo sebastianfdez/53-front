@@ -4,10 +4,10 @@ import { Observable, of } from 'rxjs';
 import {
     switchMap, take, catchError, map, tap, distinctUntilChanged,
 } from 'rxjs/operators';
+import { User } from 'src/app/shared/models/user';
 import { Contest } from '../../shared/models/contest';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { Categorie } from '../models/categorie';
-import { Speaker } from '../models/speaker';
 
 @Injectable({
     providedIn: 'root',
@@ -106,14 +106,14 @@ export class ContestsService {
         this.firebaseService.updateContest(contestId, { categories });
     }
 
-    getSpeaker(): Observable<Speaker> {
-        return this.store.value.speaker ? this.store.select<Speaker>('speaker').pipe(take(1))
+    getSpeaker(): Observable<User> {
+        return this.store.value.speaker ? this.store.select<User>('speaker').pipe(take(1))
             : this.store.select<Contest>('contest').pipe(
                 switchMap((contest) => this.firebaseService.getSpeaker(contest.speaker)),
                 switchMap((snapshot) => {
-                    const speaker: Speaker = snapshot.payload.data();
+                    const speaker: User = snapshot.payload.data();
                     this.store.set('speaker', speaker);
-                    return this.store.select<Speaker>('speaker');
+                    return this.store.select<User>('speaker');
                 }),
             );
     }
