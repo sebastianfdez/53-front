@@ -9,7 +9,6 @@ import {
 import { AuthService } from '../auth-form/services/auth.service';
 import { User } from '../../shared/models/user';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { Judge } from '../../contests/models/categorie';
 
 @Component({
     selector: 'app-password-less-auth',
@@ -66,14 +65,16 @@ export class PasswordLessAuthComponent implements OnInit {
                 this.speaker = window.localStorage.getItem('speaker') === 'true';
 
                 const result = await this.authService.signInWithLink(this.emailUrl, url);
-                const judge: Judge = {
-                    contest: this.contestId,
+                const judge: User = {
+                    contest: [this.contestId],
                     id: result.user.uid,
                     lastName: '',
                     name: '',
                     mail: this.emailUrl,
-                    role: this.speaker ? 'speaker' : 'judge',
+                    role: {},
+                    autenticated: false,
                 };
+                judge.role[this.contestId] = this.speaker ? 'speaker' : 'judge';
                 this.authService.getAuthenticatedUser().pipe(
                     filter((user) => user !== null),
                     tap((user) => {

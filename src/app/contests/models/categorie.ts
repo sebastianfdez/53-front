@@ -42,12 +42,3 @@ export const emptyCategorie: Categorie = {
     contest: '',
     final: false,
 };
-
-export interface Judge {
-    name: string;
-    id: string;
-    lastName: string;
-    mail: string;
-    role: string;
-    contest: string;
-}

@@ -10,8 +10,9 @@ import { Store } from 'store';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import {
-    Categorie, Judge, Participant, emptyCategorie,
+    Categorie, Participant, emptyCategorie,
 } from '../../models/categorie';
+import { User } from '../../../shared/models/user';
 
 export interface ScoreElement {
     pool: string;
@@ -34,7 +35,7 @@ export interface ScoreElement {
 export class ScoreTableComponent implements OnInit, OnDestroy {
     public categorie: Categorie = null;
 
-    public judges: Judge[] = [];
+    public judges: User[] = [];
 
     public dataSource: ScoreElement[] = [];
 
@@ -55,13 +56,15 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions.push(
-            this.route.data.subscribe((data: {categorie: Categorie; judges: Judge[];}) => {
+            this.route.data.subscribe((data: {categorie: Categorie; judges: User[];}) => {
                 this.judges = data.judges;
                 this.categorie = data.categorie;
                 this.getTableData();
                 this.loading = false;
                 this.displayedColumns = ['calification', 'name', 'licence'];
-                this.judges.forEach((judge) => this.displayedColumns.push(`${judge.name}${judge.lastName}`));
+                this.judges.forEach((judge) => {
+                    this.displayedColumns.push(`${judge.name}${judge.lastName}`);
+                });
                 this.displayedColumns.push('average', 'pool');
             }),
         );
@@ -212,7 +215,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    getVote(element: ScoreElement, judge: Judge) {
+    getVote(element: ScoreElement, judge: User) {
         return judge.id && element[judge.id] ? element[judge.id] : 0;
     }
 

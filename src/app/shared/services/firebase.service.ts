@@ -6,11 +6,9 @@ import {
 import {
     take, switchMap,
 } from 'rxjs/operators';
-import { Store } from 'store';
-import { Categorie, Judge } from '../../contests/models/categorie';
+import { Categorie } from '../../contests/models/categorie';
 import { Contest } from '../models/contest';
 import { User } from '../models/user';
-import { Speaker } from '../../contests/models/speaker';
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +16,6 @@ import { Speaker } from '../../contests/models/speaker';
 export class FirebaseService {
     constructor(
         private database: AngularFirestore,
-        private store: Store,
     ) { }
 
     getCategorie(id: string): Observable<Categorie> {
@@ -38,31 +35,35 @@ export class FirebaseService {
         return this.database.collection<Categorie>('categories').add(categorie);
     }
 
-    getJudges(): Observable<Judge[]> {
-        return this.store.select<Contest>('contest').pipe(
+    /**
+     * Get Judges from a provided contest
+     * @param contest Contest
+     * @return Observable of judges
+     */
+    getJudges(contest: Contest): Observable<User[]> {
+        return combineLatest(
+            contest.judges.map((judge) => this.database.collection('users').doc<User>(judge).snapshotChanges()),
+        ).pipe(
             take(1),
-            switchMap((contest) => (contest && contest.judges.length ? combineLatest(
-                contest.judges.map((judge) => this.database.collection('users').doc<Judge>(judge).snapshotChanges().pipe(take(1))),
-            ) : of([]))),
             switchMap((judges) => of(
                 judges.map((judge) => ({ ...judge.payload.data(), id: judge.payload.id })),
             )),
         );
     }
 
-    getSpeaker(idSpeaker: string): Observable<Action<DocumentSnapshot<Speaker>>> {
-        return this.database.collection('users').doc<Speaker>(idSpeaker).snapshotChanges().pipe(take(1));
+    getSpeaker(idSpeaker: string): Observable<Action<DocumentSnapshot<User>>> {
+        return this.database.collection('users').doc<User>(idSpeaker).snapshotChanges().pipe(take(1));
     }
 
     getContest(idContest: string): Observable<Contest> {
         return this.database.collection<Contest>('contests').doc<Contest>(idContest).valueChanges();
     }
 
-    createJudge(userId: string, judge: Judge): Observable<any> {
-        return this.database.collection('users').doc<Judge>(userId).valueChanges().pipe(
+    createJudge(userId: string, judge: User): Observable<any> {
+        return this.database.collection('users').doc<User>(userId).valueChanges().pipe(
             switchMap((judge_) => {
                 if (!judge_) {
-                    return this.database.collection<Judge>('users').doc<Judge>(userId).set(judge);
+                    return this.database.collection<User>('users').doc<User>(userId).set(judge);
                 }
                 return of(judge_);
             }),
@@ -73,8 +74,8 @@ export class FirebaseService {
         return this.database.collection('users').doc(judgeid).delete();
     }
 
-    updateJudge(judge: Judge) {
-        this.database.collection('users').doc<Judge>(judge.id).update({ name: judge.name, lastName: judge.lastName });
+    updateJudge(judge: User) {
+        this.database.collection('users').doc<User>(judge.id).update({ name: judge.name, lastName: judge.lastName });
     }
 
     updateContest(contestId: string, contest: Partial<Contest>) {
