@@ -47,6 +47,7 @@ export class AuthService {
                         autenticated: true,
                         role: user_.payload.data().role,
                         id: user_.payload.id,
+                        mail: user_.payload.data().mail,
                         name: user_.payload.data().name,
                         lastName: user_.payload.data().lastName,
                         contest: user_.payload.data().contest,
@@ -125,5 +126,13 @@ export class AuthService {
 
     signInWithLink(mail: string, url: string) {
         return this.afAuth.signInWithEmailLink(mail, url);
+    }
+
+    /**
+     * Send reset password link to provided mail
+     * @param mail user mail
+     */
+    changePassword(mail: string) {
+        return from(this.afAuth.sendPasswordResetEmail(mail));
     }
 }

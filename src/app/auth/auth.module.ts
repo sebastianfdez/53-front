@@ -12,7 +12,15 @@ export const ROUTES: Routes = [
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'login' },
             { path: 'login', loadChildren: () => import('./login/login.module').then((m) => m.LoginModule) },
-            { path: 'register', loadChildren: () => import('./register/register.module').then((m) => m.RegisterModule) },
+            {
+                path: 'register',
+                loadChildren: () => import('./register/register.module').then((m) => m.RegisterModule),
+            },
+            {
+                path: 'user-settings',
+                loadChildren: () => import('./user-settings/user-settings.module')
+                    .then((m) => m.UserSettingsModule),
+            },
             { path: 'inscription', component: PasswordLessAuthComponent },
         ],
     },

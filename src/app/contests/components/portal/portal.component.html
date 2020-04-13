@@ -1,9 +1,12 @@
+<div class="back-53 user" *ngIf="user">
+    <mat-icon aria-hidden="false" aria-label="Go to user settings"
+    tabindex="0" role="link" [routerLink]="['/auth/user-settings']">person</mat-icon>
+</div>
 <div class="back-53 logout">
     <button mat-flat-button color="primary" (click)="logOut()">
-        {{"Se déconnecter"}}
+        Se déconnecter
     </button>
 </div>
-
 <div class="container-53 scrollbar-53">
     <div class="grid-53-container flex-div column">
         <h1 class="title-small" *ngIf="user">
