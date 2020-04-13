@@ -102,6 +102,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     createSpeakerUser() {
         this.speaker.contest = [this.contest.id];
         this.speaker.role = {};
+        this.speaker.id = this.speaker.mail;
         this.speaker.role[this.contestId] = 'speaker';
         this.subscriptions.push(
             this.firebaseService.updateContest(this.contestId, { speaker: this.speaker.mail }).pipe(
@@ -111,7 +112,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
                     this.addSpeaker = false;
                 }),
                 switchMap(
-                    () => from(this.firebaseService.createJudge(this.speaker.mail, this.speaker)),
+                    () => from(this.firebaseService.createJudge(this.speaker, this.contest.id)),
                 ),
                 catchError(() => {
                     this.snackBarService.showMessage(`L'e-mail ${this.speaker.mail} est déjà utilisé`);

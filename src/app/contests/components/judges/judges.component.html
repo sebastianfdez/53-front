@@ -7,64 +7,86 @@
     {{"<"}}
   </button>
 </div>
-<div *ngIf="judges$ | async as judges" class="flex-div column full-width full-height">
-  <div class="judges-container container-53 scrollbar-53" *ngIf="!loading">
-    <h1 class="title-53">Liste des juges</h1>
+<ng-container *ngIf="(judges$ | async).length > 0; else nojudge">
+  <ng-container
+   *ngIf="judges$ | async as judges">
 
-    <div class="block-53" *ngFor="let judge of judges">
-      <!-- <div class="delete" (click)="deleteJudge(judge)" *ngIf="editing">
-        <mat-icon>close</mat-icon>
-      </div> -->
-      <mat-icon class="icon">person</mat-icon>
-      <div class="form-container flex-div column">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Prénom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
-          [disabled]="true">
-        </mat-form-field>
+    <div class="judges-container container-53 scrollbar-53" *ngIf="!loading">
+      <h1 class="title-53">Liste des juges</h1>
 
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
-          [disabled]="true">
-        </mat-form-field>
+      <div class="block-53" *ngFor="let judge of judges">
+        <mat-icon class="icon">person</mat-icon>
+        <div class="form-container flex-div column">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Prénom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
+            [disabled]="true">
+          </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
-        </mat-form-field>
-              
-        <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge()">
-          Supprimer juge
-        </button>
-      </div>
-      <mat-icon class="icon" (click)="copyLink(judge)" style="cursor: pointer">link</mat-icon>
-    </div>
-              
-    <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="addJudge = true">
-      <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
-    </button>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
+            [disabled]="true">
+          </mat-form-field>
 
-    <div class="block-53" style="margin-top: 50px !important;" *ngIf="addJudge && !loading">
-      <mat-icon class="icon">person_add</mat-icon>
-      <div class="form-container">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Prenom" [(ngModel)]="newJudge.name" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
+          </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Nom" [(ngModel)]="newJudge.lastName" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+          <h4 *ngIf="judge.autenticated">
+            Ce juge a déjà un compte sur la 53. Il peut dès maintenant participer au {{contest.name}}
+          </h4>
+          <h4 *ngIf="!judge.autenticated">
+            Cette adresse e-mail n'est pas associé à un compte. Cliquez sur
+            <mat-icon (click)="copyLink(judge)" style="cursor: pointer">link</mat-icon>
+            pour générer un lien d'invitation 
+            à envoyer au juge pour qu'il crée son compte.
+          </h4>
+                
+          <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)">
+            Supprimer juge
+          </button>
+        </div>
+        <mat-icon class="icon" (click)="copyLink(judge)" style="cursor: pointer"
+        *ngIf="!judge.autenticated">link</mat-icon>
       </div>
     </div>
-              
-    <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
-      [disabled]="!newJudge.name.length || !newJudge.lastName.length || newJudge.mail.length < 7">
-      <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
-    </button>
+  </ng-container>
+</ng-container>
 
+<ng-template #nojudge>
+  <div class="container-53">
+    <div class="block-53">
+      <h1>Il n'y a pas de juge associé. Ajoutez le premier</h1>
+    </div>
   </div>
+</ng-template>
+
+<div class="container-53">   
+  <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="addJudge = true">
+    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
+  </button>
+
+  <div class="block-53" style="margin-top: 50px !important;" *ngIf="addJudge && !loading">
+    <mat-icon class="icon">person_add</mat-icon>
+    <div class="form-container">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Prenom" [(ngModel)]="newJudge.name" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Nom" [(ngModel)]="newJudge.lastName" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+    </div>
+  </div>
+            
+  <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
+    [disabled]="!newJudge.name.length || !newJudge.lastName.length || newJudge.mail.length < 7">
+    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
+  </button>
+
 </div>
 
 <div class="container-53" *ngIf="loading">
