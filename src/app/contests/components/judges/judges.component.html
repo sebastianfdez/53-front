@@ -69,21 +69,13 @@
     <mat-icon class="icon">person_add</mat-icon>
     <div class="form-container">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Prenom" [(ngModel)]="newJudge.name" [ngModelOptions]="{standalone: true}">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Nom" [(ngModel)]="newJudge.lastName" [ngModelOptions]="{standalone: true}">
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
         <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}">
       </mat-form-field>
     </div>
   </div>
             
   <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
-    [disabled]="!newJudge.name.length || !newJudge.lastName.length || newJudge.mail.length < 7">
+    [disabled]="newJudge.mail.length < 7">
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
   </button>
 

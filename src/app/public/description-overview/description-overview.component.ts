@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/pluck';
@@ -9,14 +9,10 @@ import 'rxjs/add/operator/pluck';
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./description-overview.component.scss'],
 })
-export class DescriptionOverviewComponent implements OnInit {
+export class DescriptionOverviewComponent {
     type: Observable<string> = this.route.params.pluck('type');
 
     constructor(
         private route: ActivatedRoute,
     ) { }
-
-    ngOnInit() {
-        console.log(this.type);
-    }
 }

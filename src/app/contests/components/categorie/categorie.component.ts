@@ -129,7 +129,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
         }
         this.loadingSave = true;
         this.categorie = { ...this.categorie, ...this.categorieForm.value };
-        console.log(this.categorie);
         if (this.createNew) {
             this.categorie.contest = this.store.value.selectedContest.id;
             this.firebaseService.addCategorie(this.categorie)

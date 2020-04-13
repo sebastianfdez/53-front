@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-    AngularFirestore, Action, DocumentSnapshot, QueryFn, DocumentReference,
+    AngularFirestore, QueryFn,
 } from '@angular/fire/firestore';
 import {
     Observable, of, combineLatest, from,
 } from 'rxjs';
 import {
-    take, switchMap, map, tap,
+    take, switchMap, map,
 } from 'rxjs/operators';
 import { Categorie } from '../../contests/models/categorie';
 import { Contest } from '../models/contest';
@@ -84,7 +84,6 @@ export class FirebaseService {
         return this.getUserByMail(judge.mail).pipe(
             take(1),
             switchMap((judge_) => {
-                console.log(judge_);
                 if (!judge_ || !judge_.length) {
                     return this.createNewJudge(judge, judge.mail);
                 }
@@ -125,13 +124,11 @@ export class FirebaseService {
      * @param user new value of the user
      */
     updateUser(userId: string, user: Partial<User>): Observable<User> {
-        console.log({ userId, user });
         return from(
             this.database.collection('users').doc<User>(userId).update(user).catch(
                 (error) => console.log(error),
             ),
         ).pipe(
-            tap((user_) => console.log(user_)),
             map(() => user as User),
         );
     }

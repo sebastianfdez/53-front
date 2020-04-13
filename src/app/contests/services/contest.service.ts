@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from 'store';
 import { Observable, of } from 'rxjs';
 import {
-    switchMap, take, catchError, map, tap, distinctUntilChanged,
+    switchMap, take, catchError, map, distinctUntilChanged,
 } from 'rxjs/operators';
 import { User } from 'src/app/shared/models/user';
 import { Contest } from '../../shared/models/contest';
@@ -85,12 +85,10 @@ export class ContestsService {
     }
 
     addNewCategorie(contestId: string, categorieId: string): void {
-        console.log('intento actualizar contest');
         const { categories } = this.store.value.selectedContest;
         categories.push(categorieId);
         this.store.set('contest', Object.assign(this.store.value.selectedContest, { categories }));
         this.firebaseService.updateContest(contestId, { categories }).pipe(
-            tap(() => console.log(tap)),
             catchError((error) => {
                 console.log(error);
                 return null;
@@ -107,14 +105,16 @@ export class ContestsService {
     }
 
     getSpeaker(): Observable<User> {
-        return this.store.value.speaker ? this.store.select<User>('speaker').pipe(take(1))
-            : this.store.select<Contest>('contest').pipe(
-                switchMap((contest) => this.firebaseService.getSpeaker(contest.speaker)),
-                switchMap((snapshot) => {
-                    const speaker: User = snapshot.payload.data();
-                    this.store.set('speaker', speaker);
-                    return this.store.select<User>('speaker');
-                }),
-            );
+        if (this.store.value.speaker) {
+            return this.store.select<User>('speaker').pipe(take(1));
+        }
+        return this.store.select<Contest>('selectedContest').pipe(
+            switchMap((contest) => this.firebaseService.getUser(contest.speaker)),
+            switchMap((user) => {
+                const speaker: User = user;
+                this.store.set('speaker', speaker);
+                return this.store.select<User>('speaker');
+            }),
+        );
     }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from 'store';
-import { take, switchMap, tap } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { ContestsService } from '../services/contest.service';
 import { User } from '../../shared/models/user';

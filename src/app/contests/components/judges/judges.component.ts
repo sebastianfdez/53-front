@@ -18,7 +18,6 @@ import { User } from '../../../shared/models/user';
 @Component({
     selector: 'app-judges',
     templateUrl: './judges.component.html',
-    styleUrls: ['./judges.component.scss'],
 })
 export class JudgesComponent implements OnInit, OnDestroy {
     judges$: Observable<User[]> = null;
@@ -50,13 +49,11 @@ export class JudgesComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.createEmptyJudge();
         this.store.select<Contest>('selectedContest').subscribe((contest) => {
-            console.log(contest);
             this.contest = contest;
             this.contestId = contest.id;
         });
         this.judges$ = this.store.select<User[]>('judges').pipe(
-            tap((jud) => {
-                console.log(jud);
+            tap(() => {
                 this.loading = false;
             }),
         );
@@ -90,7 +87,6 @@ export class JudgesComponent implements OnInit, OnDestroy {
             ).pipe(
                 take(1),
                 switchMap(([judges, newJudge]) => {
-                    console.log({ judges, newJudge });
                     judges.push(newJudge);
                     this.store.set('judges', judges);
                     return this.firebaseService
