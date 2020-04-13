@@ -5,9 +5,9 @@ import {
     switchMap, map, filter,
 } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from 'store';
 import { User, emptyUser } from '../../../shared/models/user';
+import { FirebaseService } from '../../../shared/services/firebase.service';
 
 @Injectable()
 export class AuthService {
@@ -20,37 +20,35 @@ export class AuthService {
             const user: User = JSON.parse(JSON.stringify(emptyUser));
             user.id = user_.uid;
             user.mail = user_.email;
-            user.id = user_.uid;
-            user.role[this.store.value.selectedContest ? this.store.value.selectedContest.id : ''] = 'admin';
             return this.getLoggedUserInfo(user.id, user.mail);
         }),
     ).subscribe();
 
     constructor(
         private afAuth: AngularFireAuth,
-        private db: AngularFirestore,
+        private firebaseService: FirebaseService,
         private store: Store,
     ) {}
 
     getLoggedUserInfo(uid: string, mail: string): Observable<boolean> {
-        return this.db.doc<User>(`users/${uid}`).snapshotChanges().pipe(
-            switchMap((user_) => {
-                if (user_ && user_.payload.data()) {
-                    return of(user_);
-                }
-                return this.db.doc<User>(`users/${mail}`).snapshotChanges();
-            }),
+        return this.firebaseService.getUser(uid).pipe(
             switchMap((user_) => {
                 if (user_) {
+                    return of([user_]);
+                }
+                return this.firebaseService.getUserByMail(mail);
+            }),
+            switchMap((user_) => {
+                if (user_ && user_.length) {
                     this.store.set('user', {
                         ...this.store.value.user,
                         autenticated: true,
-                        role: user_.payload.data().role,
-                        id: user_.payload.id,
-                        mail: user_.payload.data().mail,
-                        name: user_.payload.data().name,
-                        lastName: user_.payload.data().lastName,
-                        contest: user_.payload.data().contest,
+                        role: user_[0].role,
+                        id: user_[0].id,
+                        mail: user_[0].mail,
+                        name: user_[0].name,
+                        lastName: user_[0].lastName,
+                        contest: user_[0].contest,
                     });
                     return of(true);
                 }

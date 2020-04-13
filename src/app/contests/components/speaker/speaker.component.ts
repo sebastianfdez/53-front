@@ -4,6 +4,7 @@ import {
 } from 'rxjs';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Store } from 'store';
+import { Title } from '@angular/platform-browser';
 import { Contest } from '../../../shared/models/contest';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
@@ -15,7 +16,6 @@ import { ComponentUtils } from '../../../shared/services/component-utils';
 @Component({
     selector: 'app-speaker',
     templateUrl: './speaker.component.html',
-    styleUrls: ['./speaker.component.scss'],
 })
 export class SpeakerComponent implements OnInit, OnDestroy {
     contest: Contest = null;
@@ -26,11 +26,9 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     speaker: User = null;
 
-    noSpeaker = true;
-
     addSpeaker = false;
 
-    public loading = false;
+    newMail = '';
 
     public loadingSave = false;
 
@@ -43,31 +41,28 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         private firebaseService: FirebaseService,
         private contestService: ContestsService,
         private componentUtils: ComponentUtils,
+        private titleService: Title,
     ) { }
 
     ngOnInit() {
-        this.loading = true;
+        this.titleService.setTitle('La 53 - Speaker');
         // eslint-disable-next-line no-undef
-        this.contestId = localStorage.getItem('contestId');
         this.subscriptions.push(
             this.authService.getAuthenticatedUser().pipe(
                 switchMap(() => this.contestService.getSelectedContest()),
                 switchMap((contest) => {
                     this.contest = contest;
+                    this.contestId = contest.id;
                     if (this.contest.speaker !== undefined && this.contest.speaker !== '') {
-                        this.noSpeaker = false;
-                        this.speaker = emptyUser;
-                        this.addSpeaker = true;
                         return this.contestService.getSpeaker();
                     }
-                    this.addSpeaker = false;
-                    return of(emptyUser);
+                    return of(null);
                 }),
             ).subscribe(
                 (speaker) => {
-                    this.loading = false;
-                    this.speaker = speaker;
-                    this.speaker.id = this.noSpeaker ? '' : this.contest.id;
+                    if (speaker) {
+                        this.speaker = speaker;
+                    }
                 },
             ),
         );
@@ -77,42 +72,38 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
-    isSaveDisabled(): boolean {
-        return this.addSpeaker ? this.speaker.name.length < 5 || this.speaker.lastName.length < 5
-        || this.speaker.mail.length < 5 : false;
-    }
-
     saveSpeaker() {
-        if (this.noSpeaker && !this.addSpeaker) {
-            this.addSpeaker = true;
-        } else {
-            this.loadingSave = true;
-            try {
-                this.createSpeakerUser();
-                this.snackBarService.showMessage(`Profile juge créé pour ${this.speaker.mail}.
+        this.loadingSave = true;
+        try {
+            this.createSpeakerUser();
+            this.snackBarService.showMessage(`Profile juge créé pour ${this.speaker.mail}.
                     Envoyez le lien de connexion à ${this.speaker.name} ${this.speaker.lastName}`);
-            } catch (err) {
-                console.log(err);
-                this.snackBarService.showError('Une erreur est survenue');
-                this.loadingSave = false;
-            }
+        } catch (err) {
+            console.log(err);
+            this.snackBarService.showError('Une erreur est survenue');
+            this.loadingSave = false;
         }
     }
 
     createSpeakerUser() {
+        this.speaker = emptyUser;
         this.speaker.contest = [this.contest.id];
         this.speaker.role = {};
+        this.speaker.id = this.newMail;
+        this.speaker.mail = this.newMail;
         this.speaker.role[this.contestId] = 'speaker';
         this.subscriptions.push(
-            this.firebaseService.updateContest(this.contestId, { speaker: this.speaker.mail }).pipe(
+            from(this.firebaseService.createJudge(this.speaker, this.contest.id)).pipe(
+                switchMap((speaker) => {
+                    this.store.set('speaker', speaker);
+                    this.speaker = speaker;
+                    return this.firebaseService
+                        .updateContest(this.contestId, { speaker: speaker.id });
+                }),
                 tap(() => {
                     this.loadingSave = false;
-                    this.noSpeaker = false;
                     this.addSpeaker = false;
                 }),
-                switchMap(
-                    () => from(this.firebaseService.createJudge(this.speaker.mail, this.speaker)),
-                ),
                 catchError(() => {
                     this.snackBarService.showMessage(`L'e-mail ${this.speaker.mail} est déjà utilisé`);
                     this.addSpeaker = false;
@@ -126,6 +117,36 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     copyLink() {
         this.componentUtils.copyText(
             `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${this.speaker.mail}&speaker=true`,
+        );
+    }
+
+    deleteSpeaker() {
+        this.subscriptions.push(
+            this.snackBarService.showMessage(
+                `Êtes-vous sûr de bien vouloir supprimer ${this.speaker.name} comme juge?`, 'Oui',
+            ).onAction().pipe(
+                switchMap(() => {
+                    const updatedSpeaker = this.speaker;
+                    updatedSpeaker.contest = updatedSpeaker.contest
+                        .filter((c) => c !== this.contest.id);
+                    delete updatedSpeaker.role[this.contest.id];
+                    return this.firebaseService.updateUser(this.speaker.id, updatedSpeaker);
+                }),
+                switchMap(() => {
+                    this.contest.speaker = '';
+                    this.speaker = null;
+                    this.store.set('speaker', null);
+                    return this.firebaseService.updateContest(this.contestId, this.contest);
+                }),
+                tap(() => this.snackBarService.showMessage('Speaker supprimé du contest avec succès')),
+                tap(() => {
+                    this.speaker = null;
+                }),
+                catchError((error) => {
+                    console.log(error);
+                    return of(false);
+                }),
+            ).subscribe(),
         );
     }
 }

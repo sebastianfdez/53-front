@@ -20,12 +20,12 @@ export class JudgeResolve implements Resolve<User[]> {
             : this.store.select<User>('user').pipe(
                 switchMap(() => this.contestService.getSelectedContest()),
                 take(1),
-                switchMap((contest) => this.firebaseService.getJudges(contest).pipe(
-                    switchMap((judges) => {
-                        this.store.set('judges', judges);
-                        return this.store.select<User[]>('judges').pipe(take(1));
-                    }),
-                )),
+                switchMap((contest) => this.firebaseService.getJudges(contest)),
+                switchMap((judges) => {
+                    this.store.set('judges', judges);
+                    return this.store.select<User[]>('judges');
+                }),
+                take(1),
             );
     }
 }

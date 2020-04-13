@@ -1,9 +1,11 @@
 import {
-    Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef,
+    Component, OnInit, OnDestroy,
 } from '@angular/core';
-import { switchMap, catchError, tap } from 'rxjs/operators';
 import {
-    Subscription, from, of, Observable,
+    switchMap, catchError, tap, take,
+} from 'rxjs/operators';
+import {
+    Subscription, from, of, Observable, combineLatest,
 } from 'rxjs';
 import { Store } from 'store';
 import { Title } from '@angular/platform-browser';
@@ -16,8 +18,6 @@ import { User } from '../../../shared/models/user';
 @Component({
     selector: 'app-judges',
     templateUrl: './judges.component.html',
-    styleUrls: ['./judges.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JudgesComponent implements OnInit, OnDestroy {
     judges$: Observable<User[]> = null;
@@ -30,15 +30,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
 
     addJudge = false;
 
-    newJudge: User = {
-        name: '',
-        id: '',
-        lastName: '',
-        mail: '',
-        role: {},
-        contest: [],
-        autenticated: false,
-    };
+    newJudge: User = null;
 
     errorMessage: string;
 
@@ -50,20 +42,19 @@ export class JudgesComponent implements OnInit, OnDestroy {
         private componentUtils: ComponentUtils,
         private store: Store,
         private titleService: Title,
-        private cdr: ChangeDetectorRef,
-
     ) { }
 
     ngOnInit() {
-        console.log(this.store.value);
         this.titleService.setTitle('La 53 - Judges');
-        // eslint-disable-next-line no-undef
-        this.contestId = localStorage.getItem('contestId');
         this.loading = true;
+        this.createEmptyJudge();
+        this.store.select<Contest>('selectedContest').subscribe((contest) => {
+            this.contest = contest;
+            this.contestId = contest.id;
+        });
         this.judges$ = this.store.select<User[]>('judges').pipe(
             tap(() => {
                 this.loading = false;
-                this.cdr.detectChanges();
             }),
         );
     }
@@ -76,8 +67,6 @@ export class JudgesComponent implements OnInit, OnDestroy {
         this.loading = true;
         try {
             this.createJudgeUser();
-            this.snackBarService.showMessage(`Profil juge créé pour le mail ${this.newJudge.mail}.
-                Envoyez le lien de connexion à ${this.newJudge.name} ${this.newJudge.lastName}`);
         } catch (err) {
             console.log(err);
             this.errorMessage = err.message;
@@ -89,34 +78,73 @@ export class JudgesComponent implements OnInit, OnDestroy {
     createJudgeUser() {
         this.newJudge.contest = [this.contestId];
         this.newJudge.role = {};
+        this.newJudge.id = this.newJudge.mail;
         this.newJudge.role[this.contestId] = 'judge';
         this.subscriptions.push(
-            this.store.select<User[]>('judges').pipe(
-                switchMap((judges) => {
-                    judges.push(this.newJudge);
+            combineLatest(
+                this.judges$,
+                from(this.firebaseService.createJudge(this.newJudge, this.contest.id)),
+            ).pipe(
+                take(1),
+                switchMap(([judges, newJudge]) => {
+                    judges.push(newJudge);
+                    this.store.set('judges', judges);
                     return this.firebaseService
-                        .updateContest(this.contestId, { judges: judges.map((j) => j.mail) });
+                        .updateContest(this.contestId, { judges: judges.map((j) => j.id) });
                 }),
                 tap(() => {
                     this.loading = false;
                     this.addJudge = false;
                 }),
-                switchMap(() => from(this.firebaseService
-                    .createJudge(this.newJudge.mail, this.newJudge))),
                 catchError(() => {
-                    this.snackBarService.showMessage(`L'e-mail ${this.newJudge.mail} est déjà utilisé`);
                     this.addJudge = false;
                     this.loading = false;
                     return of(null);
                 }),
-            ).subscribe(),
+            ).subscribe(() => {
+                this.snackBarService.showMessage(`Profil juge créé pour le mail ${this.newJudge.mail}.
+                    Envoyez le lien de connexion à ${this.newJudge.name} ${this.newJudge.lastName}`);
+                this.createEmptyJudge();
+            }),
         );
     }
 
+    createEmptyJudge() {
+        this.newJudge = {
+            name: '',
+            id: '',
+            lastName: '',
+            mail: '',
+            role: {},
+            contest: [],
+            autenticated: false,
+        };
+    }
+
     deleteJudge(judge: User) {
-        this.contest.judges = this.contest.judges.filter((j) => j !== judge.id);
-        this.firebaseService.updateContest(this.contestId, this.contest);
-        this.firebaseService.deleteJudge(judge.id);
+        this.subscriptions.push(
+            this.snackBarService.showMessage(
+                `Êtes-vous sûr de bien vouloir supprimer ${judge.name} comme juge?`, 'Oui',
+            ).onAction().pipe(
+                switchMap(() => {
+                    this.contest.judges = this.contest.judges.filter((j) => j !== judge.id);
+                    this.store.set('judges', this.contest.judges);
+                    return this.firebaseService.updateContest(this.contestId, this.contest);
+                }),
+                switchMap(() => {
+                    const updatedJudge = judge;
+                    updatedJudge.contest = updatedJudge.contest
+                        .filter((c) => c !== this.contest.id);
+                    delete updatedJudge.role[this.contest.id];
+                    return this.firebaseService.updateUser(judge.id, updatedJudge);
+                }),
+                tap(() => this.snackBarService.showMessage('Juge supprimé du contest avec succès')),
+                catchError((error) => {
+                    console.log(error);
+                    return of(false);
+                }),
+            ).subscribe(),
+        );
     }
 
     copyLink(judge: User) {

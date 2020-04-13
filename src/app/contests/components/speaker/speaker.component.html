@@ -1,56 +1,84 @@
-<div class="container-53 scrollbar-53">
 
-  <div class="back-53" *ngIf="!loading">
-    <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
-      {{"< Retour"}}
-    </button>
-    <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
-      {{"<"}}
-    </button>
-  </div>
 
-  <div class="scrollable-53">
+<div class="back-53">
+  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
+    {{"< Retour"}}
+  </button>
+  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+    {{"<"}}
+  </button>
+</div>
 
-    <span class="title-53" *ngIf="!loading">{{contest?.name}}</span>
-    <span class="title-53" *ngIf="!loading">Speaker</span>
-  
-    <div class="pool block-53 mat-elevation-z2">
-      <mat-icon class="icon" *ngIf="!noSpeaker">person</mat-icon>
-      <div class="speaker-cont" *ngIf="addSpeaker && speaker">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Prénom" [(ngModel)]="speaker.name" [ngModelOptions]="{standalone: true}"
-          [disabled]="!noSpeaker">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Nom" [(ngModel)]="speaker.lastName" [ngModelOptions]="{standalone: true}"
-          [disabled]="!noSpeaker">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="E-mail" [(ngModel)]="speaker.mail" [ngModelOptions]="{standalone: true}"
-          [disabled]="!noSpeaker">
-        </mat-form-field>
-      </div>
-      <mat-icon class="icon" (click)="copyLink()" style="cursor: pointer" *ngIf="!noSpeaker">link</mat-icon>
-      <div class="speaker-cont" *ngIf="!addSpeaker || !speaker">
-        <span>Aucun speaker ajoutee</span>
-      </div>
+<div class="scrollable-53">
+
+    <h1 class="title-53">{{contest?.name}}</h1>
+    <h1 class="title-53">Speaker</h1>
+
+    <div class="pool block-53 mat-elevation-z2" *ngIf="speaker; else noSpeaker">
+        <mat-icon class="icon">person</mat-icon>
+        <div class="form-container flex-div column" *ngIf="!addSpeaker">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Prénom" [(ngModel)]="speaker.name" [ngModelOptions]="{standalone: true}"
+                [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nom" [(ngModel)]="speaker.lastName" [ngModelOptions]="{standalone: true}"
+                [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="E-mail" [(ngModel)]="speaker.mail" [ngModelOptions]="{standalone: true}"
+                [disabled]="true">
+            </mat-form-field>
+            <h4 *ngIf="speaker.autenticated">
+                Ce juge a déjà un compte sur la 53. Il peut dès maintenant participer au {{contest.name}}
+            </h4>
+            <h4 *ngIf="!speaker.autenticated">
+                Cette adresse e-mail n'est pas associé à un compte. Cliquez sur
+                <mat-icon (click)="copyLink(speaker)" style="cursor: pointer">link</mat-icon>
+                pour générer un lien d'invitation 
+                à envoyer au juge pour qu'il crée son compte.
+            </h4>
+                        
+            <button mat-flat-button class="button" color="primary" (click)="deleteSpeaker()">
+                Supprimer speaker
+            </button>
+        </div>
+        <mat-icon class="icon" (click)="copyLink()" style="cursor: pointer" *ngIf="!speaker.autenticated">
+        link</mat-icon>
     </div>
-  
-    <button mat-flat-button color="primary" class="button save" (click)="saveSpeaker()" *ngIf="noSpeaker && !loadingSave"
-      [disabled]="isSaveDisabled()">
-      {{!noSpeaker ? 'Sauvegarder speaker' : 'Ajouter Speaker'}}
-    </button>
     <div class="button" *ngIf="loadingSave">
-      <mat-spinner></mat-spinner>
+        <mat-spinner></mat-spinner>
     </div>
 
-  </div>
+</div>
 
-  <div class="scrollable-53" *ngIf="loading">
-    <mat-spinner></mat-spinner>
-  </div>
-  <div class="footer-image">
+<ng-template #noSpeaker>
+    <div class="container-53">
+        <div class="block-53" *ngIf="!addSpeaker">
+            <h4>Aucun speaker ajoutee</h4>
+        </div>
+
+        <div class="block-53" style="margin-top: 50px !important;" *ngIf="addSpeaker">
+            <mat-icon class="icon">person_add</mat-icon>
+            <div class="form-container">
+                <mat-form-field class="example-full-width">
+                <input matInput placeholder="Mail speaker" [(ngModel)]="newMail" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+            </div>
+        </div>
+                
+        <button mat-flat-button class="button" *ngIf="addSpeaker" color="primary" (click)="createSpeakerUser()"
+        [disabled]="newMail.length < 7">
+            <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder speaker
+        </button>
+
+        <button mat-flat-button color="primary" class="button save" (click)="addSpeaker = true"
+        *ngIf="!loadingSave && !addSpeaker">
+            Ajouter Speaker
+        </button>
+    </div>
+</ng-template>
+
+<div class="footer-image">
     <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53.png?alt=media&token=e3ac886f-720d-4183-a9c4-78a60dc3ba64">
-  </div>
-
 </div>

@@ -4,11 +4,12 @@ import { from, of } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from 'store';
 import {
-    tap, take, switchMap, filter, catchError,
+    tap, take, switchMap, filter, catchError, map,
 } from 'rxjs/operators';
 import { AuthService } from '../auth-form/services/auth.service';
 import { User } from '../../shared/models/user';
 import { FirebaseService } from '../../shared/services/firebase.service';
+import { Contest } from '../../shared/models/contest';
 
 @Component({
     selector: 'app-password-less-auth',
@@ -58,56 +59,65 @@ export class PasswordLessAuthComponent implements OnInit {
 
     async confirmSignIn(url: string) {
         try {
-            if (this.authService.confirmSignIn(url)) {
-                this.emailSent = true;
-                this.emailUrl = window.localStorage.getItem('emailForSignIn');
-                this.contestId = window.localStorage.getItem('contestId');
-                this.speaker = window.localStorage.getItem('speaker') === 'true';
-
-                const result = await this.authService.signInWithLink(this.emailUrl, url);
-                const judge: User = {
-                    contest: [this.contestId],
-                    id: result.user.uid,
-                    lastName: '',
-                    name: '',
-                    mail: this.emailUrl,
-                    role: {},
-                    autenticated: false,
-                };
-                judge.role[this.contestId] = this.speaker ? 'speaker' : 'judge';
-                this.authService.getAuthenticatedUser().pipe(
-                    filter((user) => user !== null),
-                    tap((user) => {
-                        judge.name = user.name;
-                        judge.lastName = user.lastName;
-                    }),
-                    take(1),
-                    switchMap(() => this.firebaseService.createJudge(result.user.uid, judge)),
-                    switchMap(() => from(this.firebaseService.deleteJudge(this.emailUrl))),
-                    catchError((error) => {
-                        console.log(error);
-                        return of(null);
-                    }),
-                    take(1),
-                    switchMap(() => this.firebaseService.getContest(this.contestId).pipe(
-                        take(1),
-                    )),
-                )
-                    .subscribe((contest) => {
-                        window.localStorage.removeItem('emailForSignIn');
-                        window.localStorage.removeItem('contestId');
-                        if (this.speaker) {
-                            this.firebaseService
-                                .updateContest(this.contestId, { speaker: judge.id });
-                        } else {
-                            let judges: string[] = contest.judges
-                                .filter((judge_) => judge_ !== judge.mail);
-                            judges.push(judge.id);
-                            judges = Array.from(new Set(judges));
-                            this.firebaseService.updateContest(this.contestId, { judges });
-                        }
-                    });
+            if (!this.authService.confirmSignIn(url)) {
+                return;
             }
+            if (!window.localStorage.getItem('emailForSignIn')) {
+                return;
+            }
+            this.emailUrl = window.localStorage.getItem('emailForSignIn');
+            this.emailSent = true;
+            this.contestId = window.localStorage.getItem('contestId');
+            this.speaker = window.localStorage.getItem('speaker') === 'true';
+            const judge: User = {
+                contest: [this.contestId],
+                id: '',
+                lastName: '',
+                name: '',
+                mail: this.emailUrl,
+                role: {},
+                autenticated: true,
+            };
+            from<Promise<firebase.auth.UserCredential>>(
+                this.authService.signInWithLink(this.emailUrl, url).catch((error) => {
+                    console.log(error);
+                    this.errorMessage = error;
+                    return null;
+                }),
+            ).pipe(
+                map((result) => {
+                    judge.id = result.user.uid;
+                    judge.role[this.contestId] = this.speaker ? 'speaker' : 'judge';
+                }),
+                switchMap(() => this.authService.getAuthenticatedUser()),
+                filter((user) => user !== null),
+                tap((user) => {
+                    judge.name = user.name;
+                    judge.lastName = user.lastName;
+                }),
+                take(1),
+                switchMap(() => this.firebaseService.createNewJudge(judge, judge.id)),
+                switchMap(() => from(this.firebaseService.deleteJudge(this.emailUrl))),
+                catchError((error) => {
+                    console.log(error);
+                    return of(null);
+                }),
+                take(1),
+                switchMap(() => this.firebaseService.getContest(this.contestId)),
+                take(1),
+            ).subscribe((contest: Contest) => {
+                window.localStorage.removeItem('emailForSignIn');
+                window.localStorage.removeItem('contestId');
+                if (this.speaker) {
+                    this.firebaseService
+                        .updateContest(this.contestId, { speaker: judge.id });
+                } else {
+                    let judges: string[] = contest.judges.filter((judge_) => judge_ !== judge.mail);
+                    judges.push(judge.id);
+                    judges = Array.from(new Set(judges));
+                    this.firebaseService.updateContest(this.contestId, { judges });
+                }
+            });
         } catch (err) {
             this.errorMessage = err.message;
         }
@@ -131,6 +141,6 @@ export class PasswordLessAuthComponent implements OnInit {
     }
 
     goToHome() {
-        this.router.navigate(['portal/admin']);
+        this.router.navigate(['portal/portal']);
     }
 }

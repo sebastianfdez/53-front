@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Contest } from 'src/app/shared/models/contest';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import {
+    Observable, Subscription, combineLatest, of,
+} from 'rxjs';
 import { User } from 'src/app/shared/models/user';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
@@ -43,9 +45,9 @@ export class PortalComponent implements OnInit {
             switchMap((user) => {
                 this.user = user;
                 this.cdr.detectChanges();
-                return combineLatest(
+                return user.contest.length ? combineLatest(
                     user.contest.map((contest) => this.contestService.getContest(contest)),
-                );
+                ) : of([]);
             }),
             tap(() => {
                 this.loading = false;
