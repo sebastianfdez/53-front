@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-    AngularFirestore, Action, DocumentSnapshot, QueryFn,
+    AngularFirestore, Action, DocumentSnapshot, QueryFn, DocumentReference,
 } from '@angular/fire/firestore';
 import {
     Observable, of, combineLatest, from,
@@ -56,8 +56,24 @@ export class FirebaseService {
         );
     }
 
-    getSpeaker(idSpeaker: string): Observable<Action<DocumentSnapshot<User>>> {
-        return this.database.collection('users').doc<User>(idSpeaker).snapshotChanges().pipe(take(1));
+    /**
+     * Return a user from a provided id
+     * @param id user id
+     */
+    getUser(id: string): Observable<User> {
+        return this.database.collection('users').doc<User>(id).snapshotChanges().pipe(
+            take(1),
+            map((doc) => doc.payload.data()),
+        );
+    }
+
+    /**
+     * Get user list from a mail
+     * @param mail mail
+     */
+    getUserByMail(mail: string): Observable<User[]> {
+        const query: QueryFn = (collection) => collection.where('mail', '==', mail);
+        return this.database.collection<User>('users', query).valueChanges();
     }
 
     getContest(idContest: string): Observable<Contest> {
@@ -65,29 +81,37 @@ export class FirebaseService {
     }
 
     createJudge(judge: User, contest: string): Observable<User> {
-        const query: QueryFn = (collection) => collection.where('mail', '==', judge.mail);
-        return this.database.collection<User>('users', query).valueChanges().pipe(
+        return this.getUserByMail(judge.mail).pipe(
             take(1),
             switchMap((judge_) => {
                 console.log(judge_);
-                if (!judge_) {
-                    return this.createNewJudge(judge.id, judge);
+                if (!judge_ || !judge_.length) {
+                    return this.createNewJudge(judge, judge.mail);
                 }
                 const newJudge: User = judge_[0];
-                newJudge.contest.push(contest);
+                if (!newJudge.contest.includes(contest)) {
+                    newJudge.contest.push(contest);
+                }
+                newJudge.autenticated = true;
                 newJudge.role[contest] = judge.role[contest];
                 return this.updateUser(newJudge.id, newJudge);
             }),
         );
     }
 
-    createNewJudge(userId: string, judge: User): Observable<User> {
-        return from(this.database.collection<User>('users').doc<User>(userId).set(judge)).pipe(
-            map(() => judge),
+    /**
+     * Create a new User instance in the collection and return it
+     * @param judge judge
+     */
+    createNewJudge(judge: User, id: string): Observable<User> {
+        return from(this.database.collection<User>('users').doc(id).set(judge)).pipe(
+            map((doc) => doc),
+            switchMap(() => this.getUser(id)),
         );
     }
 
     /**
+     * @deprecated
      * Delete an old judge user with mail id
      * @param judgeid user id
      */
@@ -100,7 +124,7 @@ export class FirebaseService {
      * @param userId id of the user
      * @param user new value of the user
      */
-    updateUser(userId: string, user: User) {
+    updateUser(userId: string, user: Partial<User>): Observable<User> {
         console.log({ userId, user });
         return from(
             this.database.collection('users').doc<User>(userId).update(user).catch(
@@ -108,7 +132,7 @@ export class FirebaseService {
             ),
         ).pipe(
             tap((user_) => console.log(user_)),
-            map(() => user),
+            map(() => user as User),
         );
     }
 
