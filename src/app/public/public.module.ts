@@ -12,7 +12,15 @@ import { DescriptionOverviewComponent } from './description-overview/description
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
 
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
+    {
+        path: 'home',
+        component: HomeComponent,
+        data: {
+            title: {
+                text: 'La 53 - Home',
+            },
+        },
+    },
     {
         path: 'home/:type',
         component: DescriptionOverviewComponent,
