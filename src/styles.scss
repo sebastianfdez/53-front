@@ -1,11 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "./assets/styles/mat-override.scss";
 @import "./assets/styles/carrousel-override.scss";
 @import "./assets/styles/login-page.scss";
 @import "./assets/styles/contests.scss";
 @import "./assets/styles/la53-grid.scss";
 @import "./assets/styles/judge-speaker.scss";
+@import "./assets/styles/la53-colors.scss";
 
 .html {
     height: 100%;
@@ -163,7 +162,7 @@ body {
     }
 }
 
-@media (max-width: 970px) {
+@media screen and (max-width: 970px) {
 
     .back-53 {
         top: 30px;

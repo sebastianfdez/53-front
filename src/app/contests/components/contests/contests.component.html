@@ -16,7 +16,7 @@
     <h1 class="title-53" *ngIf="!loading">Liste des catégories</h1>
   
     <ul class="grid-53 flex-div">
-      <li class="grid-53-item flex-div column mat-elevation-z3" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
+      <li class="grid-53-item flex-div column mat-elevation-z3 primary-53" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, false)">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
@@ -24,7 +24,7 @@
         <span class="name"> {{categorie.name}} </span>
         <span class="pool"> {{categorie.pools.length}} poules </span>
       </li>
-      <li class="grid-53-item flex-div column new" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="link"
+      <li class="grid-53-item flex-div column new primary-53" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="link"
       (keydown.enter)="goToNew()">
         <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
         <span class="pool">Ajouter une catégorie</span>
@@ -37,7 +37,7 @@
   <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
     <h1 class="title-53" *ngIf="!loading && categoriesFinal(categories, true).length">Liste des catégories de finales</h1>
     <ul class="grid-53 flex-div">
-      <li class="grid-53-item flex-div column mat-elevation-z3 final" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
+      <li class="grid-53-item flex-div column mat-elevation-z3 accent-53" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, true)">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>

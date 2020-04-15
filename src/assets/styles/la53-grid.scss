@@ -11,13 +11,9 @@
         width: 10rem;
         height: 6rem;
         border-radius: 20px;
-        background-color: #ED2790;
         color: #ffffff;
         position: relative;
         cursor: pointer;
-        &.final {
-            background-color: #3f51b5;
-        }
         .name {
             margin-top: 15%;
             font-weight: bold;
