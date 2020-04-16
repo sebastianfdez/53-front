@@ -15,20 +15,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-// Angular Firebase
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import 'firebase/firestore';
 // Custom services
-import { firebaseKeys } from 'src/firebase-keys';
 import { WarningComponent } from './warning/warning.component';
 import { WarningService } from './warning/warning.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ComponentUtils } from './services/component-utils';
-import { FirebaseService } from './services/firebase.service';
+import { FirebaseModule } from './firebase.module';
 
 const materialModules = [
     MatInputModule,
@@ -50,11 +42,7 @@ const materialModules = [
         CommonModule,
         FormsModule,
         HttpClientModule,
-        AngularFireModule.initializeApp(firebaseKeys),
-        AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-        AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
-        AngularFireStorageModule, // imports firebase/storage only needed for storage features
-        AngularFireDatabaseModule,
+        FirebaseModule,
         ReactiveFormsModule,
         A11yModule,
     ],
@@ -72,7 +60,6 @@ const materialModules = [
         WarningService,
         SnackBarService,
         ComponentUtils,
-        FirebaseService,
         MatDatepickerModule,
     ],
     schemas: [

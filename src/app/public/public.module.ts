@@ -10,9 +10,18 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
+import { FirebaseModule } from '../shared/firebase.module';
 
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
+    {
+        path: 'home',
+        component: HomeComponent,
+        data: {
+            title: {
+                text: 'La 53 - Home',
+            },
+        },
+    },
     {
         path: 'home/:type',
         component: DescriptionOverviewComponent,
@@ -29,6 +38,7 @@ const routes: Routes = [
         CommonModule,
         RouterModule.forChild(routes),
         NgbModule,
+        FirebaseModule,
     ],
     declarations: [
         HomeComponent,

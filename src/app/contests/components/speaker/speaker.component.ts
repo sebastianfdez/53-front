@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-    Subscription, of, from,
+    Subscription, of,
 } from 'rxjs';
 import { switchMap, catchError, tap } from 'rxjs/operators';
 import { Store } from 'store';
@@ -93,7 +93,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.speaker.mail = this.newMail;
         this.speaker.role[this.contestId] = 'speaker';
         this.subscriptions.push(
-            from(this.firebaseService.createJudge(this.speaker, this.contest.id)).pipe(
+            this.firebaseService.createJudge(this.speaker, this.contest.id).pipe(
                 switchMap((speaker) => {
                     this.store.set('speaker', speaker);
                     this.speaker = speaker;
