@@ -35,7 +35,22 @@
             &.center {
               text-align: center;
             }
+            @media (max-width: 930px) {
+                padding: 20px 0;
+                width: 78vw;
+                &.left, &.rigth, &.center {
+                    align-items: center;
+                    text-align: center;
+                    align-self: center;
+                }
+            }
+            @media (max-width: 400px) {
+                padding: 10px 0;
+            }
         }
+    }
+    @media (max-width: 930px) {
+        padding: 150px 0;
     }
 }
 
@@ -90,39 +105,30 @@
         letter-spacing: 1px;
         overflow: hidden;
     }
+    h1 {
+        @media (max-width: 930px) {
+            margin: 0 40px 20px 40px;
+            font-size: 1.5rem;
+        }
+    }
+    h4 {
+        @media (max-width: 930px) {
+            margin: 0 10px;
+            font-size: 1.25rem;
+            letter-spacing: 0;
+        }
+        @media (max-width: 760px) {
+            font-size: 1.1rem;
+        }
+        @media (max-width: 400px) {
+            font-size: 0.9rem;
+        }
+    }
     .big-letter {
         position: absolute;
         font-size: 57vh;
         line-height: 0.65;
         font-family: applegothic;
         color: #00000045;
-    }
-}
-
-@media (max-width: 930px) {
-    .news-container {
-        padding: 150px 10px;
-        .section {
-            .block {
-                padding: 20px 0;
-                width: 78vw;
-                &.left, &.rigth, &.center {
-                    align-items: center;
-                    text-align: center;
-                    align-self: center;
-                }
-            }
-            .description {
-                h1 {
-                    margin: 0 40px 20px 40px;
-                    font-size: 1.5rem;
-                }
-                h4 {
-                    margin: 0 10px;
-                    font-size: 1.25rem;
-                    letter-spacing: 0;
-                }
-            }
-        }
     }
 }
