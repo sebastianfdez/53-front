@@ -9,8 +9,8 @@
 </div>
 <div class="container-53 scrollbar-53">
   <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
-    <h3 class="title-small" *ngIf="!loading">{{(contest$ | async)?.name}}</h3>
-    <h3 class="title-small" *ngIf="!loading && judge$ | async as judge">
+    <h3 *ngIf="!loading">{{(contest$ | async)?.name}}</h3>
+    <h3 *ngIf="!loading && judge$ | async as judge">
       {{(isAdmin | async) ? 'Admin:' : (isJudge | async) ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
     </h3>
     <h1 class="title-53" *ngIf="!loading">Liste des catégories</h1>
@@ -21,13 +21,13 @@
         <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
         </div>
-        <span class="name"> {{categorie.name}} </span>
-        <span class="pool"> {{categorie.pools.length}} poules </span>
+        <h4 class="name"> {{categorie.name}} </h4>
+        <h5 class="pool"> {{categorie.pools.length}} poules </h5>
       </li>
       <li class="grid-53-item flex-div column new primary-53" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="link"
       (keydown.enter)="goToNew()">
-        <span style="font-size: 3em; font-weight: 900; height: 60px;">+</span>
-        <span class="pool">Ajouter une catégorie</span>
+        <h4 class="add">+</h4>
+        <h5 class="pool">Ajouter une catégorie</h5>
       </li>
       <div class="scrollable" *ngIf="loading">
         <mat-spinner></mat-spinner>
@@ -42,8 +42,8 @@
         <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
         </div>
-        <span class="name"> {{categorie.name}} </span>
-        <span class="pool"> {{categorie.pools.length}} poules </span>
+        <h4 class="name"> {{categorie.name}} </h4>
+        <h5 class="pool"> {{categorie.pools.length}} poules </h5>
       </li>
     </ul>
   

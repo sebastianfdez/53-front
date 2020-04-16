@@ -17,11 +17,9 @@
             margin-top: auto;
             margin-bottom: auto;
             .carousel-title {
-              font-size: 65px;
               font-weight: bold;
             }
             .carousel-subtitle {
-              font-size: 40px;
               font-family: Roboto, "Helvetica Neue", Arial, sans-serif;;
 
             }
@@ -43,18 +41,8 @@
     }
 }
 
-@media (max-width: 760px) {
-
-    .carousel-inner {
-        .carousel-item {
-            .carousel-caption {
-                .carousel-title {
-                    font-size: 25px;
-                }
-                .carousel-subtitle {
-                    font-size: 20px;
-                }
-            }
-        }
-    }
+app-carousel {
+    height: 100%;
+    width: 100%;
+    background-color: #000000;
 }

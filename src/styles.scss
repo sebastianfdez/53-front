@@ -77,6 +77,8 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .block-53 {
@@ -148,25 +150,23 @@ body {
     display: flex;
     place-content: center;
     height: 150px;
-    bottom: 0;
-    left: 0;
-    right: 0;
     margin-right: auto;
     margin-left: auto;
     margin-top: 15px;
     margin-bottom: 15px;
     flex: 0 0 auto;
-
     img {
         height: 100%;
     }
 }
 
 @media screen and (max-width: 970px) {
-
+    .container-53 {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
     .back-53 {
         top: 30px;
-
         button {
             width: 90px;
         }
@@ -174,36 +174,31 @@ body {
 }
 
 @media (max-width: 580px) {
-
     .title-53 {
         font-size: 1.5rem;
         margin: 5px 0;
     }
-
     .back-53 {
-        top: 10px;
-
+        top: 15px;
         button {
             width: 90px;
         }
     }
     .container-53 {
         overflow: scroll;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        margin: 0;
     }
 }
 
 @media (max-width: 490px) {
-
     .back-53 {
-        top: 10px;
-
         button {
             width: 45px;
-
             &.small {
                 display: inherit;
             }
-
             &.big {
                 display: none;
             }

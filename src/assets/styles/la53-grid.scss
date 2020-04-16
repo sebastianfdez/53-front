@@ -1,6 +1,7 @@
 .grid-53 {
     margin-top: 20px;
     width: fit-content;
+    justify-content: center;
     max-width: calc(100% - 40px);
     margin: 20px;
     flex-wrap: wrap;
@@ -15,41 +16,22 @@
         position: relative;
         cursor: pointer;
         .name {
-            margin-top: 15%;
+            margin-top: 12%;
             font-weight: bold;
+            font-size: 1.2rem;
         }
-        .info {
-            margin-bottom: 30px;
+        .pool {
+            text-align: center;
+        }
+        .add {
+            margin-bottom: 0;
+            font-size: 2rem;
         }
         .delete {
             position: absolute;
             right: 5px;
             top: 5px;
             z-index: 4;
-        }
-    }
-  
-    @media (max-width: 1306px) {
-        max-width: 1081px !important;
-    }
-    
-    @media (max-width: 1120px) {
-        max-width: 903px !important;
-    }
-    
-    @media (max-width: 940px) {
-        max-width: 720px !important;
-    }
-    
-    @media (max-width: 765px) {
-        max-width: 540px !important;
-    }
-    
-    @media (max-width: 586px) {
-        max-width: 360px !important;
-        .grid-53-item {
-            padding-top: 50px;
-            max-height: calc(100% - 50px);
         }
     }
     
@@ -64,22 +46,24 @@
 }
 
 .grid-53-container {
-    left: 0;
-    right: 0;
     margin-left: auto;
     margin-right: auto;
-    top: 0;
-    bottom: 0;
     margin-top: auto;
     margin-bottom: auto;
     min-height: fit-content;
     overflow: hidden;
     max-height: 100%;
 
-    .title-small {
+    h1, h3 {
         margin: 0;
+        text-align: center;
         &:last-of-type {
             margin-bottom: 30px;
+        }
+    }
+    @media (max-width: 640px) {
+        h1 {
+            font-size: 1.75rem;
         }
     }
 }

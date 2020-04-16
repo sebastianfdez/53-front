@@ -48,17 +48,10 @@
 
 .description {
     position: relative;
-    .title {
+    h1, h4 {
         margin: 0 40px 30px 40px;
-        font-size: 40px;
-        letter-spacing: 10px;
         text-align: center;
-    }
-    .descrip {
-        margin: 0 40px;
-        font-size: 20px;
-        letter-spacing: 1.5px;
-        max-height: calc(100% - 38px);
+        letter-spacing: 1px;
         overflow: hidden;
     }
     .big-letter {
@@ -71,45 +64,29 @@
 }
 
 @media (max-width: 930px) {
-
     .news-container {
-        padding: 150px 40px;
+        padding: 150px 10px;
         .section {
             .block {
                 padding: 20px 0;
-                &.left {
+                width: 78vw;
+                &.left, &.rigth, &.center {
                     align-items: center;
                     text-align: center;
                     align-self: center;
-                }
-                &.rigth {
-                    align-self: center;
-                    align-items: center;
-                    text-align: center;
-                }
-                &.center {
-                    align-self: center;
-                    align-items: center;
-                    text-align: center;
                 }
             }
-        }
-    }
-    .description {
-        margin: 0 15px;
-        .title {
-            font-size: 25px;
-            margin: 0 10px 10px 10px;
-        }
-        .descrip {
-            font-size: 14px;
-            margin: 0 10px;
-        }
-        .body {
-            font-size: 15px;
-        }
-        .big-letter {
-            font-size: 40vh;
+            .description {
+                h1 {
+                    margin: 0 40px 20px 40px;
+                    font-size: 1.5rem;
+                }
+                h4 {
+                    margin: 0 10px;
+                    font-size: 1.25rem;
+                    letter-spacing: 0;
+                }
+            }
         }
     }
 }
