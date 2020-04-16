@@ -6,6 +6,7 @@ import {
 } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Store } from 'store';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { User, emptyUser } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 
@@ -17,6 +18,7 @@ export class AuthService {
                 this.store.set('user', null);
                 return of(null);
             }
+            this.analytics.setUserId(user_.uid);
             const user: User = JSON.parse(JSON.stringify(emptyUser));
             user.id = user_.uid;
             user.mail = user_.email;
@@ -28,6 +30,7 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private firebaseService: FirebaseService,
         private store: Store,
+        private analytics: AngularFireAnalytics,
     ) {}
 
     getLoggedUserInfo(uid: string, mail: string): Observable<boolean> {

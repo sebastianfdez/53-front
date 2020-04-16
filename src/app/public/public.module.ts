@@ -10,6 +10,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
+import { FirebaseModule } from '../shared/firebase.module';
 
 const routes: Routes = [
     {
@@ -37,6 +38,7 @@ const routes: Routes = [
         CommonModule,
         RouterModule.forChild(routes),
         NgbModule,
+        FirebaseModule,
     ],
     declarations: [
         HomeComponent,
