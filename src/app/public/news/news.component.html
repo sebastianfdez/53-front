@@ -24,13 +24,13 @@
   </div>
   <div class="section flex-div column">
     <div class="block flex-div column description left animated" [class.fadeInLeft]="elementInViewport(organizator)"
-      routerLink="organizer" #organizator>
+      routerLink="organizer" (keydown.enter)="navigate('organizer')" #organizator>
       <span class="big-letter">O</span>
       <h1>Organisateur</h1>
       <h4>Facilite la création des catégories et des poules de manière informatique. Si des modifications sont faites concernant des riders ou les poules, les juges et le speaker en seront automatiquement informés. Plus besoin de courrir à travers tout le skate park pour prévenir d'un changement ! </h4>
     </div>
     <div class="block flex-div column description rigth animated" [class.fadeInRight]="elementInViewport(judge)"
-      routerLink="judge" #judge>
+      routerLink="judge" (keydown.enter)="navigate('judge')" #judge>
       <span class="big-letter">J</span>
       <h1>Juge</h1>
       <h4> Envoi des notes rapidement et facilement. En un rien de temps, les moyennes et les classements sont fait. </h4>
@@ -38,13 +38,13 @@
   </div>
   <div class="section flex-div column">
     <div class="block flex-div column description left animated" [class.fadeInLeft]="elementInViewport(speaker)"
-      routerLink="speaker" #speaker>
+      routerLink="speaker" (keydown.enter)="navigate('speaker')" #speaker>
       <span class="big-letter">S</span>
       <h1>Speaker</h1>
       <h4>Mise à jour en direct des catégories, des poules et des infos concernants les riders. Tout est centralisé sur la 53 et accessible en seulement quelques clics. </h4>
     </div>
     <div class="block flex-div column description rigth animated" [class.fadeInRight]="elementInViewport(volunteer)"
-      routerLink="volunteer" #volunteer>
+      routerLink="volunteer" (keydown.enter)="navigate('volunteer')" #volunteer>
       <span class="big-letter">B</span>
       <h1>Benevoles</h1>
       <h4>De nouvelles fonctionnalités, pour la gestion des bénévoles seront disponibles très bientôt ... </h4>

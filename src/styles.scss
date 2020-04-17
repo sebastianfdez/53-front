@@ -29,9 +29,10 @@ body {
 
 .background-cont {
     height: 100vh;
-    overflow: scroll;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background-color: #ffffff66;
-    width: 100%;
 }
 
 .title-53 {
