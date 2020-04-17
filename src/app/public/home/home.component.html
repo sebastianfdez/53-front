@@ -10,7 +10,8 @@
 	<app-news></app-news>
 	<div class="contacts-cont full-width flex-div column">
 		<h1 class="title">Contact:</h1>
-		<div class="contacts full-width flex-div column">
+		<div class="contacts full-width flex-div column animated"
+			[class.fadeInLeft]="elementInViewport(contacts)" #contacts>
 			<h2><strong>Mail:</strong></h2>
 			<h3>lacinquantetrois@gmail.com</h3>
 			<h2><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></h2>

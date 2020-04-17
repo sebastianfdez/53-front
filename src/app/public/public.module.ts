@@ -11,6 +11,7 @@ import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
 import { FirebaseModule } from '../shared/firebase.module';
+import { AnimationService } from './services/animation.service';
 
 const routes: Routes = [
     {
@@ -33,9 +34,9 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
+        CommonModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        CommonModule,
         RouterModule.forChild(routes),
         NgbModule,
         FirebaseModule,
@@ -49,6 +50,7 @@ const routes: Routes = [
     ],
     providers: [
         DescriptionOverviewResolve,
+        AnimationService,
     ],
     exports: [
         RouterModule,
