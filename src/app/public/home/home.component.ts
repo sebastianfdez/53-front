@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
+import { AnimationService } from '../services/animation.service';
 
 @Component({
     selector: 'app-home',
@@ -13,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 export class HomeComponent implements OnInit {
     constructor(
         private titleService: Title,
+        private animationService: AnimationService,
     ) {}
 
     showSticky = true;
@@ -58,5 +60,9 @@ export class HomeComponent implements OnInit {
                 this.bottomMenu2 = false;
             }
         }), true);
+    }
+
+    elementInViewport(element: HTMLElement) {
+        return this.animationService.elementInViewport(element);
     }
 }

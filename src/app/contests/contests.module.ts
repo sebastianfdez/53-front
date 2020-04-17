@@ -15,6 +15,7 @@ import { SpeakerComponent } from './components/speaker/speaker.component';
 import { PortalComponent } from './components/portal/portal.component';
 import { PoolFormComponent } from './components/pool-form/pool-form.component';
 import { PlayerFormComponent } from './components/player-form/player-form.component';
+import { AuthModule } from '../auth/auth.module';
 
 // Services
 import { AuthGuardService } from './services/auth-guard.service';
@@ -22,11 +23,9 @@ import { AdminAuthGuardService } from './services/admin-guard.service';
 import { JudgeAuthGuardService } from './services/judge-guard.service';
 import { CategorieResolve } from './resolvers/categorie.resolve';
 import { JudgeResolve } from './resolvers/judge.resolve';
-import { AuthModule } from '../auth/auth.module';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
 import { ExcelHelperService } from './services/excel-helper.service';
-
 
 const routes: Routes = [
     {

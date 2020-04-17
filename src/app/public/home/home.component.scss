@@ -44,21 +44,17 @@
     min-height: 100vh;
     place-content: flex-end;
     .title {
-        font-size: 50px;
-        letter-spacing: 13px;
+        letter-spacing: 6px;
     }
     .contacts {
         background-color: #ffffff9f;
         min-height: 40vh;
-        font-size: 28px;
         padding: 5%;
-        letter-spacing: 6px;
+        letter-spacing: 3px;
         box-sizing: border-box;
-        a {
+        h3 {
             margin-bottom: 40px;
-        }
-        span {
-            margin-bottom: 10px;
+            max-width: 100%;
         }
         img {
             height: 30px;
@@ -67,15 +63,8 @@
     }
 }
 
-@media (max-width: 930px) {
-
-    .contacts-cont {
-        .title {
-            letter-spacing: 10px;
-        }
-        .contacts {
-            font-size: 15px;
-            letter-spacing: 3px;
-        }
+@media (max-width: 600px) {
+    h3 {
+        font-size: 1.25rem;
     }
 }

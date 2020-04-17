@@ -89,15 +89,17 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
                     club: participant.club,
                     idPlayer: participant.id,
                 };
-                participant.votes.forEach((vote) => {
-                    newScore[vote.codeJuge] = `${vote.note ? vote.note : 0}`;
-                });
                 let totalVotes = 0;
                 let totalScore = 0;
-                participant.votes.forEach((vote) => {
-                    totalVotes++;
-                    totalScore += 1 * (vote.note as number);
-                });
+                if (participant.votes) {
+                    participant.votes.forEach((vote) => {
+                        newScore[vote.codeJuge] = `${vote.note ? vote.note : 0}`;
+                    });
+                    participant.votes.forEach((vote) => {
+                        totalVotes++;
+                        totalScore += 1 * (vote.note as number);
+                    });
+                }
                 newScore.average = `${totalVotes ? (Math.round((totalScore / totalVotes) * 100) / 100) : 0}`;
                 this.dataSource.push(newScore);
             });

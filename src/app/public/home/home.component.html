@@ -1,4 +1,4 @@
-<div class="background-cont home flex-div column scrollbar-53">
+<div class="background-cont home flex-div column scrollbar-53" id="scrollable">
 	<div class="carrousel-cont flex-div full-width" #carrousel>
 		<div class="header full-width" #header [class.open]="showSticky" [class.close]="!showSticky">
 		
@@ -9,13 +9,14 @@
 	</div>
 	<app-news></app-news>
 	<div class="contacts-cont full-width flex-div column">
-		<span class="title">Contact:</span>
-		<div class="contacts full-width flex-div column">
-			<span><strong>Mail:</strong></span>
-			<a>lacinquantetrois@gmail.com</a>
-			<span><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></span>
-			<a target="_blank" href="https://github.com/sebastianfdez">sebastianfdez</a>
-			<span><strong>Version:</strong>{{ version }}</span>
+		<h1 class="title">Contact:</h1>
+		<div class="contacts full-width flex-div column animated"
+			[class.fadeInLeft]="elementInViewport(contacts)" #contacts>
+			<h2><strong>Mail:</strong></h2>
+			<h3>lacinquantetrois@gmail.com</h3>
+			<h2><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></h2>
+			<h3><a target="_blank" href="https://github.com/sebastianfdez">sebastianfdez</a></h3>
+			<h3><strong>Version:</strong>{{ version }}</h3>
 		</div>
 	</div>
 </div>

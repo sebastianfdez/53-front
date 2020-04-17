@@ -1,39 +1,53 @@
 <div class="news-container flex-div column">
   <div class="section flex-div">
-    <div class="logo">
-      <img async src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53-oficial.png?alt=media&token=cf7b1125-d9b4-49ad-bf87-529592a5667c">
+    <div class="logo flip-box flex-div">
+      <div class="flip-box-inner">
+        <div class="flip-box-front">
+          <img async alt="La53 logo"
+          src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53-oficial.png?alt=media&token=cf7b1125-d9b4-49ad-bf87-529592a5667c">
+        </div>
+        <div class="flip-box-back">
+          <img async  alt="La53 logo"
+          src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/Logo-53-oficial.png?alt=media&token=cf7b1125-d9b4-49ad-bf87-529592a5667c">
+        </div>
+      </div>
     </div>
   </div>
   <div class="section flex-div column">
-    <div class="block description flex-div column center">
-      <span class="title">LA CINQUANTE TROIS</span>
-      <span class="descrip">
+    <div class="block description flex-div column center animated" [class.fadeInRight]="elementInViewport(description)"
+      #description>
+      <h1>LA CINQUANTE TROIS</h1>
+      <h4>
       La 53 a été créée dans le but de faciliter l'organisation et la coordination des contests, depuis la création des catégories et des poules jusqu'à l'annonce des résultats.
-      </span>
+      </h4>
     </div>
   </div>
   <div class="section flex-div column">
-    <div class="block flex-div column description left" routerLink="organizer">
+    <div class="block flex-div column description left animated" [class.fadeInLeft]="elementInViewport(organizator)"
+      routerLink="organizer" (keydown.enter)="navigate('organizer')" #organizator>
       <span class="big-letter">O</span>
-      <span class="title">Organisateur</span>
-      <span class="descrip">Facilite la création des catégories et des poules de manière informatique. Si des modifications sont faites concernant des riders ou les poules, les juges et le speaker en seront automatiquement informés. Plus besoin de courrir à travers tout le skate park pour prévenir d'un changement ! </span>
+      <h1>Organisateur</h1>
+      <h4>Facilite la création des catégories et des poules de manière informatique. Si des modifications sont faites concernant des riders ou les poules, les juges et le speaker en seront automatiquement informés. Plus besoin de courrir à travers tout le skate park pour prévenir d'un changement ! </h4>
     </div>
-    <div class="block flex-div column description rigth" routerLink="judge">
+    <div class="block flex-div column description rigth animated" [class.fadeInRight]="elementInViewport(judge)"
+      routerLink="judge" (keydown.enter)="navigate('judge')" #judge>
       <span class="big-letter">J</span>
-      <span class="title">Juge</span>
-      <span class="descrip"> Envoi des notes rapidement et facilement. En un rien de temps, les moyennes et les classements sont fait. </span>
+      <h1>Juge</h1>
+      <h4> Envoi des notes rapidement et facilement. En un rien de temps, les moyennes et les classements sont fait. </h4>
     </div>
   </div>
   <div class="section flex-div column">
-    <div class="block flex-div column description left" routerLink="speaker">
+    <div class="block flex-div column description left animated" [class.fadeInLeft]="elementInViewport(speaker)"
+      routerLink="speaker" (keydown.enter)="navigate('speaker')" #speaker>
       <span class="big-letter">S</span>
-      <span class="title">Speaker</span>
-      <span class="descrip">Mise à jour en direct des catégories, des poules et des infos concernants les riders. Tout est centralisé sur la 53 et accessible en seulement quelques clics. </span>
+      <h1>Speaker</h1>
+      <h4>Mise à jour en direct des catégories, des poules et des infos concernants les riders. Tout est centralisé sur la 53 et accessible en seulement quelques clics. </h4>
     </div>
-    <div class="block flex-div column description rigth" routerLink="volunteer">
+    <div class="block flex-div column description rigth animated" [class.fadeInRight]="elementInViewport(volunteer)"
+      routerLink="volunteer" (keydown.enter)="navigate('volunteer')" #volunteer>
       <span class="big-letter">B</span>
-      <span class="title">Benevoles</span>
-      <span class="descrip">De nouvelles fonctionnalités, pour la gestion des bénévoles seront disponibles très bientôt ... </span>
+      <h1>Benevoles</h1>
+      <h4>De nouvelles fonctionnalités, pour la gestion des bénévoles seront disponibles très bientôt ... </h4>
     </div>
   </div>
 </div>
