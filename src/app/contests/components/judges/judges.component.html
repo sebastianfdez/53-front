@@ -31,15 +31,15 @@
             <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
           </mat-form-field>
 
-          <h4 *ngIf="judge.autenticated">
+          <h2 *ngIf="judge.autenticated">
             Ce juge a déjà un compte sur la 53. Il peut dès maintenant participer au {{contest.name}}
-          </h4>
-          <h4 *ngIf="!judge.autenticated">
+          </h2>
+          <h2 *ngIf="!judge.autenticated">
             Cette adresse e-mail n'est pas associé à un compte. Cliquez sur
             <mat-icon (click)="copyLink(judge)" style="cursor: pointer">link</mat-icon>
             pour générer un lien d'invitation 
             à envoyer au juge pour qu'il crée son compte.
-          </h4>
+          </h2>
                 
           <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)">
             Supprimer juge

@@ -8,10 +8,10 @@
 </div>
 
 <div class="categories container-53 scrollbar-53">
-    <h3 class="title-53" *ngIf="!loading">{{contest?.name}}</h3>
-    <h3 class="title-53" *ngIf="!loading">
+    <h1 class="title-53" *ngIf="!loading">{{contest?.name}}</h1>
+    <h1 class="title-53" *ngIf="!loading">
         {{isAdmin ? 'Admin' : isJudge ? 'Juge' : 'Speaker'}}: {{(admin$ | async)?.name}} {{(admin$ | async)?.lastName}}
-    </h3>
+    </h1>
 
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"
     *ngIf="!loading && isAdmin">

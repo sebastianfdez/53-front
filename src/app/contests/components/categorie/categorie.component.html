@@ -13,8 +13,10 @@
             {{isAdmin ? 'Admin:' : isJudge ? 'Juge:' : 'Speaker'}} {{judgeName}}
         </h1>
         <form class="flex-div column full-width" [formGroup]="categorieForm">
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Name</mat-label>
                 <input matInput placeholder="Nom de la catégorie" formControlName="name">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
             </mat-form-field>
 
             <div class="buttons-container flex-div column full-width">
@@ -31,7 +33,7 @@
                     Sauvegarder les notes
                 </button>
             
-                <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" class="button scores alternative-53" (click)="goToScores()">
+                <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" class="button scores primary-53" (click)="goToScores()">
                     Classement et finale
                 </button>
             

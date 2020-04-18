@@ -19,10 +19,10 @@ body {
 }
 
 *[role="link"] {
-    color: blue;
+    color: var(--la-53-dark-blue);
     cursor: pointer;
     &:focus {
-        outline: 1px solid rgb(36, 69, 255);
+        outline: 1px solid var(--la-53-dark-blue);
     }
 }
 
@@ -78,6 +78,7 @@ body {
     overflow-x: hidden;
     padding-top: 10px;
     padding-bottom: 10px;
+    box-sizing: border-box;
 }
 
 .block-53 {

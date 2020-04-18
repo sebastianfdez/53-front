@@ -1,29 +1,39 @@
-<div class="background-cont home flex-div column scrollbar-53" id="scrollable">
-	<div class="background-layer back">
-		<img src="../../../assets/figures/Rail.svg">
-		<img src="../../../assets/figures/Courbe.svg">
-	
+<div class="header second full-width" #header [class.open]="showSticky" [class.close]="!showSticky">
+	<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
+</div>
+<div class="home flex-div column full-height full-width background-cont scrollbar-53" id="scrollable">
+	<div class="header first full-width">
+		<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
 	</div>
-	<div class="background-layer front">
-		<div class="carrousel-cont flex-div full-width" #carrousel>
-			<div class="header full-width" #header [class.open]="showSticky" [class.close]="!showSticky">
-			
-				<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
-			
+
+	<div class="home-cont flex-div column full-width full-height" #homecont>
+		<div class="perspective-cont flex-div column full-width full-height">
+
+			<div class="background-layer back">
+				<img class="right" src="../../../assets/figures/Rail.svg">
+				<img class="left" src="../../../assets/figures/spine.svg">
+				<img class="right" src="../../../assets/figures/tremplin.svg">
+				<img class="left" src="../../../assets/figures/Courbe.svg">
 			</div>
-			<app-carousel></app-carousel>
-		</div>
-		<app-news></app-news>
-		<div class="contacts-cont full-width flex-div column">
-			<h1 class="title">Contact:</h1>
-			<div class="contacts full-width flex-div column animated"
-				[class.fadeInLeft]="elementInViewport(contacts)" #contacts>
-				<h2><strong>Mail:</strong></h2>
-				<h3>lacinquantetrois@gmail.com</h3>
-				<h2><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></h2>
-				<h3><a target="_blank" href="https://github.com/sebastianfdez">sebastianfdez</a></h3>
-				<h3><strong>Version:</strong>{{ version }}</h3>
+		
+			<div class="background-layer front flex-div column">
+				<div class="carrousel-cont flex-div full-width">
+					<app-carousel class="flex-div full-width"></app-carousel>
+				</div>
+				<app-news class="flex-div column full-width"></app-news>
+				<div class="contacts-cont full-width flex-div column">
+					<div class="contacts full-width flex-div column animated"
+						[class.fadeInLeft]="elementInViewport(contacts)" #contacts id="contacts-animation">
+						<h2><strong>Mail:</strong></h2>
+						<h3>lacinquantetrois@gmail.com</h3>
+						<h2 class="flex-div"><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></h2>
+						<h3><a target="_blank" href="https://github.com/sebastianfdez">sebastianfdez</a></h3>
+						<h3><strong>Version:</strong>{{ version }}</h3>
+					</div>
+				</div>
 			</div>
+
 		</div>
+
 	</div>
 </div>
