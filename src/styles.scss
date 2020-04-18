@@ -1,5 +1,4 @@
 @import "./assets/styles/mat-override.scss";
-@import "./assets/styles/carrousel-override.scss";
 @import "./assets/styles/login-page.scss";
 @import "./assets/styles/contests.scss";
 @import "./assets/styles/la53-grid.scss";
@@ -14,7 +13,7 @@ body {
     height: 100vh;
     display: flex;
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Dosis, "Helvetica Neue", Arial, sans-serif;
     background-size: cover;
     place-content: center;
 }
@@ -32,7 +31,6 @@ body {
     width: 100vw;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #ffffff66;
 }
 
 .title-53 {

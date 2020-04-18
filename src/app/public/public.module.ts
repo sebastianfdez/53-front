@@ -1,6 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -38,7 +37,6 @@ const routes: Routes = [
         MatIconModule,
         MatProgressSpinnerModule,
         RouterModule.forChild(routes),
-        NgbModule,
         FirebaseModule,
     ],
     declarations: [
