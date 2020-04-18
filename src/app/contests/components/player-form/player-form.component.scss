@@ -17,9 +17,6 @@
 			flex: 0 0 auto;
 			width: 40px;
 			height: fit-content;
-            @media (max-width: 270px) {
-                display: none;
-            }
 		}
 		.info {
 			flex: 1;
@@ -34,7 +31,7 @@
 	&.error {
 		border: 1px solid #ff7777;
 	}
-    @media (max-width: 570px) {
+    @media (max-width: 580px) {
         margin-top: 10px;
     }
 }

@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
 
     @ViewChild('header', { static: true }) header: ElementRef;
 
-    @ViewChild('carrousel', { static: true }) carrousel: ElementRef;
+    @ViewChild('homecont', { static: true }) homecont: ElementRef;
 
     public version: string = environment.version;
 
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
                 this.showSticky = false;
                 if (pageYOffset > window.innerHeight) {
                     this.header.nativeElement.classList.add('sticky');
-                    this.carrousel.nativeElement.classList.add('sticky');
+                    this.homecont.nativeElement.classList.add('sticky');
                     this.showSticky = true;
                     this.bottomMenu = true;
                     if (pageYOffset > 2 * window.innerHeight) {
@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
                     }
                 } else {
                     this.header.nativeElement.classList.remove('sticky');
-                    this.carrousel.nativeElement.classList.remove('sticky');
+                    this.homecont.nativeElement.classList.remove('sticky');
                     this.showSticky = false;
                 }
             } else {

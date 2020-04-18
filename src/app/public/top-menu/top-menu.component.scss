@@ -6,38 +6,40 @@
 
 .header-nav-container {
     min-height: 70px;
-    display: flex;
-    align-items: center;
     padding: 0px 30px;
     position: relative;
     height: fit-content;
-    font-size: 14px;
     font-weight: bold;
 
     .start {
         flex: 0 0 auto;
-        width: 120px;
+        width: fit-content;
         display: flex;
         text-decoration: none;
         cursor: pointer;
+        justify-content: flex-end;
 
-        .button {
+        span {
             align-items: center;
             color: #000000;
             display: flex;
-            width: 100%;
-            border-radius: 31px;
-            text-decoration: none;
+            mat-icon {
+                font-size: 32px;
+                width: 32px;
+                height: 32px;
+            }
         }
-        &:focus {
-            outline: auto;
+        @media (min-width: 580px) {
+            font-size: 2rem;
+            mat-icon {
+                font-size: 40px;
+                width: 40px;
+                height: 40px;
+            }
         }
     }
 
     .title {
-        display: flex;
-        align-items: center;
-        font-weight: 500;
         flex: 1;
         width: 270px;
         left: calc(50% - 250px);
@@ -46,11 +48,12 @@
         
         .images {
             height: 90px;
-            display: flex;
             max-height: 11vh;
             img {
                 opacity: 0;
                 transition: visibility 0s, opacity 0.5s linear;
+                height: 70px;
+                margin: 10px 0;
                 &.show {
                     border-style: unset !important;
                     visibility: visible;
@@ -61,7 +64,6 @@
                 }
             }
             .big {
-                height: 90px;
                 max-height: 11vh;
             }
             &:focus {

@@ -1,5 +1,4 @@
 @import "./assets/styles/mat-override.scss";
-@import "./assets/styles/carrousel-override.scss";
 @import "./assets/styles/login-page.scss";
 @import "./assets/styles/contests.scss";
 @import "./assets/styles/la53-grid.scss";
@@ -14,16 +13,16 @@ body {
     height: 100vh;
     display: flex;
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Dosis, "Helvetica Neue", Arial, sans-serif;
     background-size: cover;
     place-content: center;
 }
 
 *[role="link"] {
-    color: blue;
+    color: var(--la-53-dark-blue);
     cursor: pointer;
     &:focus {
-        outline: 1px solid rgb(36, 69, 255);
+        outline: 1px solid var(--la-53-dark-blue);
     }
 }
 
@@ -32,7 +31,6 @@ body {
     width: 100vw;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #ffffff66;
 }
 
 .title-53 {
@@ -80,6 +78,7 @@ body {
     overflow-x: hidden;
     padding-top: 10px;
     padding-bottom: 10px;
+    box-sizing: border-box;
 }
 
 .block-53 {

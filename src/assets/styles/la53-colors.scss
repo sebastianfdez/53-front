@@ -7,76 +7,83 @@
 @include mat-core();
 
 $la-53-primary: (
-  50: #e8eaf6,
-  100: #c5cae9,
-  200: #9fa8da,
-  300: #7986cb,
-  400: #5c6bc0,
-  500: #3f51b5,
-  600: #3949ab,
-  700: #303f9f,
-  800: #283593,
-  900: #1a237e,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $light-primary-text,
-    400: $light-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $dark-primary-text,
-    A200: $light-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
-  )
+    50: #e8eaf6,
+    100: #c5cae9,
+    200: #9fa8da,
+    300: #7986cb,
+    400: #5c6bc0,
+    500: #20405F,
+    600: #3949ab,
+    700: #303f9f,
+    800: #283593,
+    900: #1a237e,
+    A100: #8c9eff,
+    A200: #536dfe,
+    A400: #3d5afe,
+    A700: #304ffe,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $light-primary-text,
+        400: $light-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text,
+    )
 );
 
 $la-53-accent: (
-  50: #fce4ec,
-  100: #f8bbd0,
-  200: #f48fb1,
-  300: #f06292,
-  400: #ec407a,
-  500: #ed2790,
-  600: #d81b60,
-  700: #c2185b,
-  800: #ad1457,
-  900: #880e4f,
-  A100: #ff80ab,
-  A200: #ff4081,
-  A400: #f50057,
-  A700: #c51162,
-  contrast: (
-    50: $dark-primary-text,
-    100: $dark-primary-text,
-    200: $dark-primary-text,
-    300: $dark-primary-text,
-    400: $dark-primary-text,
-    500: $light-primary-text,
-    600: $light-primary-text,
-    700: $light-primary-text,
-    800: $light-primary-text,
-    900: $light-primary-text,
-    A100: $dark-primary-text,
-    A200: $light-primary-text,
-    A400: $light-primary-text,
-    A700: $light-primary-text,
-  )
+    50: #fce4ec,
+    100: #f8bbd0,
+    200: #f48fb1,
+    300: #f06292,
+    400: #ec407a,
+    500: #5F1629,
+    600: #d81b60,
+    700: #c2185b,
+    800: #ad1457,
+    900: #880e4f,
+    A100: #ff80ab,
+    A200: #ff4081,
+    A400: #f50057,
+    A700: #c51162,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text,
+    )
+);
+
+$la-53-warn: (
+    500: #FF0000,
+    contrast: (
+        500: $light-primary-text,
+    )
 );
 
 $app-la-53-primary: mat-palette($la-53-primary);
 $app-la-53-accent:  mat-palette($la-53-accent);
 
 // The warn palette is optional (defaults to red).
-$app-la-53-warn:   mat-palette($mat-red);
+$app-la-53-warn:   mat-palette($la-53-warn);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $app-la-53-theme: mat-light-theme($app-la-53-primary, $app-la-53-accent, $app-la-53-warn);
@@ -89,20 +96,23 @@ $app-la-53-theme: mat-light-theme($app-la-53-primary, $app-la-53-accent, $app-la
 @include angular-material-theme($app-la-53-theme);
 
 :root {
-  $primary: map-get($app-la-53-theme, primary);
-  $accent: map-get($app-la-53-theme, accent);
-  $warn: map-get($app-la-53-theme, warn);
-  $alternative: #007106;
-  .primary-53 {
-    background-color: mat-color($primary);
-  }
-  .accent-53 {
-    background-color: mat-color($accent);
-  }
-  .alternative-53 {
-    background-color: $alternative;
-  }
-  .warm-53 {
-    background-color: mat-color($warn);
-  }
+    $primary: map-get($app-la-53-theme, primary);
+    $accent: map-get($app-la-53-theme, accent);
+    $warn: map-get($app-la-53-theme, warn);
+    --alternative: #007106;
+    --la-53-dark-blue: #20405F;
+    --la-53-light-blue: #B4C6D7;
+    --la-53-dark-red: #5F1629;
+    .primary-53 {
+        background-color: var(--la-53-dark-blue);
+    }
+    .accent-53 {
+        background-color: var(--la-53-light-blue);
+    }
+    .alternative-53 {
+        background-color: --alternative;
+    }
+    .warm-53 {
+        background-color: mat-color($warn);
+    }
 }
