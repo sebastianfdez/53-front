@@ -1,57 +1,37 @@
 .carrousel-container {
     padding: 20px 5%;
+    box-sizing: border-box;
+    height: 100%;
     .text {
         flex: 3;
         margin-right: 4%;    
         h1 {
-            font-size: 7rem;
-            margin: 0;
+            font-size: 14vmin;
             color: var(--la-53-dark-blue);
             font-weight: lighter;
             letter-spacing: 2px;
-            line-height: 112px;
-            margin-bottom: 12px;
+            line-height: 14vmin;
+            margin: 0;
+            min-height: fit-content;
+            margin-bottom: 6vmin;
         }
         h2 {
-            font-size: 6rem;
+            font-size: 9vmin;
             margin: 0;
             color: var(--la-53-dark-red);
             letter-spacing: 2px;
-            line-height: 96px;
+            line-height: 9vmin;
+            min-height: fit-content;
+            margin-bottom: 6vmin;
         }
         h3 {
-            font-size: 2rem;
+            font-size: 6vmin;
+            line-height: 7vmin;
+            min-height: fit-content;
+            margin: 0;
         }
         @media (max-width: 930px) {
             text-align: center;
-            h2 {
-                font-size: 5rem;
-                line-height: 80px;
-            }
-            h3 {
-                font-size: 1.5rem;
-                line-height: 20px;
-            }
-        }
-        @media (max-width: 580px) {    
-            h1 {
-                font-size: 5rem;
-                line-height: 80px;
-            }
-            h2 {
-                font-size: 4rem;
-                line-height: 64px;
-            }
-        }
-        @media (max-width: 400px) {    
-            h1 {
-                font-size: 3.5rem;
-                line-height: 56px;
-            }
-            h2 {
-                font-size: 2.5rem;
-                line-height: 40px;
-            }
         }
     }
     .logo {
