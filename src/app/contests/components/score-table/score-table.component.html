@@ -3,10 +3,12 @@
   <div class="table-container flex-div column">
 
     <div class="back-53" *ngIf="!loading">
-      <button mat-flat-button class="big" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}">
+      <button mat-flat-button class="big" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}"
+      role="button" aria-label="Go back to category menu">
         {{"< Retour"}}
       </button>
-      <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+      <button mat-flat-button class="small" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}"
+      role="button" aria-label="Go back to category menu">
         {{"<"}}
       </button>
     </div>
@@ -23,57 +25,61 @@
           (matSortChange)="sortData($event)">
         
             <ng-container matColumnDef="calification">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Classement </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header tabindex="-1"> Classement </th>
               <td mat-cell *matCellDef="let element"> {{element.calification}} </td>
             </ng-container>
         
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Nom </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header="name" tabindex="-1"> Nom </th>
               <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
         
             <ng-container matColumnDef="licence">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Licence </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header tabindex="-1"> Licence </th>
               <td mat-cell *matCellDef="let element"> {{element.licence}} </td>
             </ng-container>
         
             <ng-container matColumnDef="{{judge.name}}{{judge.lastName}}" *ngFor="let judge of judges">
-              <th mat-header-cell *matHeaderCellDef> Note {{judge.name}} {{judge.lastName}} </th>
+              <th mat-header-cell *matHeaderCellDef tabindex="-1"> Note {{judge.name}} {{judge.lastName}} </th>
               <td mat-cell *matCellDef="let element"> {{getVote(element, judge)}} </td>
               <!-- <td mat-cell *matCellDef="let element"> 0 </td> -->
             </ng-container>
         
             <ng-container matColumnDef="average">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Moyenne </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header tabindex="-1"> Moyenne </th>
               <td mat-cell *matCellDef="let element"> {{element.average}} </td>
             </ng-container>
         
             <ng-container matColumnDef="pool">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header="pool"> Poule </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header="pool" tabindex="-1"> Poule </th>
               <td mat-cell *matCellDef="let element"> {{parseInt(element.pool) + 1}} </td>
             </ng-container>
         
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" tabindex="-1"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
 
       </div>
     </div>
   
-    <button mat-flat-button class="button scores" (click)="save(excelexportPublic)" *ngIf="!loading">
+    <button mat-flat-button class="button scores" (click)="save(excelexportPublic)" *ngIf="!loading"
+    role="button" aria-label="Export to excel file">
       Exporter sur excel (Public)
     </button>
   
-    <button mat-flat-button class="button scores" (click)="save(excelexportFederation)" *ngIf="!loading">
+    <button mat-flat-button class="button scores" (click)="save(excelexportFederation)" *ngIf="!loading"
+    role="button" aria-label="Export to excel file (Federation version)">
       Exporter sur excel (Fédération)
     </button>
   
-    <button mat-flat-button color="primary" class="button save" (click)="createFinal()" *ngIf="!loading && !categorie?.final">
+    <button mat-flat-button color="primary" class="button save" (click)="createFinal()" *ngIf="!loading && !categorie?.final"
+    role="button" aria-label="Generate final">
       Générer la finale
     </button>
   </div>
   <div class="footer-image">
-      <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+      <img aria-label="Logo 53"
+      src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
   </div>
       
 </div>

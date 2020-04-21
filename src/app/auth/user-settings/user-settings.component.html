@@ -16,6 +16,7 @@
             pour le réinitialiser</h3>
         <p></p>
         <button mat-flat-button class="button" color="primary" *ngIf="!loading"
+        role="button" aria-label="Change password"
         (click)="changePassword()" [disabled]="!user.mail">
             Changer mot de passe
         </button>

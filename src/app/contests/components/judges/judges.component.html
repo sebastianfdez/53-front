@@ -1,9 +1,11 @@
 
 <div class="back-53">
-  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"< Retour"}}
   </button>
-  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"<"}}
   </button>
 </div>
@@ -24,7 +26,7 @@
 
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
-            [disabled]="true">
+            [disabled]="true" aria-label="Judge name">
           </mat-form-field>
 
           <mat-form-field class="example-full-width">
@@ -41,7 +43,8 @@
             à envoyer au juge pour qu'il crée son compte.
           </h2>
                 
-          <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)">
+          <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)"
+          role="button" aria-label="Delete Judge">
             Supprimer juge
           </button>
         </div>
@@ -61,7 +64,8 @@
 </ng-template>
 
 <div class="container-53">   
-  <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="addJudge = true">
+  <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="addJudge = true"
+  role="button" aria-label="Add judge">
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
   </button>
 
@@ -69,13 +73,14 @@
     <mat-icon class="icon">person_add</mat-icon>
     <div class="form-container">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}">
+        <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}"
+        aria-label="Judge name">
       </mat-form-field>
     </div>
   </div>
             
   <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
-    [disabled]="newJudge.mail.length < 7">
+    [disabled]="newJudge.mail.length < 7" role="button" aria-label="Save Judge">
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
   </button>
 
@@ -85,5 +90,6 @@
   <mat-spinner></mat-spinner>
 </div>
 <div class="footer-image">
-    <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+    <img aria-label="Logo 53"
+    src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
 </div>

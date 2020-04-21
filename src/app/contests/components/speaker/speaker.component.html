@@ -1,10 +1,12 @@
 
 
 <div class="back-53">
-  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"< Retour"}}
   </button>
-  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"<"}}
   </button>
 </div>
@@ -39,7 +41,8 @@
                 à envoyer au juge pour qu'il crée son compte.
             </h4>
                         
-            <button mat-flat-button class="button" color="primary" (click)="deleteSpeaker()">
+            <button mat-flat-button class="button" color="primary" (click)="deleteSpeaker()"
+            role="button" aria-label="Delete speaker" role="button" aria-label="Delete Judge">
                 Supprimer speaker
             </button>
         </div>
@@ -62,23 +65,25 @@
             <mat-icon class="icon">person_add</mat-icon>
             <div class="form-container">
                 <mat-form-field class="example-full-width">
-                <input matInput placeholder="Mail speaker" [(ngModel)]="newMail" [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Mail speaker" [(ngModel)]="newMail" [ngModelOptions]="{standalone: true}"
+                aria-label="Speaker mail">
                 </mat-form-field>
             </div>
         </div>
                 
         <button mat-flat-button class="button" *ngIf="addSpeaker" color="primary" (click)="createSpeakerUser()"
-        [disabled]="newMail.length < 7">
+        [disabled]="newMail.length < 7" role="button" aria-label="Save changes">
             <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder speaker
         </button>
 
         <button mat-flat-button color="primary" class="button save" (click)="addSpeaker = true"
-        *ngIf="!loadingSave && !addSpeaker">
+        *ngIf="!loadingSave && !addSpeaker" role="button" aria-label="Add speaker">
             Ajouter Speaker
         </button>
     </div>
 </ng-template>
 
 <div class="footer-image">
-    <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+    <img aria-label="Logo 53"
+    src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
 </div>

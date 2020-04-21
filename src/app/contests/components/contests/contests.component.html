@@ -1,14 +1,17 @@
 
 <div class="back-53">
-  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="big" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"< Retour"}}
   </button>
-  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin">
+  <button mat-flat-button class="small" color="primary" routerLink="/portal/admin"
+  role="button" aria-label="Go back to admin menu">
     {{"<"}}
   </button>
 </div>
 <div class="container-53 scrollbar-53">
-  <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
+  <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories"
+    role="navigation" aria-label="Category list">
     <h1 class="title-53" *ngIf="!loading">Liste des catégories</h1>
     <h2 *ngIf="!loading">{{(contest$ | async)?.name}}</h2>
     <h2 *ngIf="!loading && judge$ | async as judge">
@@ -16,16 +19,17 @@
     </h2>
   
     <ul class="grid-53 flex-div">
-      <li class="grid-53-item flex-div column mat-elevation-z3 primary-53" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
-      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, false)">
+      <li class="grid-53-item flex-div column mat-elevation-z3 primary-53" tabindex="0" role="button" (keydown.enter)="goTo(categorie)"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, false)"
+      [attr.aria-label]="'Go to category: ' + categorie.name">
         <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
           <mat-icon>close</mat-icon>
         </div>
         <h4 class="name"> {{categorie.name}} </h4>
         <h5 class="pool"> {{categorie.pools.length}} poules </h5>
       </li>
-      <li class="grid-53-item flex-div column new primary-53" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="link"
-      (keydown.enter)="goToNew()">
+      <li class="grid-53-item flex-div column new primary-53" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="button"
+      (keydown.enter)="goToNew()" aria-label="Go to create new category">
         <h4 class="add">+</h4>
         <h5 class="pool">Ajouter une catégorie</h5>
       </li>
@@ -37,9 +41,11 @@
   <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
     <h1 class="title-53" *ngIf="!loading && categoriesFinal(categories, true).length">Liste des catégories de finales</h1>
     <ul class="grid-53 flex-div">
-      <li class="grid-53-item flex-div column mat-elevation-z3 accent-53" tabindex="0" role="link" (keydown.enter)="goTo(categorie)"
-      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, true)">
-        <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)">
+      <li class="grid-53-item flex-div column mat-elevation-z3 accent-53" tabindex="0" role="button" (keydown.enter)="goTo(categorie)"
+      (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, true)"
+      [attr.aria-label]="'Go to category: ' + categorie.name">
+        <div class="delete" *ngIf="deleteCategories[categorie.id] && (isAdmin | async)"
+          [attr.role]="deleteCategories[categorie.id] && (isAdmin | async) ? 'button' : 'none'">
           <mat-icon>close</mat-icon>
         </div>
         <h4 class="name"> {{categorie.name}} </h4>
@@ -48,7 +54,8 @@
     </ul>
   
     <div class="footer-image">
-      <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+      <img aria-label="Logo 51"
+      src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
     </div>
   </div>
 </div>

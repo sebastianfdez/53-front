@@ -23,29 +23,33 @@
       <img src="../../../assets/figures/53-2020.png">
     </div>
   </div>
-  <div class="section flex-div column">
-    <div class="block flex-div column description left animated" [class.fadeInRight]="elementInViewport(organizator)"
-      routerLink="organizer" (keydown.enter)="navigate('organizer')" #organizator id="organizator-animation">
+  <ul class="section flex-div column">
+    <li class="block flex-div column description left animated" [class.fadeInRight]="elementInViewport(organizator)"
+      routerLink="organizer" (keydown.enter)="navigate('organizer')" #organizator id="organizator-animation"
+      role="link" aria-label="Organiser description">
       <span class="big-letter">O</span>
       <h1>Organisateur</h1>
       <h3>Facilite la création des catégories et des poules de manière informatique. Si des modifications sont faites concernant des riders ou les poules, les juges et le speaker en seront automatiquement informés. Plus besoin de courrir à travers tout le skate park pour prévenir d'un changement ! </h3>
-    </div>
-    <div class="block flex-div column description rigth animated" [class.fadeInLeft]="elementInViewport(judge)"
-      routerLink="judge" (keydown.enter)="navigate('judge')" #judge id="judge-animation">
+    </li>
+    <li class="block flex-div column description rigth animated" [class.fadeInLeft]="elementInViewport(judge)"
+      routerLink="judge" (keydown.enter)="navigate('judge')" #judge id="judge-animation" role="link"
+      aria-label="Judge description">
       <span class="big-letter">J</span>
       <h1>Juge</h1>
       <h3> Envoi des notes rapidement et facilement. En un rien de temps, les moyennes et les classements sont fait. </h3>
-    </div>
-  </div>
+    </li>
+  </ul>
   <div class="section flex-div column">
     <div class="block flex-div column description left animated" [class.fadeInRight]="elementInViewport(speaker)"
-      routerLink="speaker" (keydown.enter)="navigate('speaker')" #speaker id="speaker-animation">
+      routerLink="speaker" (keydown.enter)="navigate('speaker')" #speaker id="speaker-animation" role="link"
+      aria-label="Speaker description">
       <span class="big-letter">S</span>
       <h1>Speaker</h1>
       <h3>Mise à jour en direct des catégories, des poules et des infos concernants les riders. Tout est centralisé sur la 53 et accessible en seulement quelques clics. </h3>
     </div>
     <div class="block flex-div column description rigth animated" [class.fadeInLeft]="elementInViewport(volunteer)"
-      routerLink="volunteer" (keydown.enter)="navigate('volunteer')" #volunteer id="volunteer-animation">
+      routerLink="volunteer" (keydown.enter)="navigate('volunteer')" #volunteer id="volunteer-animation" role="link"
+      aria-label="Volunteer description">
       <span class="big-letter">B</span>
       <h1>Benevoles</h1>
       <h3>De nouvelles fonctionnalités, pour la gestion des bénévoles seront disponibles très bientôt ... </h3>
