@@ -17,17 +17,29 @@
         </div>
     </ng-container>
     <ng-template #form>
-        <mat-form-field class="example-full-width">
-            <input class="name-focus" matInput placeholder="Prénom" formControlName="name">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Prénom</mat-label>
+            <input matInput placeholder="Nom de la catégorie" formControlName="name"
+            aria-label="Player name">
+            <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <input matInput placeholder="Nom" formControlName="lastName">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="lastName"
+            aria-label="Player last name">
+            <mat-icon matSuffix>perm_identity</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <input matInput placeholder="Licence" formControlName="licence">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Licence</mat-label>
+            <input matInput formControlName="licence"
+            aria-label="Player id or licence">
+            <mat-icon matSuffix>payment</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <input matInput placeholder="Ville/Club" formControlName="club">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Ville/Club</mat-label>
+            <input matInput formControlName="club"
+            aria-label="Player club or city">
+            <mat-icon matSuffix>location_city</mat-icon>
         </mat-form-field>
     </ng-template>
 </div>

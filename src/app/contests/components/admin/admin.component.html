@@ -1,28 +1,30 @@
 <div class="back-53" *ngIf="!loading">
-    <button mat-flat-button class="big" color="primary" routerLink="/portal/portal">
+    <button mat-flat-button class="big" color="primary" routerLink="/portal/portal"
+    role="button" aria-label="Go back to main menu">
         {{"< Retour"}}
     </button>
-    <button mat-flat-button class="small" color="primary" routerLink="/portal/portal">
+    <button mat-flat-button class="small" color="primary" routerLink="/portal/portal"
+    role="button" aria-label="Go back to main menu">
         {{"<"}}
     </button>
 </div>
 
-<div class="categories container-53 scrollbar-53">
+<ul class="categories container-53 scrollbar-53" role="navigation" aria-label="Admin menu">
     <h1 class="title-53" *ngIf="!loading">{{contest?.name}}</h1>
     <h1 class="title-53" *ngIf="!loading">
         {{isAdmin ? 'Admin' : isJudge ? 'Juge' : 'Speaker'}}: {{(admin$ | async)?.name}} {{(admin$ | async)?.lastName}}
     </h1>
 
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToJudges()"
-    *ngIf="!loading && isAdmin">
+    *ngIf="!loading && isAdmin" role="button" aria-label="Go to judge menu">
         Juges
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" routerLink="/portal/sponsors"
-    *ngIf="!loading && isAdmin">
+    *ngIf="!loading && isAdmin" role="button" aria-label="Go to speaker menu">
         Speaker & Sponsors
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToContest()"
-    *ngIf="!loading">
+    *ngIf="!loading" role="button" aria-label="Go to riders menu">
         Riders
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;"
@@ -33,8 +35,9 @@
         <mat-spinner></mat-spinner>
     </div>
     <div class="footer-image">
-        <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+        <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d"
+        aria-label="Logo 53">
     </div>
 
-</div>
+</ul>
   

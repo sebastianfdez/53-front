@@ -63,6 +63,10 @@ export class PortalComponent implements OnInit {
         this.router.navigate(['/portal/admin']);
     }
 
+    goToUserSettings() {
+        this.router.navigate(['/auth/user-settings']);
+    }
+
     async logOut() {
         await this.authService.logOut();
         this.router.navigate(['home']);

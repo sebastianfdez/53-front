@@ -1,13 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+    Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef,
+} from '@angular/core';
 import { User } from 'src/app/shared/models/user';
 import { Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { AuthService } from '../auth-form/services/auth.service';
 
 @Component({
     selector: 'app-user-settings',
     templateUrl: './user-settings.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsComponent implements OnInit, OnDestroy {
     user: User = null;
@@ -21,22 +24,37 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private snackBarService: SnackBarService,
+        private cdr: ChangeDetectorRef,
     ) {}
 
     ngOnInit() {
         this.user$ = this.authService.getAuthenticatedUser().pipe(
             tap((user) => {
                 this.user = user;
+                this.cdr.detectChanges();
             }),
         );
     }
 
     changePassword() {
         this.loading = true;
+        const snackbar = this.snackBarService
+            .showMessage('Êtes-vous sûr de bien vouloir changer votre mot de passe?', 'Oui');
         this.subscriptions.push(
-            this.authService.changePassword(this.user.mail).subscribe(() => {
+            snackbar.onAction().pipe(
+                switchMap(() => this.authService.changePassword(this.user.mail)),
+                tap(() => {
+                    this.loading = true;
+                }),
+                switchMap(() => this.snackBarService
+                    .showMessage(`Mail pour changer mot de passe envoyé. ${this.user.mail}`).afterDismissed()),
+            ).subscribe(() => {
                 this.loading = false;
-                this.snackBarService.showMessage(`Mail pour changer mot de passe envoyé. ${this.user.mail}`);
+                this.cdr.detectChanges();
+            }),
+            snackbar.afterDismissed().subscribe(() => {
+                this.loading = false;
+                this.cdr.detectChanges();
             }),
         );
     }

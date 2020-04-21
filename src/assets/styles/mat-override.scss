@@ -3,6 +3,11 @@
     background: #ff0000 !important;
     color: #FFFFFF !important;
 }
+.message-snackbar {
+    .mat-simple-snackbar-action {
+        color: #FFFFFF !important;
+    }
+}
 
 .table td, .table th {
     padding: .75rem !important;

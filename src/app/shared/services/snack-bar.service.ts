@@ -14,7 +14,7 @@ export class SnackBarService {
     showMessage(
         message: string, action?: string, config?: MatSnackBarConfig<any>,
     ): MatSnackBarRef<SimpleSnackBar> {
-        return this.snackBar.open(message, action, config || { duration: 5000 });
+        return this.snackBar.open(message, action, config || { panelClass: ['message-snackbar'], duration: 5000 });
     }
 
     showError(message: string) {

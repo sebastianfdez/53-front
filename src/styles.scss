@@ -18,11 +18,12 @@ body {
     place-content: center;
 }
 
-*[role="link"] {
+*[role="link"], *[role="button"] {
     color: var(--la-53-dark-blue);
     cursor: pointer;
     &:focus {
         outline: 1px solid var(--la-53-dark-blue);
+        outline-offset: 3px;
     }
 }
 

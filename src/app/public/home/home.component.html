@@ -3,7 +3,8 @@
 </div>
 <div class="home flex-div column full-height full-width background-cont scrollbar-53" id="scrollable">
 	<div class="header first full-width">
-		<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
+		<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"
+		role="navigation" aria-label="Home menu navigation"></app-top-menu>
 	</div>
 
 	<div class="home-cont flex-div column full-width full-height" #homecont>
@@ -27,7 +28,8 @@
 						<h2><strong>Mail:</strong></h2>
 						<h3>lacinquantetrois@gmail.com</h3>
 						<h2 class="flex-div"><img src="../../../assets/figures/github-logo.svg"><strong>Github:</strong></h2>
-						<h3><a target="_blank" href="https://github.com/sebastianfdez">sebastianfdez</a></h3>
+						<h3><a target="_blank" role="link" aria-label="Creator git-hub link"
+							href="https://github.com/sebastianfdez">sebastianfdez</a></h3>
 						<h3><strong>Version:</strong>{{ version }}</h3>
 					</div>
 				</div>
