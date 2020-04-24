@@ -5,13 +5,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 import { Store } from 'store';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';
 import { AppComponent } from './app.component';
+
+registerLocaleData(localeFr, 'fr');
 
 const routes: Routes = [
     {

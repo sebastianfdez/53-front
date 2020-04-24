@@ -1,0 +1,11 @@
+:host {
+    padding: 0 20px;
+}
+
+mat-form-field {
+    width: 100px;
+    margin-left: 10px;
+    mat-select-arrow-wrapper {
+        display: none;
+    }
+}

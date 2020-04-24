@@ -6,6 +6,7 @@ export interface State {
     selectedContest: Contest;
     judges: User[];
     speaker: User;
+    language: String;
     contests: {
         [id: string]: Contest;
     };

@@ -8,6 +8,7 @@ const state: State = {
     contests: {},
     judges: undefined,
     speaker: undefined,
+    language: undefined,
 };
 
 export class Store {
