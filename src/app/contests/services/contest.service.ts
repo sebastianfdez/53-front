@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import {
     switchMap, take, catchError, map, distinctUntilChanged,
 } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user';
+import { User } from '../../shared/models/user';
 import { Contest } from '../../shared/models/contest';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { Categorie } from '../models/categorie';

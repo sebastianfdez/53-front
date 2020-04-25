@@ -3,7 +3,6 @@ import {
     Component, OnInit, LOCALE_ID, Inject,
 } from '@angular/core';
 import { Store } from 'store';
-import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { LANGUAGES_53 } from '../../../shared/models/languages';
 
@@ -31,9 +30,10 @@ export class LanguageSelectorComponent implements OnInit {
         this.store.set('language', this.selected ? this.selected : null);
     }
 
-    changeLanguage(event: MatSelectChange) {
-        this.store.set('language', event.value);
-        localStorage.setItem('language', event.value);
-        this.router.navigate([event.value]);
+    changeLanguage(lang: string) {
+        this.selected = lang;
+        this.store.set('language', lang);
+        localStorage.setItem('language', lang);
+        this.router.navigate([lang]);
     }
 }

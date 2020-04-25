@@ -8,7 +8,7 @@ import {
 import {
     ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR, FormArray, FormBuilder, Validators,
 } from '@angular/forms';
-import { ComponentUtils } from 'src/app/shared/services/component-utils';
+import { ComponentUtils } from '../../../shared/services/component-utils';
 
 @Component({
     selector: 'app-pool-form',

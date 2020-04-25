@@ -1,13 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Contest } from 'src/app/shared/models/contest';
 import {
     Observable, Subscription, combineLatest, of,
 } from 'rxjs';
-import { User } from 'src/app/shared/models/user';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { switchMap, tap, take } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { User } from '../../../shared/models/user';
+import { Contest } from '../../../shared/models/contest';
+import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import { ContestsService } from '../../services/contest.service';
 
 @Component({

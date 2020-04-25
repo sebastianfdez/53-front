@@ -11,14 +11,16 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MinimalMaterialModule } from './minimal-material.module';
 // Custom services
 import { WarningComponent } from './warning/warning.component';
 import { WarningService } from './warning/warning.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ComponentUtils } from './services/component-utils';
-import { FirebaseModule } from './firebase.module';
-import { MinimalMaterialModule } from './minimal-material.module';
+// Other modules
 import { LanguagesModule } from '../language/languages.module';
+import { FirebaseModule } from './firebase.module';
 
 const materialModules = [
     MatInputModule,
@@ -29,6 +31,7 @@ const materialModules = [
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
 ];
 
 @NgModule({

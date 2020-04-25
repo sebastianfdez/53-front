@@ -4,8 +4,8 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { ContestsService } from './contest.service';
+import { AuthService } from '../../auth/auth-form/services/auth.service';
 
 @Injectable()
 export class SelectedContestGuardService implements CanActivate {

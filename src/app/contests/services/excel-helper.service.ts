@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { UploadEvent } from '@progress/kendo-angular-upload';
 import * as XLSX from 'xlsx';
-import { WarningService } from 'src/app/shared/warning/warning.service';
+import { WarningService } from '../../shared/warning/warning.service';
 import { Categorie } from '../models/categorie';
 
 @Injectable()

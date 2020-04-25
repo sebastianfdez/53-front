@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { AuthService } from '../../auth/auth-form/services/auth.service';
 
 @Injectable()
 export class JudgeAuthGuardService implements CanActivate {

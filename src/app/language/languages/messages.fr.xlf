@@ -6,6 +6,10 @@
                 <source>Welcome to the app</source>
                 <target>Bienvenue sur l'application</target>
             </trans-unit>
+            <trans-unit id="carouselH3" datatype="html">
+                <source>The application that will make your contest easier</source>
+                <target>L'application qui va faciliter la coordination de ton contest</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
