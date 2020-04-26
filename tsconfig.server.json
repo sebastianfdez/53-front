@@ -1,20 +1,18 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./out-tsc/app-server",
         "baseUrl": ".",
         "types": ["node"],
         "paths": {
-          "store": ["./app/store.ts"],
+          "store": ["./src/app/store.ts"],
         }
     },
     "include": [
-        "**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "test.ts",
-        "e2e/src/app.e2e-spec.ts",
-        "e2e/src/app.po.ts",
         "**/*.spec.ts"
     ],
     "angularCompilerOptions": {

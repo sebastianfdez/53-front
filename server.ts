@@ -15,9 +15,9 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 const routes = [
-    { path: '/es/*', view: 'es/index', bundle: require('./server/es/main') },
-    { path: '/fr/*', view: 'fr/index', bundle: require('./server/fr/main') },
-    { path: '/*', view: 'index', bundle: require('./server/main') },
+    { path: '/es/*', view: 'es/index', bundle: require(join(DIST_FOLDER, 'server', 'es', 'main')) },
+    { path: '/fr/*', view: 'fr/index', bundle: require(join(DIST_FOLDER, 'server', 'fr', 'main')) },
+    { path: '/*', view: 'index', bundle: require(join(DIST_FOLDER, 'server', 'main')) },
 ];
 
 // Load your engine
@@ -30,9 +30,9 @@ app.engine('html', (filePath, options: any, callback) => {
 });
 
 app.set('view engine', 'html');
-app.set('views', join(DIST_FOLDER, 'browser'));
+app.set('views', join(DIST_FOLDER, 'la-53'));
 
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
+app.get('*.*', express.static(join(DIST_FOLDER, 'la-53')));
 routes.forEach((route) => {
     app.get(route.path, (req, res) => {
         res.render(route.view, {
@@ -49,3 +49,4 @@ routes.forEach((route) => {
 app.listen(PORT, () => {
     console.log(`Node server listening on port ${PORT}`);
 });
+export default app;

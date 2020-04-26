@@ -253,7 +253,7 @@
                     "builder": "@angular-devkit/build-angular:server",
                     "options": {
                         "main": "src/main.server.ts",
-                        "tsConfig": "src/tsconfig.server.json",
+                        "tsConfig": "./tsconfig.server.json",
                         "stylePreprocessorOptions": {
                             "includePaths": [
                                 "src/app/styles"
@@ -308,33 +308,6 @@
                     "es": "src/app/language/languages/messages.es.xlf"
                 }
             }
-        },
-        "la-53-e2e": {
-        "root": "e2e/",
-        "projectType": "application",
-        "architect": {
-            "e2e": {
-                "builder": "@angular-devkit/build-angular:protractor",
-                "options": {
-                    "protractorConfig": "e2e/protractor.conf.js",
-                    "devServerTarget": "la-53:serve"
-                },
-                "configurations": {
-                    "production": {
-                        "devServerTarget": "la-53:serve:production"
-                    }
-                }
-                },
-                "lint": {
-                "builder": "@angular-devkit/build-angular:tslint",
-                "options": {
-                    "tsConfig": "e2e/tsconfig.e2e.json",
-                    "exclude": [
-                        "**/node_modules/**"
-                    ]
-                }
-            }
-        }
         }
     },
     "defaultProject": "la-53"

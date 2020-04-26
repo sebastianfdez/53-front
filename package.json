@@ -9,7 +9,6 @@
         "build": "ng build --prod",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e",
         "deploy": "bash scripts/deploy.sh",
         "build:prod:en": "ng build --configuration=production-en",
         "build:prod:es": "ng build --configuration=production-es",
