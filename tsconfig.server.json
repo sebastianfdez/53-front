@@ -1,0 +1,21 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/app-server",
+        "baseUrl": ".",
+        "types": ["node"],
+        "paths": {
+          "store": ["./src/app/store.ts"],
+        }
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "test.ts",
+        "**/*.spec.ts"
+    ],
+    "angularCompilerOptions": {
+        "entryModule": "app/app.server.module#AppServerModule"
+    }
+}

@@ -1,10 +1,10 @@
 import {
     Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef,
 } from '@angular/core';
-import { User } from 'src/app/shared/models/user';
 import { Observable, Subscription } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
-import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { User } from '../../shared/models/user';
+import { SnackBarService } from '../../shared/services/snack-bar.service';
 import { AuthService } from '../auth-form/services/auth.service';
 
 @Component({

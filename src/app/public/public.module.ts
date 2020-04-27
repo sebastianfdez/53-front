@@ -1,16 +1,15 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HomeComponent } from './home/home.component';
 import { TopMenuComponent } from './top-menu/top-menu.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { NewsComponent } from './news/news.component';
 import { DescriptionOverviewComponent } from './description-overview/description-overview.component';
 import { DescriptionOverviewResolve } from './description-overview/description-overview.resolve';
-import { FirebaseModule } from '../shared/firebase.module';
 import { AnimationService } from './services/animation.service';
+import { MinimalMaterialModule } from '../shared/minimal-material.module';
+import { LanguagesModule } from '../language/languages.module';
 
 const routes: Routes = [
     {
@@ -34,10 +33,9 @@ const routes: Routes = [
 @NgModule({
     imports: [
         CommonModule,
-        MatIconModule,
-        MatProgressSpinnerModule,
+        MinimalMaterialModule,
+        LanguagesModule,
         RouterModule.forChild(routes),
-        FirebaseModule,
     ],
     declarations: [
         HomeComponent,

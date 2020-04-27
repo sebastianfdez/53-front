@@ -1,147 +1,314 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "la-53": {
-      "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "prefix": "app",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "aot": true,
-            "outputPath": "dist/la-53",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.json",
-              "src/sitemap.xml"
-            ],
-            "styles": [
-              {
-                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
-              },
-              "src/styles.scss",
-              "node_modules/animate.css/animate.css"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "la-53": {
+            "root": "",
+            "sourceRoot": "src",
+            "projectType": "application",
+            "prefix": "app",
+            "schematics": {},
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "aot": true,
+                        "outputPath": "dist/la-53",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "src/tsconfig.app.json",
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets",
+                            "src/manifest.json",
+                            "src/sitemap.xml"
+                            ],
+                            "styles": [
+                            {
+                                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+                            },
+                            "src/styles.scss",
+                            "node_modules/animate.css/animate.css"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "budgets": [
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "serviceWorker": true,
+                            "ngswConfigPath": "src/ngsw-config.json"
+                        },
+                        "en": {
+                            "aot": true,
+                            "outputPath": "dist/la-53/",
+                            "localize": ["en"],
+                            "i18nLocale": "en",
+                            "i18nFormat": "xlf",
+                            "baseHref": "/"
+                        },
+                        "fr": {
+                            "aot": true,
+                            "outputPath": "dist/la-53/fr/",
+                            "localize": ["fr"],
+                            "i18nLocale": "fr",
+                            "i18nFormat": "xlf",
+                            "baseHref": "/fr/"
+                        },
+                        "es": {
+                            "aot": true,
+                            "outputPath": "dist/la-53/es/",
+                            "localize": ["es"],
+                            "i18nLocale": "es",
+                            "i18nFormat": "xlf",
+                            "baseHref": "/es/"
+                        },
+                        "production-en": {
+                            "assets": [
+                                {
+                                    "glob": "**/*",
+                                    "input": "src/assets/",
+                                    "output": "/assets/",
+                                    "ignore": [
+                                        "base/*",
+                                        "css/*",
+                                        "js/*"
+                                    ]
+                                },
+                                {
+                                    "glob": "**/*",
+                                    "input": "src/assets/base",
+                                    "output": "/"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                }
+                            ],
+                            "outputPath": "dist/la-53/",
+                            "baseHref": "/",
+                            "i18nFile": "src/app/language/languages/messages.en.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "en"
+                        },
+                        "production-es": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                }
+                            ],
+                            "outputPath": "dist/la-53/es/",
+                            "baseHref": "/es/",
+                            "i18nFile": "src/app/language/languages/messages.es.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "es"
+                        },
+                        "production-fr": {
+                            "fileReplacements": [
+                            {
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.prod.ts"
+                            }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                            {
+                                "type": "initial",
+                                "maximumWarning": "2mb",
+                                "maximumError": "5mb"
+                            }
+                            ],
+                            "outputPath": "dist/la-53/fr/",
+                            "baseHref": "/fr/",
+                            "i18nFile": "src/app/language/languages/messages.fr.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "fr"
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "la-53:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "la-53:build:production"
+                        },
+                        "fr": {
+                            "browserTarget": "la-53:build:fr"
+                        },
+                        "es": {
+                            "browserTarget": "la-53:build:es"
+                        },
+                        "en": {
+                            "browserTarget": "la-53:build:en"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "la-53:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "src/test.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "src/tsconfig.spec.json",
+                        "karmaConfig": "src/karma.conf.js",
+                        "styles": [
+                            {
+                                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+                            },
+                            "src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets",
+                            "src/manifest.json",
+                            "src/sitemap.xml"
+                        ]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "src/tsconfig.app.json",
+                            "src/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "server": {
+                    "builder": "@angular-devkit/build-angular:server",
+                    "options": {
+                        "main": "src/main.server.ts",
+                        "tsConfig": "./tsconfig.server.json",
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "src/app/styles"
+                            ]
+                        }
+                    },
+                    "configurations": {
+                        "production-en": {
+                            "outputPath": "dist/server",
+                            "i18nFile": "src/app/language/languages/messages.en.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "en",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ]
+                        },
+                        "production-es": {
+                            "outputPath": "dist/server/es",
+                            "i18nFile": "src/app/language/languages/messages.es.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "es",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ]
+                        },
+                        "production-fr": {
+                            "outputPath": "dist/server/fr",
+                            "i18nFile": "src/app/language/languages/messages.fr.xlf",
+                            "i18nFormat": "xlf",
+                            "i18nLocale": "fr",
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ]
+                        }
+                    }
                 }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+            },
+            "i18n": {
+                "sourceLocale": "en-US",
+                "locales": {
+                    "fr": "src/app/language/languages/messages.fr.xlf",
+                    "en": "src/app/language/languages/messages.en.xlf",
+                    "es": "src/app/language/languages/messages.es.xlf"
                 }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "ngswConfigPath": "src/ngsw-config.json"
             }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "la-53:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "la-53:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "la-53:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              {
-                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
-              },
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.json",
-              "src/sitemap.xml"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
-      }
     },
-    "la-53-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "la-53:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "la-53:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    }
-  },
-  "defaultProject": "la-53"
+    "defaultProject": "la-53"
 }

@@ -5,7 +5,7 @@ import {
     Component, forwardRef, AfterContentInit, Input, Injector,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
-import { ComponentUtils } from 'src/app/shared/services/component-utils';
+import { ComponentUtils } from '../../../shared/services/component-utils';
 import { Participant } from '../../models/categorie';
 
 @Component({

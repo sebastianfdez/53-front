@@ -2,8 +2,8 @@
 import {
     Component, OnInit, ElementRef, ViewChild,
 } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 import { AnimationService } from '../services/animation.service';
 
 @Component({

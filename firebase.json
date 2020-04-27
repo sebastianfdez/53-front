@@ -1,17 +1,17 @@
 {
     "hosting": {
-      "public": "dist/la-53",
-      "ignore": [
-        "firebase.json",
-        "**/node_modules/**"
-      ],
-      "rewrites": [{
-        "source": "/public/**",
-        "destination": "/public.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }]
+        "public": "public",
+        "ignore": [
+            "firebase.json",
+            "**/node_modules/**"
+        ],
+        "rewrites": [{
+            "source" : "**/*.@(css|js)",
+            "destination": "/index2.html"
+        },
+        {
+            "source": "**",
+            "function": "ssr"
+        }]
     }
-  }
+}

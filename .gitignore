@@ -4,6 +4,9 @@
 
 # compiled output
 /dist
+/public
+/functions
+/scripts
 /tmp
 /out-tsc
 /e2e

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="ng2.template">
+        <body>
+            <trans-unit id="carouselH1" datatype="html">
+                <source>Welcome to the app</source>
+                <target>Bienvenidos a la aplicación</target>
+            </trans-unit>
+            <trans-unit id="carouselH3" datatype="html">
+                <source>The application that will make your contest easier</source>
+                <target>La aplicación que va a facilitar la organización de tu campeonato</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
