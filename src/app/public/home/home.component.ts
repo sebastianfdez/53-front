@@ -21,8 +21,6 @@ export class HomeComponent implements OnInit {
 
     bottomMenu = false;
 
-    bottomMenu2 = false;
-
     @ViewChild('header', { static: true }) header: ElementRef;
 
     @ViewChild('homecont', { static: true }) homecont: ElementRef;
@@ -37,27 +35,20 @@ export class HomeComponent implements OnInit {
     setHeaderAnimation() {
         window.addEventListener('scroll', ((event) => {
             const pageYOffset = (event.target as HTMLElement).scrollTop;
-            if (pageYOffset > 200) {
-                this.showSticky = false;
-                if (pageYOffset > window.innerHeight) {
-                    this.header.nativeElement.classList.add('sticky');
-                    this.homecont.nativeElement.classList.add('sticky');
-                    this.showSticky = true;
+            if (pageYOffset > window.innerHeight) {
+                this.header.nativeElement.classList.add('sticky');
+                this.homecont.nativeElement.classList.add('sticky');
+                this.showSticky = true;
+                if (pageYOffset > 2 * window.innerHeight) {
                     this.bottomMenu = true;
-                    if (pageYOffset > 2 * window.innerHeight) {
-                        this.bottomMenu2 = true;
-                    } else {
-                        this.bottomMenu2 = false;
-                    }
                 } else {
-                    this.header.nativeElement.classList.remove('sticky');
-                    this.homecont.nativeElement.classList.remove('sticky');
-                    this.showSticky = false;
+                    this.bottomMenu = false;
                 }
             } else {
-                this.showSticky = true;
+                this.header.nativeElement.classList.remove('sticky');
+                this.homecont.nativeElement.classList.remove('sticky');
+                this.showSticky = false;
                 this.bottomMenu = false;
-                this.bottomMenu2 = false;
             }
         }), true);
     }

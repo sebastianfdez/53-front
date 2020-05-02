@@ -1,16 +1,16 @@
 <div class="header second full-width" #header [class.open]="showSticky" [class.close]="!showSticky">
-	<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"></app-top-menu>
+	<app-top-menu [bottomMenu]="bottomMenu"></app-top-menu>
 </div>
 <div class="home flex-div column full-height full-width background-cont scrollbar-53" id="scrollable">
 	<div class="header first full-width">
-		<app-top-menu [bottomMenu]="bottomMenu" [bottomMenu2]="bottomMenu2"
+		<app-top-menu [bottomMenu]="true" [bottomMenu2]="true" [class.close]="showSticky"
 		role="navigation" aria-label="Home menu navigation"></app-top-menu>
 	</div>
 
 	<div class="home-cont flex-div column full-width full-height" #homecont>
 		<div class="perspective-cont flex-div column full-width full-height">
 
-			<div class="background-layer back">
+			<div class="background-layer back" tabindex="-1" aria-hidden="true">
 				<img class="right" src="../../../assets/figures/Rail.svg">
 				<img class="left" src="../../../assets/figures/spine.svg">
 				<img class="right" src="../../../assets/figures/tremplin.svg">

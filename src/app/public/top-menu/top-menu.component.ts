@@ -7,6 +7,4 @@ import { Component, Input } from '@angular/core';
 })
 export class TopMenuComponent {
     @Input() bottomMenu: boolean;
-
-    @Input() bottomMenu2: boolean;
 }
