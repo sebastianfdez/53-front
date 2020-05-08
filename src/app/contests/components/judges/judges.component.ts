@@ -2,7 +2,7 @@ import {
     Component, OnInit, OnDestroy,
 } from '@angular/core';
 import {
-    switchMap, catchError, tap, take,
+    switchMap, catchError, tap, take, map,
 } from 'rxjs/operators';
 import {
     Subscription, from, of, Observable, combineLatest,
@@ -36,6 +36,8 @@ export class JudgesComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription[] = [];
 
+    adminIsJudge = false;
+
     constructor(
         private firebaseService: FirebaseService,
         private snackBarService: SnackBarService,
@@ -49,6 +51,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.createEmptyJudge();
         this.store.select<Contest>('selectedContest').subscribe((contest) => {
+            this.adminIsJudge = this.store.value.user.role[contest.id] === 'adminjudge';
             this.contest = contest;
             this.contestId = contest.id;
         });
@@ -150,6 +153,28 @@ export class JudgesComponent implements OnInit, OnDestroy {
     copyLink(judge: User) {
         this.componentUtils.copyText(
             `https://la53.fr/auth/inscription?contestId=${this.store.value.selectedContest.id}&email=${judge.mail}`,
+        );
+    }
+
+    addUserAsJudge() {
+        this.loading = true;
+        this.subscriptions.push(
+            this.judges$.pipe(
+                take(1),
+                tap((judges) => this.firebaseService.updateContest(this.contestId,
+                    { judges: judges.map((j) => j.id).concat(this.store.value.user.id) })),
+                tap(() => {
+                    const roles = this.store.value.user.role;
+                    roles[this.contestId] = 'adminjudge';
+                    return this.firebaseService.updateUser(
+                        this.store.value.user.id, { ...this.store.value.user, role: roles },
+                    );
+                }),
+                tap((judges) => this.store
+                    .set('judges', judges.concat(this.store.value.user))),
+            ).subscribe(() => {
+                this.loading = false;
+            }),
         );
     }
 }

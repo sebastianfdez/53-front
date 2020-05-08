@@ -12,26 +12,30 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 
 @Injectable()
 export class AuthService {
-    auth$ = this.afAuth.authState.pipe(
-        switchMap((user_) => {
-            if (!user_) {
-                this.store.set('user', null);
-                return of(null);
-            }
-            this.analytics.setUserId(user_.uid);
-            const user: User = JSON.parse(JSON.stringify(emptyUser));
-            user.id = user_.uid;
-            user.mail = user_.email;
-            return this.getLoggedUserInfo(user.id, user.mail);
-        }),
-    ).subscribe();
-
     constructor(
         private afAuth: AngularFireAuth,
         private firebaseService: FirebaseService,
         private store: Store,
         private analytics: AngularFireAnalytics,
-    ) {}
+    ) {
+        this.getAuth();
+    }
+
+    getAuth() {
+        this.afAuth.authState.pipe(
+            switchMap((user_) => {
+                if (!user_) {
+                    this.store.set('user', null);
+                    return of(null);
+                }
+                this.analytics.setUserId(user_.uid);
+                const user: User = JSON.parse(JSON.stringify(emptyUser));
+                user.id = user_.uid;
+                user.mail = user_.email;
+                return this.getLoggedUserInfo(user_.uid, user_.email);
+            }),
+        ).subscribe();
+    }
 
     getLoggedUserInfo(uid: string, mail: string): Observable<boolean> {
         return this.firebaseService.getUser(uid).pipe(
@@ -60,7 +64,13 @@ export class AuthService {
         );
     }
 
-    getAuthenticatedUser(): Observable<User> {
+    getAuthenticatedUser(reload?: boolean): Observable<User> {
+        if (reload) {
+            return this.getLoggedUserInfo(this.store.value.user.id, this.store.value.user.mail)
+                .pipe(
+                    switchMap(() => this.store.select<User>('user')),
+                );
+        }
         return this.store.select<User>('user');
     }
 
@@ -77,7 +87,7 @@ export class AuthService {
             switchMap((user) => of(user.role[
                 this.store.value.selectedContest
                     ? this.store.value.selectedContest.id
-                    : window.localStorage.getItem('selectedContest')] === 'admin')),
+                    : window.localStorage.getItem('selectedContest')].indexOf('admin') >= 0)),
         );
     }
 
@@ -92,7 +102,11 @@ export class AuthService {
                     || user.role[
                         this.store.value.selectedContest
                             ? this.store.value.selectedContest.id
-                            : window.localStorage.getItem('selectedContest')] === 'admin',
+                            : window.localStorage.getItem('selectedContest')] === 'admin'
+                    || user.role[
+                        this.store.value.selectedContest
+                            ? this.store.value.selectedContest.id
+                            : window.localStorage.getItem('selectedContest')] === 'adminjudge',
             )),
         );
     }
