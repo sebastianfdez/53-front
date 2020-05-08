@@ -10,6 +10,7 @@ import { Contest } from '../../../shared/models/contest';
 import { User } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { TypeContests } from '../../../shared/models/type-contests';
 
 @Component({
     selector: 'app-register',
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit {
 
     error: string;
 
-    types: string[] = ['Skate', 'Roller', 'BMX', 'Autre'];
+    types: string[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -33,6 +34,9 @@ export class RegisterComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.types = Object.keys(TypeContests)
+            .map((key) => TypeContests[key])
+            .filter((val) => val.length > 1);
         this.titleService.setTitle('La 53 - Register');
         this.registerForm = this.fb.group({
             user: ['', Validators.required],

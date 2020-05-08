@@ -63,6 +63,10 @@ export class PortalComponent implements OnInit {
         this.router.navigate(['/portal/admin']);
     }
 
+    newContest() {
+        this.router.navigate(['/portal/new']);
+    }
+
     goToUserSettings() {
         this.router.navigate(['/auth/user-settings']);
     }

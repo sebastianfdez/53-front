@@ -1,10 +1,11 @@
 <div class="login-container flex-div column">
+  <h1 class="title">S'inscrire à la 53</h1>
   <app-auth-form [authFormGroup]="registerForm" [types]="types">
     <div class="error" *ngIf="error">
       *{{error}}
     </div>
     <button mat-flat-button color="primary" class="button" (click)="register()" [disabled]="disableButton">
-      Registrez-vous
+      Inscrivez-vous
     </button>
     <div class="error" *ngIf="emailFormat">
       *E-mail incorrecte
@@ -23,4 +24,6 @@
     </div>
     <a class="link" tabindex="0" role="link" routerLink="/auth/login">Vous avez déjà un compte?</a>
   </app-auth-form>
+  <img src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+
 </div>

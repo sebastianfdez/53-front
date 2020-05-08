@@ -1,0 +1,21 @@
+<div class="back-53 user">
+  <button mat-flat-button color="primary" aria-hidden="false"
+      aria-label="Go back to main menu" [routerLink]="['/portal/portal']"
+      tabindex="0" role="link">
+      Retour
+  </button>
+</div>
+
+<app-auth-form [authFormGroup]="newContestForm" [types]="types">
+  <div class="error" *ngIf="error">
+    *{{error}}
+  </div>
+  <div class="error" *ngIf="missingName">
+    *Nom du contest manquant
+  </div>
+  <button mat-flat-button color="primary" class="button" (click)="newContest()" [disabled]="disableButton"
+  *ngIf="!loading">
+    Créer nouveau contest
+  </button>
+  <mat-spinner [diameter]="40" *ngIf="loading"></mat-spinner>
+</app-auth-form>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from 'store';
 import { Observable, of } from 'rxjs';
 import {
-    switchMap, take, catchError, map, distinctUntilChanged,
+    switchMap, take, catchError, map, distinctUntilChanged, tap,
 } from 'rxjs/operators';
 import { User } from 'src/app/shared/models/user';
 import { Contest } from '../../shared/models/contest';
@@ -116,5 +116,16 @@ export class ContestsService {
                 return this.store.select<User>('speaker');
             }),
         );
+    }
+
+    newContest(contest: Contest): Observable<User> {
+        return this.firebaseService
+            .newContestForUser({
+                ...contest,
+                admins: [this.store.value.user.mail],
+            }, this.store.value.user)
+            .pipe(
+                tap((user) => this.store.set('user', user)),
+            );
     }
 }
