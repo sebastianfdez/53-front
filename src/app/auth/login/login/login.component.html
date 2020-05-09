@@ -1,4 +1,5 @@
 <div class="login-container flex-div column" (keyup.enter)="login()">
+  <h1 class="title">Se connecter à la 53</h1>
   <app-auth-form [authFormGroup]="loginForm">
     <button mat-flat-button color="primary" class="button" (click)="login()" *ngIf="!loging">
       Connectez-vous

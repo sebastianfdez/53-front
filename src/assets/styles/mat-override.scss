@@ -13,6 +13,12 @@
     padding: .75rem !important;
 }
 
+mat-form-field.mat-form-field-appearance-outline {
+    .mat-form-field-flex {
+        background-color: #FFFFFF;
+    }
+}
+
 @media (max-width: 970px) {
 
     .mat-table {

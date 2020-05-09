@@ -26,6 +26,8 @@ import { JudgeResolve } from './resolvers/judge.resolve';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
 import { ExcelHelperService } from './services/excel-helper.service';
+import { AuthFormModule } from '../auth/auth-form/auth-form.module';
+import { NewContestComponent } from './components/new-contest/new-contest.component';
 
 const routes: Routes = [
     {
@@ -47,6 +49,7 @@ const routes: Routes = [
                     judges: JudgeResolve,
                 },
             },
+            { path: 'new', component: NewContestComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
             { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
             { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
             { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
@@ -88,6 +91,7 @@ const routes: Routes = [
         ExcelModule,
         UploadModule,
         AuthModule,
+        AuthFormModule,
     ],
     declarations: [
         ContestsComponent,
@@ -99,6 +103,7 @@ const routes: Routes = [
         PortalComponent,
         PoolFormComponent,
         PlayerFormComponent,
+        NewContestComponent,
     ],
     providers: [
         AuthGuardService,

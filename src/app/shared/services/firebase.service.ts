@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-    AngularFirestore, QueryFn,
+    AngularFirestore, QueryFn, DocumentReference,
 } from '@angular/fire/firestore';
 import {
     Observable, of, combineLatest, from,
 } from 'rxjs';
 import {
-    take, switchMap, map,
+    take, switchMap, map, catchError, tap,
 } from 'rxjs/operators';
 import { Categorie } from '../../contests/models/categorie';
 import { Contest } from '../models/contest';
@@ -125,10 +125,12 @@ export class FirebaseService {
      */
     updateUser(userId: string, user: Partial<User>): Observable<User> {
         return from(
-            this.database.collection('users').doc<User>(userId).update(user).catch(
-                (error) => console.log(error),
-            ),
+            this.database.collection('users').doc<User>(userId).update(user),
         ).pipe(
+            catchError((error) => {
+                console.log(error);
+                return of(null);
+            }),
             map(() => user as User),
         );
     }
@@ -140,11 +142,26 @@ export class FirebaseService {
         );
     }
 
-    createContest(contest: Contest) {
+    createContest(contest: Contest): Promise<DocumentReference> {
         return this.database.collection<Contest>('contests').add(contest);
     }
 
     createUser(user: User) {
         return from(this.database.collection<User>('users').doc<User>(user.id).set(user));
+    }
+
+    newContestForUser(contest: Contest, user: User): Observable<User> {
+        return from(this.createContest(contest)).pipe(
+            switchMap((newContest) => {
+                user.contest.push(newContest.id);
+                const role = { ...user.role };
+                role[newContest.id] = 'admin';
+                return combineLatest(this.updateUser(user.id, { ...user, role }), of(newContest));
+            }),
+            switchMap(([user_, contest_]) => combineLatest(
+                of(user_), this.updateContest(contest_.id, { id: contest_.id }),
+            )),
+            switchMap(([user_]) => of(user_)),
+        );
     }
 }
