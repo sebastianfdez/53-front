@@ -7,7 +7,6 @@ import { AuthFormModule } from '../auth/auth-form/auth-form.module';
 import { InscriptionResolve } from './inscription.resolve';
 import { TopMenuModule } from '../public/top-menu/top-menu.module';
 import { InscriptionService } from './inscription.service';
-import { AuthServiceModule } from '../auth/auth.module';
 import { AuthGuardService } from '../auth/auth-form/services/auth-guard.service';
 
 const routes: Routes = [{
@@ -27,7 +26,6 @@ const routes: Routes = [{
         CommonModule,
         TopMenuModule,
         SharedModule,
-        AuthServiceModule,
         AuthFormModule,
         RouterModule.forChild(routes),
     ],

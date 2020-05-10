@@ -48,7 +48,6 @@ export class AuthServiceModule {}
         AuthRoutingModule,
         CommonModule,
         SharedModule,
-        AuthServiceModule,
     ],
 })
 export class AuthModule {}
