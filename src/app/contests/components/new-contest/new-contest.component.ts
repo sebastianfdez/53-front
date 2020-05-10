@@ -41,8 +41,8 @@ export class NewContestComponent implements OnInit, OnDestroy {
             contestName: ['', Validators.required],
             date: [(new Date()).getTime(), Validators.required],
             place: ['', Validators.required],
+            isPublic: false,
         });
-        console.log(this.newContestForm);
     }
 
     get missingName() {
@@ -61,7 +61,7 @@ export class NewContestComponent implements OnInit, OnDestroy {
             id: '',
             judges: [],
             speaker: '',
-            isPublic: false,
+            isPublic: this.newContestForm.value.isPublic,
         };
         this.loading = true;
         this.subscriptions.push(

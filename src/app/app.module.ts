@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';
 import { AppComponent } from './app.component';
+import { AuthServiceModule } from './auth/auth.module';
 
 const routes: Routes = [
     {
@@ -41,6 +42,7 @@ const routes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         PublicModule,
+        AuthServiceModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     providers: [

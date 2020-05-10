@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Contest } from 'src/app/shared/models/contest';
-import { Subscription } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { Subscription, of } from 'rxjs';
+import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Categorie, Participant } from 'src/app/contests/models/categorie';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { InscriptionService } from '../inscription.service';
@@ -31,6 +31,7 @@ export class PlayerInscriptionComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
+        private router: Router,
         private inscriptionService: InscriptionService,
         private snackBarService: SnackBarService,
     ) {}
@@ -106,6 +107,14 @@ export class PlayerInscriptionComponent implements OnInit {
             ).pipe(
                 tap(() => {
                     this.isLoading = false;
+                    this.snackBarService.showMessage(`Vous êtes déjà inscrit au contest: ${this.contest.name}`);
+                    this.router.navigate(['']);
+                }),
+                catchError((error) => {
+                    console.log(error);
+                    this.isLoading = false;
+                    this.snackBarService.showError('Une erreur est survenue');
+                    return of(null);
                 }),
             ).subscribe(),
         );

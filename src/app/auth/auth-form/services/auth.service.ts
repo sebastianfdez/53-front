@@ -16,6 +16,8 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 export class AuthService {
     authState$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(undefined);
 
+    disconnected = false;
+
     constructor(
         private afAuth: AngularFireAuth,
         private firebaseService: FirebaseService,
@@ -31,7 +33,11 @@ export class AuthService {
             tap((user) => this.authState$.next(user)),
             switchMap((user_) => {
                 if (!user_) {
-                    this.store.set('user', null);
+                    if (!this.disconnected) {
+                        this.store.set('user', null);
+                    } else {
+                        this.disconnected = false;
+                    }
                     return of(false);
                 }
                 this.analytics.setUserId(user_.uid);
@@ -45,6 +51,7 @@ export class AuthService {
 
     getLoggedUserInfo(uid: string, mail: string): Observable<boolean> {
         return this.firebaseService.getUser(uid).pipe(
+            distinctUntilChanged(),
             switchMap((user_) => {
                 if (user_) {
                     return of([user_]);
@@ -82,14 +89,14 @@ export class AuthService {
 
     get authenticated(): Observable<boolean> {
         return this.store.value.user !== undefined ? this.store.select<User>('user').pipe(
-            map((user) => {
-                return (user ? user.autenticated : false);
-            }),
+            tap((user) => console.log(user)),
+            map((user) => (user ? user.autenticated : false)),
         ) : this.authState$.pipe(
+            tap((user) => console.log(user)),
             filter((user) => user !== undefined),
-            map((user) => {
-                return !!user;
-            }),
+            switchMap(() => this.store.select('user')),
+            filter((user) => user !== undefined),
+            map((user) => !!user),
         );
     }
 
@@ -132,6 +139,8 @@ export class AuthService {
     }
 
     logOut() {
+        this.store.set('user', undefined);
+        this.disconnected = true;
         return this.afAuth.signOut();
     }
 
