@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit, OnDestroy {
                 map((contest) => {
                     this.contest = contest;
                     this.isJudge = this.user.role[contest.id] === 'judge';
-                    this.isAdmin = this.user.role[contest.id] === 'admin';
+                    this.isAdmin = this.user.role[contest.id].indexOf('admin') >= 0;
                     // eslint-disable-next-line no-undef
                     localStorage.setItem('contestId', this.contest.id);
                     this.loading = false;

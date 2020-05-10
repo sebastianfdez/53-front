@@ -64,9 +64,13 @@
 </ng-template>
 
 <div class="container-53">   
-  <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="addJudge = true"
+  <button mat-flat-button class="button" *ngIf="!addJudge && !loading" color="primary" (click)="addJudge = true"
   role="button" aria-label="Add judge">
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
+  </button> 
+  <button mat-flat-button class="button" *ngIf="!addJudge && !loading && !adminIsJudge" color="primary" (click)="addUserAsJudge()"
+  role="button" aria-label="Add yourself as judge">
+    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> S'ajouter comme juge
   </button>
 
   <div class="block-53" style="margin-top: 50px !important;" *ngIf="addJudge && !loading">

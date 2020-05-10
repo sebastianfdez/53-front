@@ -6,7 +6,7 @@ import {
     Observable, of, combineLatest, from,
 } from 'rxjs';
 import {
-    take, switchMap, map, catchError, tap,
+    take, switchMap, map, catchError,
 } from 'rxjs/operators';
 import { Categorie } from '../../contests/models/categorie';
 import { Contest } from '../models/contest';
