@@ -49,8 +49,9 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
             this.participant_ = this.playerForm.value;
         }
         if (this.participant_.videoLink) {
+            const cleanURL = this.participant_.videoLink.replace('watch?v=', 'embed/').split('&t=')[0];
             this.safeURL = this._sanitizer
-                .bypassSecurityTrustResourceUrl(`${this.participant_.videoLink.replace('watch?v=', 'embed/')}`);
+                .bypassSecurityTrustResourceUrl(cleanURL);
         }
     }
 
