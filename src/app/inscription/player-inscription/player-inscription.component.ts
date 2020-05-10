@@ -6,6 +6,7 @@ import { Subscription, of } from 'rxjs';
 import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Categorie, Participant } from 'src/app/contests/models/categorie';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { Title } from '@angular/platform-browser';
 import { InscriptionService } from '../inscription.service';
 import { User } from '../../shared/models/user';
 
@@ -34,9 +35,11 @@ export class PlayerInscriptionComponent implements OnInit {
         private router: Router,
         private inscriptionService: InscriptionService,
         private snackBarService: SnackBarService,
+        private titleService: Title,
     ) {}
 
     ngOnInit() {
+        this.titleService.setTitle('La 53 - Participer au contest');
         this.isLoading = true;
         this.subscriptions.push(
             this.route.data.pipe(

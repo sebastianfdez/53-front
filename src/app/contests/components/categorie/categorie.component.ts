@@ -198,10 +198,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
             });
     }
 
-    goToScores() {
-        this.router.navigate([`/portal/categorie/${this.categorie.id}/scores`]);
-    }
-
     openUploeader() {
         this.subscriptions.push(
             this.warningService

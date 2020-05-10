@@ -26,36 +26,20 @@
                     [disabled]="saveDisabled" role="button" aria-label="Save">
                     Sauvegarder la categorie
                 </button>
-                <button mat-flat-button *ngIf="isAdmin && !loadingSave && categorieForm.dirty"
-                color="warn" class="button" (click)="resetForm()" role="button" aria-label="Dismiss changes">
-                    Supprimer modifications 
-                </button>
             
                 <button mat-flat-button *ngIf="isJudge && !isAdmin && !loadingSave" color="primary" class="button" (click)="saveVotes()"
                 role="button" aria-label="Save changes">
                     Sauvegarder les notes
                 </button>
             
-                <button mat-flat-button *ngIf="isAdmin && !createNew && !loadingSave" class="button scores primary-53"
+                <button mat-flat-button
+                *ngIf="isAdmin && !createNew && !loadingSave && categorie.pools.length  && categorie.pools[0].participants.length"
+                class="button scores primary-53"
                 [routerLink]="'/portal/categorie/' + this.categorie.id + '/scores'"
                 role="button" aria-label="Go to classification and final creation">
-                    Classement et finale
-                </button>
-            
-                <button mat-flat-button *ngIf="isAdmin && !categorie.final && !loadingSave" color="primary" class="button excel" (click)="openUploeader()"
-                role="button" aria-label="Use excel tool">
-                    Importer depuis excel
+                    Classement
                 </button>
             </div>
-
-            <kendo-upload
-                #UploadComponent
-                [autoUpload]="false"
-                [restrictions]="myRestrictions"
-                (select)="fileSelected($event)"
-                (upload)="uploadFile($event)"
-                *ngIf="showUploader">
-            </kendo-upload>
         
             <div class="button" *ngIf="loadingSave">
                 <mat-spinner [diameter]="50"></mat-spinner>
@@ -73,18 +57,12 @@
                         class="flex-div column full-width"
                         [formGroupName]="i"
                         [poolForm]="poolForm"
-                        (deletePoolOut)="deletePool(i)"
                         (addParticipantOut)="addParticipant(i)"
-                        [isJudge]="isJudge" [isSpeaker]="isSpeaker"
+                        [isJudge]="isJudge"
+                        [isAdmin]="isAdmin"
                         [votesRecord]="votesRecord"
-                        [publicContest]="false"
+                        [publicContest]="true"
                     ></app-pool-form>
-                </div>
-          
-                <div class="pool block-53 mat-elevation-z2 flex-div column" *ngIf="isAdmin">
-                    <button mat-flat-button class="button add-pool" style="margin-top: 20px;" (click)="addPoolForm()">
-                        + Ajouter une poule
-                    </button>
                 </div>
             </div>
 

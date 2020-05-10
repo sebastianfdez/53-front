@@ -89,10 +89,8 @@ export class AuthService {
 
     get authenticated(): Observable<boolean> {
         return this.store.value.user !== undefined ? this.store.select<User>('user').pipe(
-            tap((user) => console.log(user)),
             map((user) => (user ? user.autenticated : false)),
         ) : this.authState$.pipe(
-            tap((user) => console.log(user)),
             filter((user) => user !== undefined),
             switchMap(() => this.store.select('user')),
             filter((user) => user !== undefined),

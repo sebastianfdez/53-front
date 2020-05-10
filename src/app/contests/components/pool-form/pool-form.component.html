@@ -6,18 +6,20 @@
             [formGroupName]="i"
             [isJudge]="isJudge"
             [isSpeaker]="isSpeaker"
+            [isAdmin]="isAdmin"
             [votesRecord]="votesRecord"
+            [publicContest]="publicContest"
             ></app-player-form>
-            <button mat-stroked-button *ngIf="!disabled" class="delete" (click)="deleteParticipant(i)">
+            <button mat-stroked-button *ngIf="!disabled && !publicContest" class="delete" (click)="deleteParticipant(i)">
                 - Supprimer ce rider
             </button>
         </div>
     </div>
-    <button mat-stroked-button *ngIf="!poolForm.disabled" class="button" (click)="addParticipant()">
+    <button mat-stroked-button *ngIf="!poolForm.disabled && !publicContest" class="button" (click)="addParticipant()">
         + Ajouter un rider
     </button>
 
-    <button mat-raised-button *ngIf="!poolForm.disabled" color="warn" class="button" (click)="deletePool()">
+    <button mat-raised-button *ngIf="!poolForm.disabled && !publicContest" color="warn" class="button" (click)="deletePool()">
         - Supprimer la poule
     </button>
 </ng-container>
