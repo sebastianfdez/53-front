@@ -14,6 +14,8 @@ export class User {
     lastName: string;
 
     autenticated: boolean;
+
+    participant: boolean;
 }
 
 export const emptyUser: User = {
@@ -24,4 +26,5 @@ export const emptyUser: User = {
     name: '',
     lastName: '',
     autenticated: false,
+    participant: true,
 };

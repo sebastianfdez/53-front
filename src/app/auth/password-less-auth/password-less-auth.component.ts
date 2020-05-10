@@ -77,6 +77,7 @@ export class PasswordLessAuthComponent implements OnInit {
                 mail: this.emailUrl,
                 role: {},
                 autenticated: true,
+                participant: false,
             };
             from<Promise<firebase.auth.UserCredential>>(
                 this.authService.signInWithLink(this.emailUrl, url).catch((error) => {

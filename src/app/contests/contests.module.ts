@@ -15,7 +15,10 @@ import { SpeakerComponent } from './components/speaker/speaker.component';
 import { PortalComponent } from './components/portal/portal.component';
 import { PoolFormComponent } from './components/pool-form/pool-form.component';
 import { PlayerFormComponent } from './components/player-form/player-form.component';
+import { NewContestComponent } from './components/new-contest/new-contest.component';
+import { CategoryOpenComponent } from './components/category-open/category-open.component';
 import { AuthModule } from '../auth/auth.module';
+import { AuthFormModule } from '../auth/auth-form/auth-form.module';
 
 // Services
 import { AuthGuardService } from '../auth/auth-form/services/auth-guard.service';
@@ -26,8 +29,6 @@ import { JudgeResolve } from './resolvers/judge.resolve';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
 import { ExcelHelperService } from './services/excel-helper.service';
-import { AuthFormModule } from '../auth/auth-form/auth-form.module';
-import { NewContestComponent } from './components/new-contest/new-contest.component';
 
 const routes: Routes = [
     {
@@ -56,6 +57,14 @@ const routes: Routes = [
             {
                 path: 'categorie/:id',
                 component: CategorieComponent,
+                canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+                resolve: {
+                    categorie: CategorieResolve,
+                },
+            },
+            {
+                path: 'categorie-open/:id',
+                component: CategoryOpenComponent,
                 canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
                 resolve: {
                     categorie: CategorieResolve,
@@ -104,6 +113,7 @@ const routes: Routes = [
         PoolFormComponent,
         PlayerFormComponent,
         NewContestComponent,
+        CategoryOpenComponent,
     ],
     providers: [
         AdminAuthGuardService,

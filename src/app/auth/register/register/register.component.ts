@@ -86,10 +86,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
             role: {},
             contest: [],
             autenticated: false,
+            participant: false,
         };
         if (this.registerToContest) {
             newUser.role[this.registerToContest] = 'player';
             newUser.contest.push(this.registerToContest);
+            newUser.participant = true;
         }
         await this.firebaseService.createUser(newUser);
         this.subscriptions.push(
