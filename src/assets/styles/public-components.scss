@@ -1,0 +1,10 @@
+app-home, app-description-overview {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url('assets/figures/Fond-home.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}

@@ -18,7 +18,7 @@ import { PlayerFormComponent } from './components/player-form/player-form.compon
 import { AuthModule } from '../auth/auth.module';
 
 // Services
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuardService } from '../auth/auth-form/services/auth-guard.service';
 import { AdminAuthGuardService } from './services/admin-guard.service';
 import { JudgeAuthGuardService } from './services/judge-guard.service';
 import { CategorieResolve } from './resolvers/categorie.resolve';
@@ -106,7 +106,6 @@ const routes: Routes = [
         NewContestComponent,
     ],
     providers: [
-        AuthGuardService,
         AdminAuthGuardService,
         JudgeAuthGuardService,
         SelectedContestGuardService,

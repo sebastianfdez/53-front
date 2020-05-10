@@ -19,6 +19,8 @@
   </mat-form-field>
 
   <mat-form-field *ngIf="authFormGroup.contains('pass')" appearance="outline">
+    <mat-icon matPrefix *ngIf="contestEnroll"
+    matTooltip="Info about the action">info</mat-icon>
     <mat-label>Mot de passe</mat-label>
     <input matInput placeholder="Mot de passe" formControlName="pass" type="password">
     <mat-icon matSuffix>vpn_key</mat-icon>
@@ -26,7 +28,7 @@
   </mat-form-field>
 
   <mat-form-field *ngIf="authFormGroup.contains('passconf')" appearance="outline">
-    <mat-label>Mot de passe</mat-label>
+    <mat-label>Confirmez le mot de passe</mat-label>
     <input matInput placeholder="Confirmez le mot de passe" formControlName="passconf" type="password">
     <mat-icon matSuffix>vpn_key</mat-icon>
   </mat-form-field>
@@ -41,16 +43,34 @@
     <mat-icon matSuffix>style</mat-icon>
   </mat-form-field>
 
-  <mat-form-field *ngIf="authFormGroup.contains('contestName')" appearance="outline">
+  <mat-form-field *ngIf="authFormGroup.get('contestName')" appearance="outline">
     <mat-label>Nom du contest</mat-label>
     <input matInput placeholder="Nom du contest" formControlName="contestName">
     <mat-icon matSuffix>emoji_events</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="authFormGroup.contains('category')" appearance="outline">
+    <mat-label>Categorie</mat-label>
+    <mat-select formControlName="category">
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+    <mat-icon matSuffix>style</mat-icon>
   </mat-form-field>
 
   <mat-form-field *ngIf="authFormGroup.contains('place')" appearance="outline">
     <mat-label>Ville, Pays</mat-label>
     <input matInput placeholder="Ville, Pays" formControlName="place">
     <mat-icon matSuffix>emoji_transportation</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="authFormGroup.contains('videoLink')" appearance="outline">
+    <mat-icon matPrefix
+    matTooltip="Info about the action">info</mat-icon>
+    <mat-label>Lien de la video</mat-label>
+    <input matInput placeholder="Lien sur instagram ou youtube" formControlName="videoLink">
+    <mat-icon matSuffix>ondemand_video</mat-icon>
   </mat-form-field>
 
   <mat-form-field *ngIf="authFormGroup.contains('date')" appearance="outline">
@@ -62,6 +82,7 @@
 </div>
 
 <ng-content select="div.error"></ng-content>
+<ng-content select="div.error-message"></ng-content>
 <ng-content select="button"></ng-content>
 <ng-content select="mat-spinner"></ng-content>
 <ng-content select="a"></ng-content>

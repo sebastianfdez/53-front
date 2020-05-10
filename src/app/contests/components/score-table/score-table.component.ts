@@ -260,28 +260,36 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
                             this.dataSource.sort((a, b) => (a.average > b.average ? -1 : 1))
                                 .slice(0, limit)
                                 .reverse()
-                                .forEach((particpant, index) => {
+                                .forEach((participant, index) => {
                                     if (index % ridersPool === 0 && index !== 0) {
                                         pools
                                             .push({
                                                 participants: JSON.parse(JSON.stringify(pool)),
                                             });
                                         pool = [{
-                                            licence: particpant.licence,
-                                            club: particpant.club,
-                                            name: particpant.name.split(' ')[0],
-                                            lastName: particpant.name.split(' ')[1],
-                                            id: particpant.idPlayer,
+                                            licence: participant.licence,
+                                            club: participant.club,
+                                            name: participant.name.split(' ')[0],
+                                            lastName: participant.name.split(' ')[1],
+                                            id: participant.idPlayer,
                                             votes: [],
+                                            likes: 0,
+                                            videoLink: '',
+                                            mail: '',
+                                            isUser: false,
                                         }];
                                     } else {
                                         pool.push({
-                                            licence: particpant.licence,
-                                            club: particpant.club,
-                                            name: particpant.name.split(' ')[0],
-                                            lastName: particpant.name.split(' ')[1],
-                                            id: particpant.idPlayer,
+                                            licence: participant.licence,
+                                            club: participant.club,
+                                            name: participant.name.split(' ')[0],
+                                            lastName: participant.name.split(' ')[1],
+                                            id: participant.idPlayer,
                                             votes: [],
+                                            likes: 0,
+                                            videoLink: '',
+                                            mail: '',
+                                            isUser: false,
                                         });
                                     }
                                 });

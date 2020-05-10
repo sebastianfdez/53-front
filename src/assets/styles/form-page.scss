@@ -1,4 +1,4 @@
-app-register, app-login {
+app-register, app-login, app-player-inscription {
     height: 100%;
     width: 100%;
     display: flex;
@@ -7,16 +7,11 @@ app-register, app-login {
     background: url('assets/figures/Fond.png');
     background-size: cover;
     background-repeat: no-repeat;
-    .login-container {
+    .form-container {
         overflow: auto;
         padding: 5%;
         max-height: 100%;
         box-sizing: border-box;
-        img {
-            max-width: 800px;
-            width: 60%;
-            margin: 17px 0;
-        }
         .link {
             padding: 10px;
             font-size: 1.3rem;
@@ -29,9 +24,10 @@ app-register, app-login {
             width: 300px;
             font-size: 1.5em;
         }
-        .error{
+        .error, .error-message {
             margin: 5px 0;
             color: #ff0000;
+            font-size: 1.2rem;
         }
     }
     @media (max-width: 490px) {
@@ -45,5 +41,11 @@ app-register, app-login {
                 font-size: 1em;
             }
         }
+    }
+}
+app-player-inscription {
+    flex-direction: column;
+    .form-container {
+        padding: 0 5%;
     }
 }

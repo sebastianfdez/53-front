@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'portal',
         loadChildren: () => import('./contests/contests.module').then((m) => m.ContestsModule),
     },
+    {
+        path: 'inscription',
+        loadChildren: () => import('./inscription/inscription.module').then((m) => m.InscriptionModule),
+    },
     { path: '**', redirectTo: 'home' },
 ];
 

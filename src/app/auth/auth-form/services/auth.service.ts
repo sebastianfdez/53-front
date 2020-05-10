@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
-import { of, Observable, from } from 'rxjs';
+import {
+    of, Observable, from, BehaviorSubject,
+} from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {
-    switchMap, map, filter,
+    switchMap, map, filter, tap, distinctUntilChanged,
 } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Store } from 'store';
@@ -12,6 +14,8 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 
 @Injectable()
 export class AuthService {
+    authState$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(undefined);
+
     constructor(
         private afAuth: AngularFireAuth,
         private firebaseService: FirebaseService,
@@ -23,10 +27,12 @@ export class AuthService {
 
     getAuth() {
         this.afAuth.authState.pipe(
+            distinctUntilChanged(),
+            tap((user) => this.authState$.next(user)),
             switchMap((user_) => {
                 if (!user_) {
                     this.store.set('user', null);
-                    return of(null);
+                    return of(false);
                 }
                 this.analytics.setUserId(user_.uid);
                 const user: User = JSON.parse(JSON.stringify(emptyUser));
@@ -75,9 +81,15 @@ export class AuthService {
     }
 
     get authenticated(): Observable<boolean> {
-        return this.store.select<User>('user').pipe(
-            filter((user) => user !== null && user !== undefined),
-            map((user) => (user ? user.autenticated : false)),
+        return this.store.value.user !== undefined ? this.store.select<User>('user').pipe(
+            map((user) => {
+                return (user ? user.autenticated : false);
+            }),
+        ) : this.authState$.pipe(
+            filter((user) => user !== undefined),
+            map((user) => {
+                return !!user;
+            }),
         );
     }
 

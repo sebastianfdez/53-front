@@ -78,6 +78,10 @@ export class ExcelHelperService {
                     lastName: player.nom,
                     name: player.prenom,
                     licence: player.licence,
+                    likes: 0,
+                    mail: '',
+                    videoLink: '',
+                    isUser: false,
                 });
             } else {
                 categorie_.pools.push({
@@ -88,6 +92,10 @@ export class ExcelHelperService {
                         lastName: player.nom,
                         name: player.prenom,
                         licence: player.licence,
+                        likes: 0,
+                        mail: '',
+                        videoLink: '',
+                        isUser: false,
                     }],
                 });
             }
