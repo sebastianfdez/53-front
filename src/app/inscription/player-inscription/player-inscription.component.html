@@ -1,0 +1,34 @@
+<app-top-menu [bottomMenu]="true"></app-top-menu>
+<div class="form-container flex-div column">
+    <ng-container *ngIf="playerInscriptionForm; else loading">
+        <h1>S'inscrire au contest: {{contest.name}}</h1>
+        <app-auth-form
+            [authFormGroup]="playerInscriptionForm"
+            [categories]="categories"
+            [contestEnroll]="true"
+        >
+            <div class="error-message" *ngIf="missingCategory">
+                *Categorie manquant
+            </div>
+            <div class="error-message" *ngIf="missingPlace">
+                *Ville/pays manquant
+            </div>
+            <div class="error-message" *ngIf="missingVideoLink">
+                *Link de video manquant
+            </div>
+            <button mat-flat-button color="primary" class="button" (click)="inscribeToContest()" [disabled]="disableButton"
+            *ngIf="!isLoading">
+                S'inscrire au contest
+            </button>
+            <mat-spinner [diameter]="40" *ngIf="isLoading"></mat-spinner>
+        </app-auth-form>
+    </ng-container>
+
+    <ng-template #loading>
+        <mat-spinner [diameter]="40"></mat-spinner>
+    </ng-template>
+    <div class="footer-image">
+      <img aria-label="Logo 53" class="logo-53"
+      src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+    </div>
+</div>

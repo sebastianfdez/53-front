@@ -6,21 +6,29 @@ export interface Votes {
 }
 
 export interface Participant {
+    mail: string;
     name: string;
     lastName: string;
     licence: string;
     votes: Votes[];
     club: string;
     id: string;
+    likes: number;
+    videoLink: string;
+    isUser: boolean;
 }
 
 export const emptyParticipant: Participant = {
+    mail: '',
     name: '',
     lastName: '',
     licence: '',
     votes: [],
     club: '',
     id: '',
+    likes: 0,
+    videoLink: '',
+    isUser: true,
 };
 
 export interface Pool {

@@ -16,6 +16,8 @@ export class Contest {
     date: number;
 
     place: string;
+
+    isPublic: boolean;
 }
 
 export const emptyContest: Contest = {
@@ -28,4 +30,5 @@ export const emptyContest: Contest = {
     type: '',
     date: 0,
     place: '',
+    isPublic: false,
 };

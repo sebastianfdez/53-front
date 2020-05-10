@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthService } from './auth-form/services/auth.service';
 import { SharedModule } from '../shared/shared.module';
 import { PasswordLessAuthComponent } from './password-less-auth/password-less-auth.component';
+import { AuthGuardService } from './auth-form/services/auth-guard.service';
 
 export const ROUTES: Routes = [
     {
@@ -28,9 +29,16 @@ export const ROUTES: Routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(ROUTES)],
-    exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}
+
+@NgModule({
+    providers: [
+        AuthService,
+        AuthGuardService,
+    ],
+})
+export class AuthServiceModule {}
 
 @NgModule({
     declarations: [
@@ -40,9 +48,7 @@ export class AuthRoutingModule { }
         AuthRoutingModule,
         CommonModule,
         SharedModule,
-    ],
-    providers: [
-        AuthService,
+        AuthServiceModule,
     ],
 })
 export class AuthModule {}

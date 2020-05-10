@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // Custom services
 import { WarningComponent } from './warning/warning.component';
 import { WarningService } from './warning/warning.service';
@@ -34,6 +35,7 @@ const materialModules = [
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTooltipModule,
 ];
 
 @NgModule({

@@ -25,6 +25,10 @@ export class AuthFormComponent implements ControlValueAccessor, AfterContentInit
 
     @Input() types: string[] = [];
 
+    @Input() categories: { id: string; name: string; }[] = [];
+
+    @Input() contestEnroll = false;
+
     minDate = new Date();
 
     constructor(
