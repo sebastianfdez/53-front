@@ -7,6 +7,13 @@
 		width: 90%;
 		max-width: 460px;
 	}
+	.frame-container {
+        max-height: 320px;
+        overflow: scroll;
+        iframe {
+            height: 500px;
+        }
+	}
 	.vote-mode {
 		width: 100%;
 		flex-wrap: wrap;
