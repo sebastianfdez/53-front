@@ -31,7 +31,11 @@ export class PoolFormComponent implements ControlValueAccessor, AfterContentInit
 
     @Input() isJudge: Boolean = false;
 
+    @Input() isAdmin: Boolean = false;
+
     @Input() votesRecord: { [codeParticipant: string]: number; } = {};
+
+    @Input() publicContest = false;
 
     constructor(
         private componentUtils: ComponentUtils,

@@ -1,4 +1,4 @@
-<div class="login-container flex-div column" (keyup.enter)="login()">
+<div class="form-container flex-div column" (keyup.enter)="login()">
   <h1 class="title">Se connecter à la 53</h1>
   <app-auth-form [authFormGroup]="loginForm">
     <button mat-flat-button color="primary" class="button" (click)="login()" *ngIf="!loging">
@@ -13,4 +13,8 @@
     <a class="link" routerLink="/auth/register" tabindex="0" role="link" *ngIf="!loging">Créer un compte</a>
   </app-auth-form>
   <mat-spinner *ngIf="loging" [diameter]="40"></mat-spinner>
+  <div class="footer-image">
+    <img aria-label="Logo 53" class="logo-53"
+    src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+  </div>
 </div>

@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';
 import { AppComponent } from './app.component';
+import { AuthServiceModule } from './auth/auth.module';
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'portal',
         loadChildren: () => import('./contests/contests.module').then((m) => m.ContestsModule),
+    },
+    {
+        path: 'inscription',
+        loadChildren: () => import('./inscription/inscription.module').then((m) => m.InscriptionModule),
     },
     { path: '**', redirectTo: 'home' },
 ];
@@ -37,6 +42,7 @@ const routes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         PublicModule,
+        AuthServiceModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     providers: [

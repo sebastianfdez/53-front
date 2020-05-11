@@ -2,7 +2,7 @@ import {
     Component, OnInit, OnDestroy,
 } from '@angular/core';
 import {
-    switchMap, catchError, tap, take, map,
+    switchMap, catchError, tap, take,
 } from 'rxjs/operators';
 import {
     Subscription, from, of, Observable, combineLatest,
@@ -121,6 +121,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
             role: {},
             contest: [],
             autenticated: false,
+            participant: false,
         };
     }
 

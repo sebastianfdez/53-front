@@ -20,7 +20,7 @@
         Juges
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" routerLink="/portal/sponsors"
-    *ngIf="!loading && isAdmin" role="button" aria-label="Go to speaker menu">
+    *ngIf="!loading && isAdmin && !contest.isPublic" role="button" aria-label="Go to speaker menu">
         Speaker & Sponsors
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;" (click)="goToContest()"
@@ -28,7 +28,7 @@
         Riders
     </button>
     <button mat-flat-button color="primary" class="button" style="margin-top: 20px;"
-    *ngIf="!loading && isAdmin" disabled>
+    *ngIf="!loading && isAdmin && !contest.isPublic" disabled>
         Bénevoles (Bientôt)
     </button>
     <div class="scrollable" *ngIf="loading">

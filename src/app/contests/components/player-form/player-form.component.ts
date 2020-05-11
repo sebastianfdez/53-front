@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
 import { ComponentUtils } from 'src/app/shared/services/component-utils';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Participant } from '../../models/categorie';
 
 @Component({
@@ -26,19 +27,31 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
 
     @Input() isJudge: Boolean = false;
 
+    @Input() isAdmin: Boolean = false;
+
     participant_: Participant = null;
 
     @Input() votesRecord: { [codeParticipant: string]: number; } = {};
 
+    @Input() publicContest = false;
+
+    safeURL: SafeResourceUrl = null;
+
     constructor(
         private componentUtils: ComponentUtils,
         private injector: Injector,
+        private _sanitizer: DomSanitizer,
     ) {}
 
     ngAfterContentInit() {
         if (!this.playerForm) {
             this.playerForm = this.componentUtils.getFormGroup(this.injector);
             this.participant_ = this.playerForm.value;
+        }
+        if (this.participant_.videoLink) {
+            const cleanURL = this.participant_.videoLink.replace('watch?v=', 'embed/').split('&t=')[0];
+            this.safeURL = this._sanitizer
+                .bypassSecurityTrustResourceUrl(cleanURL);
         }
     }
 

@@ -5,15 +5,18 @@
         <div class="flex-div vote-mode">
             <mat-icon class="icon">person</mat-icon>
             <div class="info flex-div column">
-            <h4>Prenom: <strong style="font-weight: bold; margin-left: 10px">{{participant_.name}} </strong></h4>
-            <h4>Nom: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.lastName}} </strong></h4>
-            <h4 *ngIf="isJudge">Licence: <strong> {{participant_.licence}} </strong></h4>
-            <h4 *ngIf="isSpeaker">Ville/Club: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.club}} </strong></h4>
+                <h4>Prenom: <strong style="font-weight: bold; margin-left: 10px">{{participant_.name}} </strong></h4>
+                <h4>Nom: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.lastName}} </strong></h4>
+                <h4 *ngIf="isJudge && !publicContest">Licence: <strong> {{participant_.licence}} </strong></h4>
+                <h4 *ngIf="isSpeaker">Ville/Club: <strong style="font-weight: bold; margin-left: 10px"> {{participant_.club}} </strong></h4>
             </div>
-            <mat-form-field class="vote-input" *ngIf="isJudge">
+            <mat-form-field class="vote-input" *ngIf="isJudge && !isAdmin">
                 <input matInput placeholder="Note (1-100)" step=".25" min="0" max="100" [(ngModel)]="votesRecord[participant_.id]" 
                 [ngModelOptions]="{standalone: true}" (keyup)="valueChange($event, participant_.id)" required>
             </mat-form-field>
+            <div class="frame-container" *ngIf="publicContest && safeURL" >
+                <iframe [src]='safeURL' frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
     </ng-container>
     <ng-template #form>
@@ -29,7 +32,8 @@
             aria-label="Player last name">
             <mat-icon matSuffix>perm_identity</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline"
+            *ngIf="playerForm.get('licence')">
             <mat-label>Licence</mat-label>
             <input matInput formControlName="licence"
             aria-label="Player id or licence">
@@ -40,6 +44,13 @@
             <input matInput formControlName="club"
             aria-label="Player club or city">
             <mat-icon matSuffix>location_city</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline"
+            *ngIf="playerForm.get('videoLink')">
+            <mat-label>Video</mat-label>
+            <input matInput formControlName="videoLink"
+            aria-label="Video link">
+            <mat-icon matSuffix>ondemand_video</mat-icon>
         </mat-form-field>
     </ng-template>
 </div>

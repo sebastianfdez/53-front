@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
     FormBuilder, FormGroup, Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import {
+    tap, filter,
+} from 'rxjs/operators';
 import { AuthService } from '../../auth-form/services/auth.service';
 import { ComponentUtils } from '../../../shared/services/component-utils';
-import { Contest } from '../../../shared/models/contest';
 import { User } from '../../../shared/models/user';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
@@ -16,12 +19,18 @@ import { TypeContests } from '../../../shared/models/type-contests';
     selector: 'app-register',
     templateUrl: './register.component.html',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
 
     error: string;
 
     types: string[] = [];
+
+    registerToContest = '';
+
+    subscriptions: Subscription[] = [];
+
+    loading = false;
 
     constructor(
         private fb: FormBuilder,
@@ -31,6 +40,7 @@ export class RegisterComponent implements OnInit {
         private snackBarService: SnackBarService,
         private router: Router,
         private titleService: Title,
+        private route: ActivatedRoute,
     ) {}
 
     ngOnInit() {
@@ -42,16 +52,20 @@ export class RegisterComponent implements OnInit {
             user: ['', Validators.required],
             pass: ['', Validators.required],
             passconf: ['', Validators.required],
-            type: ['', Validators.required],
             name: ['', Validators.required],
             lastName: ['', Validators.required],
-            contestName: ['', Validators.required],
-            date: [(new Date()).getTime(), Validators.required],
-            place: ['', Validators.required],
         }, { validators: this.samePassword });
+        this.subscriptions.push(
+            this.route.queryParams.subscribe((data) => {
+                if (data.contest) {
+                    this.registerToContest = data.contest;
+                }
+            }),
+        );
     }
 
     async register() {
+        this.loading = true;
         try {
             const user: firebase.auth.UserCredential = await this.authService
                 .createUser(this.registerForm.value.user, this.registerForm.value.pass);
@@ -59,36 +73,43 @@ export class RegisterComponent implements OnInit {
         } catch (err) {
             console.log(err);
             this.error = err.message;
+            this.loading = false;
         }
     }
 
     async createContestUser(user: firebase.auth.UserCredential) {
-        const newContest: Contest = {
-            id: '',
-            admins: [user.user.email],
-            categories: [],
-            judges: [],
-            name: this.registerForm.value.contestName,
-            speaker: '',
-            type: this.registerForm.value.type,
-            date: this.registerForm.value.date,
-            place: this.registerForm.value.place,
-        };
-        const newContest_ = await this.firebaseService.createContest(newContest);
         const newUser: User = {
             id: user.user.uid,
             mail: user.user.email,
             name: this.registerForm.value.name,
             lastName: this.registerForm.value.lastName,
             role: {},
-            contest: [newContest_.id],
+            contest: [],
             autenticated: false,
+            participant: false,
         };
-        newUser.role[newContest_.id] = 'admin';
+        if (this.registerToContest) {
+            newUser.role[this.registerToContest] = 'player';
+            newUser.contest.push(this.registerToContest);
+            newUser.participant = true;
+        }
         await this.firebaseService.createUser(newUser);
-        await this.firebaseService.updateContest(newContest_.id, { id: newContest_.id });
-        this.snackBarService.showMessage('Utilisateur et contest créé avec succès');
-        this.router.navigate(['auth/login']);
+        this.subscriptions.push(
+            this.authService.authState$.pipe(
+                filter((user_) => user_ !== undefined),
+                tap((user_) => {
+                    if (user_) {
+                        this.snackBarService.showMessage('Utilisateur créé avec succès');
+                        if (this.registerToContest) {
+                            this.router.navigate(['inscription'], { preserveQueryParams: true });
+                        } else {
+                            this.router.navigate(['portal']);
+                        }
+                    }
+                    this.loading = false;
+                }),
+            ).subscribe(),
+        );
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -118,12 +139,11 @@ export class RegisterComponent implements OnInit {
         return (control.hasError('required') && control.touched) || (control2.hasError('required') && control2.touched);
     }
 
-    get missingName() {
-        const control = this.registerForm.get('contestName');
-        return control.hasError('required') && control.touched;
-    }
-
     get disableButton() {
         return this.registerForm.invalid;
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 }

@@ -51,6 +51,8 @@ export class ContestsComponent implements OnInit, OnDestroy {
         [id: string]: boolean;
     } = {};
 
+    isPublic = false;
+
     subscriptions: Subscription[] = [];
 
     constructor(
@@ -68,7 +70,10 @@ export class ContestsComponent implements OnInit, OnDestroy {
         this.isJudge = this.authService.isJudge();
         this.judge$ = this.authService.getAuthenticatedUser();
         this.contest$ = this.contestService.getSelectedContest().pipe(
-            tap((contest) => this.titleService.setTitle(`La 53 - ${contest.name}`)),
+            tap((contest) => {
+                this.titleService.setTitle(`La 53 - ${contest.name}`);
+                this.isPublic = contest.isPublic;
+            }),
         );
         this.categories$ = this.contestService.getSelectedContest().pipe(
             tap(() => {
@@ -94,10 +99,13 @@ export class ContestsComponent implements OnInit, OnDestroy {
     }
 
     goTo(categorie: Categorie) {
-        // eslint-disable-next-line no-unused-expressions
-        (this.isJudge || this.isAdmin)
-            ? this.router.navigate([`/portal/categorie/${categorie.id}`])
-            : this.router.navigate([`/portal/categorie/${categorie.id}/speaker`]);
+        if (this.isPublic) {
+            this.router.navigate([`/portal/categorie-open/${categorie.id}`]);
+        } else if (this.isJudge || this.isAdmin) {
+            this.router.navigate([`/portal/categorie/${categorie.id}`]);
+        } else {
+            this.router.navigate([`/portal/categorie/${categorie.id}/speaker`]);
+        }
     }
 
     public mouseup(categorie: Categorie, event: any) {

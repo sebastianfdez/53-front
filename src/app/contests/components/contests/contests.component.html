@@ -26,7 +26,10 @@
           <mat-icon>close</mat-icon>
         </div>
         <h4 class="name"> {{categorie.name}} </h4>
-        <h5 class="pool"> {{categorie.pools.length}} poules </h5>
+        <h5 class="pool" *ngIf="(contest$ | async).isPublic">
+          {{categorie.pools[0] ? categorie.pools[0].participants.length : 0}} riders
+        </h5>
+        <h5 class="pool" *ngIf="!(contest$ | async).isPublic"> {{categorie.pools.length}} poules </h5>
       </li>
       <li class="grid-53-item flex-div column new primary-53" *ngIf="isAdmin | async" (click)="goToNew()" tabindex="0" role="button"
       (keydown.enter)="goToNew()" aria-label="Go to create new category">
@@ -49,12 +52,15 @@
           <mat-icon>close</mat-icon>
         </div>
         <h4 class="name"> {{categorie.name}} </h4>
-        <h5 class="pool"> {{categorie.pools.length}} poules </h5>
+        <h5 class="pool" *ngIf="(contest$ | async).isPublic">
+          {{categorie.pools[0] ? categorie.pools[0].participants.length : 0}} riders
+        </h5>
+        <h5 class="pool" *ngIf="!(contest$ | async).isPublic"> {{categorie.pools.length}} poules </h5>
       </li>
     </ul>
   
     <div class="footer-image">
-      <img aria-label="Logo 51"
+      <img aria-label="Logo 53"
       src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
     </div>
   </div>
