@@ -10,7 +10,7 @@
     <div class="error" *ngIf="passwordInvalid">
       *Mot de pass manquant
     </div>
-    <a class="link" routerLink="/auth/register" tabindex="0" role="link" *ngIf="!loging">Créer un compte</a>
+    <!-- <a class="link" routerLink="/auth/register" tabindex="0" role="link" *ngIf="!loging">Créer un compte</a> -->
   </app-auth-form>
   <mat-spinner *ngIf="loging" [diameter]="40"></mat-spinner>
   <div class="footer-image">
