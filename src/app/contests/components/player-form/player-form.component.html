@@ -1,6 +1,8 @@
 <div class="participants-cont flex-div column full-width mat-elevation-z1"
     [class.error]="playerForm.invalid"
-    [formGroup]="playerForm">
+    [formGroup]="playerForm"
+    [class.fullwidth]="fullWidth"
+>
     <ng-container *ngIf="disabled else form">
         <div class="flex-div vote-mode">
             <mat-icon class="icon">person</mat-icon>
@@ -20,13 +22,13 @@
         </div>
     </ng-container>
     <ng-template #form>
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline" *ngIf="playerForm.get('name')">
             <mat-label>Prénom</mat-label>
             <input matInput placeholder="Nom de la catégorie" formControlName="name"
             aria-label="Player name">
             <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline" *ngIf="playerForm.get('lastName')">
             <mat-label>Nom</mat-label>
             <input matInput formControlName="lastName"
             aria-label="Player last name">
@@ -39,7 +41,7 @@
             aria-label="Player id or licence">
             <mat-icon matSuffix>payment</mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline" *ngIf="playerForm.get('club')">
             <mat-label>Ville/Club</mat-label>
             <input matInput formControlName="club"
             aria-label="Player club or city">
@@ -53,4 +55,5 @@
             <mat-icon matSuffix>ondemand_video</mat-icon>
         </mat-form-field>
     </ng-template>
+    <ng-content select="button"></ng-content>
 </div>

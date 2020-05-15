@@ -29,17 +29,22 @@ import { JudgeResolve } from './resolvers/judge.resolve';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
 import { ExcelHelperService } from './services/excel-helper.service';
+import { PlayerPortalComponent } from './components/player-portal/player-portal.component';
+import { PlayerGuardService } from './services/player-guard.service';
 
 const routes: Routes = [
     {
         path: '',
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'portal' },
-            { path: 'portal', component: PortalComponent, canActivate: [AuthGuardService] },
+            { path: 'portal', component: PortalComponent, canActivate: [AuthGuardService, PlayerGuardService] },
             {
                 path: 'contests',
                 component: ContestsComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+                canActivate: [
+                    JudgeAuthGuardService,
+                    SelectedContestGuardService,
+                ],
             },
             { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
             {
@@ -52,8 +57,13 @@ const routes: Routes = [
             },
             { path: 'new', component: NewContestComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
             { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
+            { path: 'player', component: PlayerPortalComponent, canActivate: [AuthGuardService] },
             { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
-            { path: 'categorie/new', component: CategorieComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
+            {
+                path: 'categorie/new',
+                component: CategorieComponent,
+                canActivate: [AdminAuthGuardService, SelectedContestGuardService],
+            },
             {
                 path: 'categorie/:id',
                 component: CategorieComponent,
@@ -114,6 +124,7 @@ const routes: Routes = [
         PlayerFormComponent,
         NewContestComponent,
         CategoryOpenComponent,
+        PlayerPortalComponent,
     ],
     providers: [
         AdminAuthGuardService,
@@ -123,6 +134,7 @@ const routes: Routes = [
         JudgeResolve,
         ContestsService,
         ExcelHelperService,
+        PlayerGuardService,
     ],
     exports: [
         RouterModule,

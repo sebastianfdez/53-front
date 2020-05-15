@@ -32,6 +32,7 @@ export class ContestsService {
         return this.store.value.selectedContest ? this.store.select<Contest>('selectedContest')
         // eslint-disable-next-line no-undef
             : this.getContest(window.localStorage.getItem('selectedContest')).pipe(
+                take(1),
                 switchMap((contest) => {
                     this.selectContest(contest);
                     return this.store.select<Contest>('selectedContest');
@@ -46,18 +47,16 @@ export class ContestsService {
      * @return {Observable<Contest>}    Return observable of the contest
     */
     getContest(idContest: string): Observable<Contest> {
-        let contest$: Observable<{[id: string]: Contest;}> = null;
-        contest$ = this.store.value.contests[idContest] ? this.store.select<{[id: string]: Contest;}>('contests')
-            : this.firebaseService.getContest(idContest).pipe(
-                switchMap((contest) => {
-                    const { contests } = this.store.value;
-                    const contest_ = { id: idContest, ...contest };
-                    contests[idContest] = contest_;
-                    this.store.set('contests', contests);
-                    return this.store.select<{[id: string]: Contest;}>('contests');
-                }),
-            );
-        return contest$.pipe(
+        return this.store.value.contests[idContest] ? this.store.select<{[id: string]: Contest;}>('contests').pipe(
+            map((contests) => contests[idContest]),
+        ) : this.firebaseService.getContest(idContest).pipe(
+            switchMap((contest) => {
+                const contests = this.store.value.contests ? this.store.value.contests : {};
+                const contest_ = { id: idContest, ...contest };
+                contests[idContest] = contest_;
+                this.store.set('contests', contests);
+                return this.store.select<{[id: string]: Contest;}>('contests');
+            }),
             map((contests) => contests[idContest]),
         );
     }
