@@ -14,6 +14,22 @@
     </div>
   </div>
   <div class="section flex-div column">
+    <div class="block description flex-div column center animated open-contests" [class.fadeInLeft]="elementInViewport(description)"
+      #description>
+      <h1>CONTESTS EN COURS</h1>
+      <h2>
+        Lyon Roller Open 5 #CovidEdition
+      </h2>
+      <button mat-flat-button color="primary" class="button" style="margin-top: 20px;"
+      role="button" aria-label="Go to judge menu" (click)="goToOpenContest()">
+      VOIR
+      </button>
+      <h2>
+        Du 1 juin au 31 août 2020
+      </h2>
+    </div>
+  </div>
+  <div class="section flex-div column">
     <div class="block description flex-div column center animated" [class.fadeInLeft]="elementInViewport(description)"
       #description>
       <h1>LA CINQUANTE TROIS</h1>

@@ -45,6 +45,15 @@
             &.center {
               text-align: center;
             }
+            &.open-contests {
+                button {
+                    font-size: 1.3rem;
+                    margin-top: 20px;
+                    margin-bottom: 50px;
+                    width: 200px;
+                    background-color: var(--la-53-dark-red);
+                }
+            }
             @media (max-width: 930px) {
                 padding: 20px 0;
                 width: 78vw;

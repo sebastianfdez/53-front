@@ -45,13 +45,15 @@
     right: 0;
     bottom: 0;
     &.back {
-        transform: translateZ(-100px) scale(2);
-        @media (min-width: 930px) {
-            transform: translateZ(-200px) scale(2);
-        }
+        transform: translateZ(-100px) translateY(180vh) scale(2);
         z-index: 3;
         width: 96vw;
         padding-top: 10rem;
+        overflow: hidden;
+        height: 300vh;
+        @media (min-width: 930px) {
+            transform: translateZ(-200px) translateY(180vh) scale(2);
+        }
         img {
             padding: 5rem 0;
             margin-bottom: 10rem;
@@ -62,11 +64,11 @@
                 margin-bottom: 5rem;
             }
             @media (min-width: 760px) {
-                width: 60%;
                 margin-bottom: 5rem;
+                max-width: 90vw;
             }
             @media (min-width: 930px) {
-                width: 100vh;
+                width: 90vh;
                 margin-bottom: 10vh;
                 padding: 5vh 0;
                 margin-left: 0;
