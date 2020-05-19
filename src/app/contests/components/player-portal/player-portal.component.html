@@ -1,11 +1,14 @@
+<h1>Meetre a jour vos donnés</h1>
+<h1 *ngIf="constestName">Contest: {{constestName}}</h1>
 <ng-container *ngIf="participant$ | async as participant">
     <app-player-form [playerForm]="playerForm" style="
     width: 90%;
     max-width: 600px;">
-        <button mat-flat-button color="primary" class="button"
-        (click)="update()" [disabled]="playerForm.valid && playerForm.dirty">
+        <button mat-flat-button color="primary" class="button" *ngIf="!loading"
+        (click)="update()" [disabled]="!playerForm.valid || !playerForm.dirty">
             Mettre à jour les données
         </button>
+        <mat-spinner [diameter]="40" *ngIf="loading"></mat-spinner>
     </app-player-form>
 </ng-container>
 <div class="footer-image">

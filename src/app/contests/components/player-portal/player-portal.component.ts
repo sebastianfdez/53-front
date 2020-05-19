@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
     switchMap, map, tap,
 } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import {
 } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { User } from 'src/app/shared/models/user';
+import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { ContestsService } from '../../services/contest.service';
 import { Categorie, Participant } from '../../models/categorie';
 
@@ -20,19 +21,32 @@ export class PlayerPortalComponent implements OnInit {
 
     participant$: Observable<Participant> = null;
 
+    loading = false;
+
+    category: Categorie = null;
+
+    constestName = '';
+
+    idplayer = '';
+
     constructor(
         private contestService: ContestsService,
         private authService: AuthService,
         private formBuilder: FormBuilder,
+        private snackbarService: SnackBarService,
     ) {}
 
     ngOnInit(): void {
+        this.loading = true;
         this.participant$ = combineLatest<Observable<User>, Observable<Categorie[]>>(
             this.authService.getAuthenticatedUser(),
             this.contestService.getSelectedContest().pipe(
-                switchMap((contest) => combineLatest(
-                    contest.categories.map((cat) => this.contestService.getCategorie(cat)),
-                )),
+                switchMap((contest) => {
+                    this.constestName = contest.name;
+                    return combineLatest(
+                        contest.categories.map((cat) => this.contestService.getCategorie(cat)),
+                    );
+                }),
             ),
         ).pipe(
             map((value) => {
@@ -43,6 +57,8 @@ export class PlayerPortalComponent implements OnInit {
                         // value[1][i].pools[j].participants.forEach((participant) => {
                         for (let k = 0; k < categories[i].pools[j].participants.length; k++) {
                             if (categories[i].pools[j].participants[k].id === value[0].id) {
+                                this.category = categories[i];
+                                this.idplayer = value[0].id;
                                 return categories[i].pools[j].participants[k];
                             }
                         }
@@ -51,19 +67,26 @@ export class PlayerPortalComponent implements OnInit {
                 return null;
             }),
             tap((participant: Participant) => {
-                console.log(participant);
                 this.playerForm = this.formBuilder.group({
-                    name: participant.name,
-                    lastName: participant.lastName,
-                    club: participant.club,
-                    mail: participant.mail,
-                    videoLink: participant.videoLink,
+                    name: [participant.name, Validators.required],
+                    lastName: [participant.lastName, Validators.required],
+                    club: [participant.club, Validators.required],
+                    mail: [participant.mail, Validators.required],
+                    videoLink: [participant.videoLink, Validators.required],
                 });
+                this.loading = false;
             }),
         );
     }
 
     update() {
-        console.log(this.playerForm.value);
+        this.loading = true;
+        this.contestService.updatePlayer(this.category, { ...this.playerForm.value, id: this.idplayer }).then(() => {
+            this.loading = false;
+            this.playerForm.reset(this.playerForm.value);
+        }).catch(() => {
+            this.snackbarService.showError('Erreur de connexion');
+            this.loading = false;
+        });
     }
 }

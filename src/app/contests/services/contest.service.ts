@@ -7,7 +7,7 @@ import {
 import { User } from 'src/app/shared/models/user';
 import { Contest } from '../../shared/models/contest';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { Categorie } from '../models/categorie';
+import { Categorie, Participant } from '../models/categorie';
 
 @Injectable({
     providedIn: 'root',
@@ -126,5 +126,26 @@ export class ContestsService {
             .pipe(
                 tap((user) => this.store.set('user', user)),
             );
+    }
+
+    /**
+     * Update a player from a category
+     * @param category Category to update
+     * @param participant Participant to update
+     */
+    updatePlayer(category: Categorie, participant: Partial<Participant>) {
+        const category_ = category;
+        for (let j = 0; j < category_.pools.length; j++) {
+            // value[1][i].pools[j].participants.forEach((participant) => {
+            for (let k = 0; k < category_.pools[j].participants.length; k++) {
+                if (category_.pools[j].participants[k].id === participant.id) {
+                    category_.pools[j].participants[k] = {
+                        ...category_.pools[j].participants[k],
+                        ...participant,
+                    };
+                }
+            }
+        }
+        return this.firebaseService.updateCategorie(category_);
     }
 }

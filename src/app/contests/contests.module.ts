@@ -46,28 +46,36 @@ const routes: Routes = [
                     SelectedContestGuardService,
                 ],
             },
-            { path: 'admin', component: AdminComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
+            {
+                path: 'admin',
+                component: AdminComponent,
+                canActivate: [AuthGuardService, SelectedContestGuardService, PlayerGuardService],
+            },
             {
                 path: 'judges',
                 component: JudgesComponent,
-                canActivate: [AdminAuthGuardService, SelectedContestGuardService],
+                canActivate: [AdminAuthGuardService, SelectedContestGuardService, PlayerGuardService],
                 resolve: {
                     judges: JudgeResolve,
                 },
             },
-            { path: 'new', component: NewContestComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
+            {
+                path: 'new',
+                component: NewContestComponent,
+                canActivate: [AuthGuardService, SelectedContestGuardService, PlayerGuardService],
+            },
             { path: 'speaker', component: ContestsComponent, canActivate: [AuthGuardService, SelectedContestGuardService] },
             { path: 'player', component: PlayerPortalComponent, canActivate: [AuthGuardService] },
             { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
             {
                 path: 'categorie/new',
                 component: CategorieComponent,
-                canActivate: [AdminAuthGuardService, SelectedContestGuardService],
+                canActivate: [AdminAuthGuardService, SelectedContestGuardService, PlayerGuardService],
             },
             {
                 path: 'categorie/:id',
                 component: CategorieComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
                 resolve: {
                     categorie: CategorieResolve,
                 },
@@ -75,7 +83,7 @@ const routes: Routes = [
             {
                 path: 'categorie-open/:id',
                 component: CategoryOpenComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
                 resolve: {
                     categorie: CategorieResolve,
                 },
@@ -83,7 +91,7 @@ const routes: Routes = [
             {
                 path: 'categorie/:id/scores',
                 component: ScoreTableComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService],
+                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
                 resolve: {
                     categorie: CategorieResolve,
                     judges: JudgeResolve,
@@ -92,7 +100,7 @@ const routes: Routes = [
             {
                 path: 'categorie/:id/speaker',
                 component: CategorieComponent,
-                canActivate: [AuthGuardService, SelectedContestGuardService],
+                canActivate: [AuthGuardService, SelectedContestGuardService, PlayerGuardService],
                 resolve: {
                     categorie: CategorieResolve,
                 },
