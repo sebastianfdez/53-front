@@ -9,12 +9,10 @@ export class PlayerGuardService implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {}
 
     canActivate(): Observable<boolean> | boolean {
-        console.log('entro');
         return this.authService.authenticated.pipe(
             switchMap(() => this.authService.getAuthenticatedUser()),
             switchMap((user) => {
                 const roles = Object.values(user.role);
-                console.log(roles);
                 if (roles.length === 1 && roles[0] === 'player') {
                     this.router.navigate(['portal/player']);
                     return of(false);
