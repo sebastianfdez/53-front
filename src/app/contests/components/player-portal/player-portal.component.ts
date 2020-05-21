@@ -9,6 +9,7 @@ import {
 import { AuthService } from 'src/app/auth/auth-form/services/auth.service';
 import { User } from 'src/app/shared/models/user';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
+import { Router } from '@angular/router';
 import { ContestsService } from '../../services/contest.service';
 import { Categorie, Participant } from '../../models/categorie';
 
@@ -34,6 +35,7 @@ export class PlayerPortalComponent implements OnInit {
         private authService: AuthService,
         private formBuilder: FormBuilder,
         private snackbarService: SnackBarService,
+        private router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -81,12 +83,20 @@ export class PlayerPortalComponent implements OnInit {
 
     update() {
         this.loading = true;
-        this.contestService.updatePlayer(this.category, { ...this.playerForm.value, id: this.idplayer }).then(() => {
+        this.contestService.updatePlayer(
+            this.category,
+            { ...this.playerForm.value, id: this.idplayer },
+        ).then(() => {
             this.loading = false;
             this.playerForm.reset(this.playerForm.value);
         }).catch(() => {
             this.snackbarService.showError('Erreur de connexion');
             this.loading = false;
         });
+    }
+
+    async logOut() {
+        await this.authService.logOut();
+        this.router.navigate(['home']);
     }
 }

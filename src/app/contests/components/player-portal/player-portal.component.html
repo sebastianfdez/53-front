@@ -1,3 +1,9 @@
+<div class="back-53 logout">
+    <button mat-flat-button color="primary" role="button" (click)="logOut()"
+    aria-label="Log Out">
+        Se déconnecter
+    </button>
+</div>
 <h1>Meetre a jour vos donnés</h1>
 <h1 *ngIf="constestName">Contest: {{constestName}}</h1>
 <ng-container *ngIf="participant$ | async as participant">
