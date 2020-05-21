@@ -1,0 +1,23 @@
+<div class="back-53 logout">
+    <button mat-flat-button color="primary" role="button" (click)="logOut()"
+    aria-label="Log Out">
+        Se déconnecter
+    </button>
+</div>
+<h1>Meetre a jour vos donnés</h1>
+<h1 *ngIf="constestName">Contest: {{constestName}}</h1>
+<ng-container *ngIf="participant$ | async as participant">
+    <app-player-form [playerForm]="playerForm" style="
+    width: 90%;
+    max-width: 600px;">
+        <button mat-flat-button color="primary" class="button" *ngIf="!loading"
+        (click)="update()" [disabled]="!playerForm.valid || !playerForm.dirty">
+            Mettre à jour les données
+        </button>
+        <mat-spinner [diameter]="40" *ngIf="loading"></mat-spinner>
+    </app-player-form>
+</ng-container>
+<div class="footer-image">
+    <img aria-label="Logo 53"
+    src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+</div>

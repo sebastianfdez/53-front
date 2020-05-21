@@ -96,7 +96,7 @@ export class PlayerInscriptionComponent implements OnInit {
             lastName: this.user.lastName,
             club: this.playerInscriptionForm.value.place,
             id: this.user.id,
-            licence: '',
+            licence: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
             likes: 0,
             videoLink: this.playerInscriptionForm.value.videoLink,
             mail: this.user.mail,

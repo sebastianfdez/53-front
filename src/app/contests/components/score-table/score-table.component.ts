@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
 import { WarningService } from 'src/app/shared/warning/warning.service';
 import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { Store } from 'store';
+import { Contest } from 'src/app/shared/models/contest';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import {
@@ -43,6 +44,8 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
     loading = false;
 
+    contest: Contest = null;
+
     subscriptions: Subscription[] = [];
 
     constructor(
@@ -56,17 +59,31 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions.push(
-            this.route.data.subscribe((data: {categorie: Categorie; judges: User[];}) => {
-                this.judges = data.judges;
-                this.categorie = data.categorie;
-                this.getTableData();
-                this.loading = false;
-                this.displayedColumns = ['calification', 'name', 'licence'];
-                this.judges.forEach((judge) => {
-                    this.displayedColumns.push(`${judge.name}${judge.lastName}`);
-                });
-                this.displayedColumns.push('average', 'pool');
-            }),
+            this.route.data.pipe(
+                switchMap((data: {categorie: Categorie; judges: User[];}) => {
+                    this.judges = data.judges;
+                    this.categorie = data.categorie;
+                    this.getTableData();
+                    return this.store.select<Contest>('selectedContest');
+                }),
+                tap((contest) => {
+                    this.loading = false;
+                    this.contest = contest;
+                    if (contest.isPublic) {
+                        this.displayedColumns = ['calification', 'name', 'club'];
+                    } else {
+                        this.displayedColumns = ['calification', 'name', 'licence'];
+                    }
+                    this.judges.forEach((judge) => {
+                        this.displayedColumns.push(`${judge.name}${judge.lastName}`);
+                    });
+                    if (contest.isPublic) {
+                        this.displayedColumns.push('average');
+                    } else {
+                        this.displayedColumns.push('average', 'pool');
+                    }
+                }),
+            ).subscribe(),
         );
     }
 
@@ -126,6 +143,7 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
                 case 'pool': return this.compareNumber(this.parseInt(a.pool), this.parseInt(b.pool), isAsc);
                 case 'name': return this.compare(a.name, b.name, isAsc);
                 case 'licence': return this.compare(a.licence, b.licence, isAsc);
+                case 'club': return this.compare(a.club, b.club, isAsc);
                 case 'average': return this.compareNumber(this.parseInt(a.average), this.parseInt(b.average), isAsc);
                 case 'calification': return this.compareNumber(this.parseInt(a.calification), this.parseInt(b.calification), isAsc);
                 default: return 0;

@@ -3,11 +3,13 @@
   <div class="table-container flex-div column">
 
     <div class="back-53" *ngIf="!loading">
-      <button mat-flat-button class="big" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}"
+      <button mat-flat-button class="big" color="primary"
+      routerLink="{{ contest.isPublic ? '/portal/categorie-open/' + categorie?.id : '/portal/categorie/' + categorie?.id}}"
       role="button" aria-label="Go back to category menu">
         {{"< Retour"}}
       </button>
-      <button mat-flat-button class="small" color="primary" routerLink="{{'/portal/categorie/' + categorie?.id}}"
+      <button mat-flat-button class="small" color="primary"
+      routerLink="{{ contest.isPublic ? '/portal/categorie-open/' + categorie?.id : '/portal/categorie/' + categorie?.id}}"
       role="button" aria-label="Go back to category menu">
         {{"<"}}
       </button>
@@ -37,6 +39,11 @@
             <ng-container matColumnDef="licence">
               <th mat-header-cell *matHeaderCellDef mat-sort-header tabindex="-1"> Licence </th>
               <td mat-cell *matCellDef="let element"> {{element.licence}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="club">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header tabindex="-1"> Ville, Pays </th>
+              <td mat-cell *matCellDef="let element"> {{element.club }} </td>
             </ng-container>
         
             <ng-container matColumnDef="{{judge.name}}{{judge.lastName}}" *ngFor="let judge of judges">

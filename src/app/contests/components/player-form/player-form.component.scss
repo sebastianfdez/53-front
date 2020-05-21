@@ -3,9 +3,13 @@
 	border-radius: 8px;
 	background-color: #fbfbfb;
 	margin-bottom: 20px;
-	.mat-form-field {
-		width: 90%;
-		max-width: 460px;
+    .mat-form-field {
+        width: 90%;
+    }
+	:not(.fullwidth) {
+		.mat-form-field {
+			max-width: 460px;
+		}
 	}
 	.frame-container {
         max-height: 320px;
@@ -42,7 +46,7 @@
 	&.error {
 		border: 1px solid #ff7777;
 	}
-    @media (max-width: 580px) {
-        margin-top: 10px;
-    }
+	@media (max-width: 580px) {
+			margin-top: 10px;
+	}
 }

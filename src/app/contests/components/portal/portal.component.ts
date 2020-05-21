@@ -54,6 +54,7 @@ export class PortalComponent implements OnInit {
                 ) : of([]);
             }),
             tap((contests: Contest[]) => {
+                this.extraContests = [];
                 contests.forEach((contest) => {
                     if (this.user.role[contest.id] === 'adminjudge') {
                         this.extraContests.push(contest);

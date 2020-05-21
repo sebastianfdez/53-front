@@ -35,6 +35,8 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
 
     @Input() publicContest = false;
 
+    @Input() fullWidth = false;
+
     safeURL: SafeResourceUrl = null;
 
     constructor(
@@ -48,7 +50,7 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
             this.playerForm = this.componentUtils.getFormGroup(this.injector);
             this.participant_ = this.playerForm.value;
         }
-        if (this.participant_.videoLink) {
+        if (this.participant_ && this.participant_.videoLink) {
             const cleanURL = this.participant_.videoLink.replace('watch?v=', 'embed/').split('&t=')[0];
             this.safeURL = this._sanitizer
                 .bypassSecurityTrustResourceUrl(cleanURL);
