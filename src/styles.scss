@@ -60,14 +60,18 @@ body {
 
 .scrollable-53 {
     align-items: center;
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: fit-content;
-    padding: 48px 15px;
-    min-width: fit-content;
+    padding: 48px 1%;
     box-sizing: border-box;
     min-height: fit-content;
+	@media (min-width: 580px) {
+        min-width: fit-content;
+        width: 90%;
+        padding: 48px 5%;
+	}
 }
 
 .container-53 {
@@ -81,6 +85,9 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     box-sizing: border-box;
+    &.public {
+        padding: 0;
+    }
 }
 
 .block-53 {
@@ -88,11 +95,22 @@ body {
     display: flex;
     align-items: center;
     padding: 15px;
-    background-color: #f1f1f1;
     border-radius: 32px;
     margin: 10px 0;
-    max-width: 800px;
     position: relative;
+    &:not(.public) {
+        background-color: #f1f1f1;
+        max-width: 800px;
+    }
+    &.public {
+        max-width: 1100px;
+        width: 97%;
+        padding: 1%;
+        @media (min-width: 580px) {
+            background-color: #f1f1f1;
+            width: 90%;
+        }
+    }
 }
 
 .back-53 {

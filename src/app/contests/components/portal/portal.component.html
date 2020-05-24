@@ -19,7 +19,7 @@
             {{user?.name}} {{user?.lastName}}
         </h1>
         <h2 class="title-53" *ngIf="!loading">Liste des contests</h2>
-        <ul class="grid-53 flex-div" *ngIf="contests$ | async as contests">
+        <ul class="grid-53 portal flex-div" *ngIf="contests$ | async as contests">
             <li class="grid-53-item flex-div column primary-53 mat-elevation-z3" tabindex="0" role="link"
             (keydown.enter)="goTo(contest)" (click)="goTo(contest)"
             *ngFor="let contest of contests">

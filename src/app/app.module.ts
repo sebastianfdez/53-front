@@ -27,6 +27,10 @@ const routes: Routes = [
         path: 'inscription',
         loadChildren: () => import('./inscription/inscription.module').then((m) => m.InscriptionModule),
     },
+    {
+        path: 'public-contest',
+        loadChildren: () => import('./public-contest/public-contest.module').then((m) => m.PublicContestModule),
+    },
     { path: '**', redirectTo: 'home' },
 ];
 

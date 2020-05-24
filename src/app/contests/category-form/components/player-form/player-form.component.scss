@@ -1,8 +1,9 @@
 .participants-cont {
-	padding: 20px 0;
+	padding: 10px 0;
 	border-radius: 8px;
 	background-color: #fbfbfb;
 	margin-bottom: 20px;
+    margin-top: 10px;
     .mat-form-field {
         width: 90%;
     }
@@ -28,13 +29,14 @@
 			font-size: 40px;
 			flex: 0 0 auto;
 			width: 40px;
-			height: fit-content;
+            height: fit-content;
+            display: none;
 		}
 		.info {
 			flex: 1;
-			margin: 0 10px;
+			margin: 0 10px 10px 10px;
 			h4 {
-				margin: 10px;
+				margin: 2px;
 			}
 		}
 		.vote-input {
@@ -46,7 +48,8 @@
 	&.error {
 		border: 1px solid #ff7777;
 	}
-	@media (max-width: 580px) {
-			margin-top: 10px;
+	@media (min-width: 580px) {
+        padding: 20px 0;
+		margin-top: 0;
 	}
 }

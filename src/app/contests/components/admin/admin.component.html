@@ -9,7 +9,7 @@
     </button>
 </div>
 
-<ul class="categories container-53 scrollbar-53" role="navigation" aria-label="Admin menu">
+<div class="categories container-53 scrollbar-53" role="navigation" aria-label="Admin menu">
     <h1 class="title-53" *ngIf="!loading">{{contest?.name}}</h1>
     <h1 class="title-53" *ngIf="!loading">
         {{isAdmin ? 'Admin' : isJudge ? 'Juge' : 'Speaker'}}: {{(admin$ | async)?.name}} {{(admin$ | async)?.lastName}}
@@ -39,5 +39,5 @@
         aria-label="Logo 53">
     </div>
 
-</ul>
+</div>
   
