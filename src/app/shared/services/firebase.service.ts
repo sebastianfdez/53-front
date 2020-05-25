@@ -165,13 +165,32 @@ export class FirebaseService {
         );
     }
 
+    /**
+     * Get the vote list of a participant
+     * @param idVote id of the participant votes
+     */
     getParticipantVotes(idVote: string): Observable<PublicVote> {
         return this.database.collection<PublicVote>('votes').doc<PublicVote>(idVote).valueChanges();
     }
 
-    vote(userIP: string, vote: PublicVote, voteid: string) {
-        return this.database.collection<PublicVote>('votes').doc<PublicVote>(voteid).update(
+    /**
+     * Vote for a player
+     * @param userIP ip to add to the list
+     * @param vote vote object
+     * @param idVote od of the participant votes
+     */
+    vote(userIP: string, vote: PublicVote, idVote: string): Promise<void> {
+        return this.database.collection<PublicVote>('votes').doc<PublicVote>(idVote).update(
             { ips: vote.ips.concat(userIP) },
+        );
+    }
+
+    /**
+     * Create vote object and return the id.
+    */
+    createVote(): Observable<string> {
+        return from(this.database.collection<PublicVote>('votes').add({ ips: [] })).pipe(
+            map((doc) => doc.id),
         );
     }
 }

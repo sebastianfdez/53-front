@@ -4,10 +4,10 @@ import { Sort } from '@angular/material/sort';
 import { ExcelExportComponent } from '@progress/kendo-angular-excel-export';
 import { switchMap, tap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
-import { WarningService } from 'src/app/shared/warning/warning.service';
-import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import { Store } from 'store';
-import { Contest } from 'src/app/shared/models/contest';
+import { WarningService } from '../../../shared/warning/warning.service';
+import { WarningReponse } from '../../../shared/warning/warning.component';
+import { Contest } from '../../../shared/models/contest';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import {

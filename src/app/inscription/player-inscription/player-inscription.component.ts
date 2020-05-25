@@ -1,5 +1,8 @@
+/* eslint-disable class-methods-use-this */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder, FormGroup, Validators, ValidationErrors, AbstractControl,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { tap, switchMap, catchError } from 'rxjs/operators';
@@ -46,7 +49,7 @@ export class PlayerInscriptionComponent implements OnInit {
                 switchMap((contest) => {
                     this.contest = contest.contest;
                     this.playerInscriptionForm = this.formBuilder.group({
-                        videoLink: ['', Validators.required],
+                        videoLink: ['', [Validators.required, this.videoLinkCheck()]],
                         category: ['', Validators.required],
                         contestName: [this.contest.name, Validators.required],
                         place: ['', Validators.required],
@@ -103,15 +106,20 @@ export class PlayerInscriptionComponent implements OnInit {
             votes: [],
             isUser: true,
             category: '',
+            active: false,
         };
         this.subscriptions.push(
             this.inscriptionService.enrollContest(
                 player,
                 this.playerInscriptionForm.value.category,
             ).pipe(
-                tap(() => {
+                tap((enrolled) => {
                     this.isLoading = false;
-                    this.snackBarService.showMessage(`Vous êtes déjà inscrit au contest: ${this.contest.name}`);
+                    if (enrolled) {
+                        this.snackBarService.showMessage(`Vous êtes déjà inscrit au contest: ${this.contest.name}`);
+                    } else {
+                        this.snackBarService.showError('Votre mail est déjà inscrit dans ce contest');
+                    }
                     this.router.navigate(['']);
                 }),
                 catchError((error) => {
@@ -122,5 +130,14 @@ export class PlayerInscriptionComponent implements OnInit {
                 }),
             ).subscribe(),
         );
+    }
+
+    videoLinkCheck(): ValidationErrors {
+        return (c: AbstractControl): {[key: string]: any;} => {
+            if (
+                (c.value as string).indexOf('youtube') > -1 || (c.value as string).indexOf('instagram') > -1
+            ) return null;
+            return { videoLinkCheck: { valid: false } };
+        };
     }
 }

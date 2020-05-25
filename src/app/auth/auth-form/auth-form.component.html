@@ -67,7 +67,7 @@
 
     <mat-form-field *ngIf="authFormGroup.contains('videoLink')" appearance="outline">
         <mat-icon matPrefix
-        matTooltip="Info about the action">info</mat-icon>
+        matTooltip="Lien sur instagram ou youtube (ex: https://www.youtube.com/watch?v=_i8t0kp8SeQ)">info</mat-icon>
         <mat-label>Lien de la video</mat-label>
         <input matInput placeholder="Lien sur instagram ou youtube" formControlName="videoLink">
         <mat-icon matSuffix>ondemand_video</mat-icon>
@@ -87,7 +87,7 @@
         formControlName="isPublic">
         Contest ouvert au public
         <mat-icon matSuffix
-        matTooltip="Info about the action">info</mat-icon>
+        matTooltip="Creer un contest ouvert au public">info</mat-icon>
     </mat-slide-toggle>
 </form>
 

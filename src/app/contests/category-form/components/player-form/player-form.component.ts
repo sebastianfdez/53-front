@@ -5,7 +5,7 @@ import {
     Component, forwardRef, AfterContentInit, Input, Injector,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
-import { ComponentUtils } from 'src/app/shared/services/component-utils';
+import { ComponentUtils } from '../../../../shared/services/component-utils';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Participant, ParticipantPublic } from '../../../models/categorie';
 
@@ -83,5 +83,13 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
             this.votesRecord[id] = Math.floor(value * 100) / 100
                 ? Math.floor(value * 100) / 100 : 0;
         }
+    }
+
+    isChecked(participant: ParticipantPublic) {
+        return participant.active !== undefined && participant.active;
+    }
+
+    check(checked: boolean) {
+        this.playerForm.get('active').patchValue(checked);
     }
 }

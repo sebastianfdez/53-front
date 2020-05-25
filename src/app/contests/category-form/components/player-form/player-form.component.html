@@ -6,6 +6,10 @@
     <ng-container *ngIf="disabled else form">
         <div class="flex-div vote-mode">
             <mat-icon class="icon">person</mat-icon>
+            <div *ngIf="publicContest && playerForm.get('active')" class="full-width flex-div column">
+                <mat-slide-toggle [checked]="isChecked(participant_)"
+                (change)="check($event.checked)">Participant actif</mat-slide-toggle>
+            </div>
             <div class="info flex-div column">
                 <h4>Prenom: {{participant_.name}}</h4>
                 <h4>Nom: {{participant_.lastName}}</h4>
