@@ -13,9 +13,17 @@ export interface Participant {
     votes: Votes[];
     club: string;
     id: string;
-    likes: number;
-    videoLink: string;
     isUser: boolean;
+}
+
+export interface ParticipantPublic extends Participant {
+    category: string;
+    likes: string;
+    videoLink: string;
+}
+
+export interface PublicVote {
+    ips: string[];
 }
 
 export const emptyParticipant: Participant = {
@@ -26,8 +34,6 @@ export const emptyParticipant: Participant = {
     votes: [],
     club: '',
     id: '',
-    likes: 0,
-    videoLink: '',
     isUser: true,
 };
 
@@ -38,7 +44,7 @@ export interface Pool {
 export interface Categorie {
     contest: string;
     name: string;
-    pools: { participants: Participant[]; }[];
+    pools: { participants: (Participant | ParticipantPublic)[]; }[];
     id: string;
     final: boolean;
 }

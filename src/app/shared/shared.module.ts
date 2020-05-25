@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { A11yModule } from '@angular/cdk/a11y';
 // Angular Marterial
@@ -24,6 +24,7 @@ import { WarningService } from './warning/warning.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ComponentUtils } from './services/component-utils';
 import { FirebaseModule } from './firebase.module';
+import { ApiService } from './services/api.service';
 
 const materialModules = [
     MatInputModule,
@@ -51,6 +52,7 @@ const materialModules = [
         FirebaseModule,
         ReactiveFormsModule,
         A11yModule,
+        HttpClientJsonpModule,
     ],
     declarations: [
         WarningComponent,
@@ -67,6 +69,7 @@ const materialModules = [
         SnackBarService,
         ComponentUtils,
         MatDatepickerModule,
+        ApiService,
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA,

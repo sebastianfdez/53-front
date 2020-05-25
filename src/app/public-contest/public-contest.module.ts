@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SharedModule } from '@progress/kendo-angular-upload';
+import { CommonModule } from '@angular/common';
 import { CategoryFormModule } from '../contests/category-form/category-form.module';
 import { PublicContestsService } from './services/public-contest.service';
 import { PublicContestComponent } from './components/public-contest/public-contest.component';
 import { PublicContestGuardService } from './services/public-contest-guard.service';
 import { PublicContestResolver } from './services/public-contest.resolver';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
     {
@@ -33,6 +34,7 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
+        CommonModule,
         CategoryFormModule,
     ],
     providers: [

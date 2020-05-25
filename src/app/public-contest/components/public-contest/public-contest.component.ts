@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Contest } from 'src/app/shared/models/contest';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, combineLatest, from } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
-import { Participant } from 'src/app/contests/models/categorie';
+import { Observable, combineLatest } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ParticipantPublic, PublicVote } from '../../../contests/models/categorie';
 import { PublicContestsService } from '../../services/public-contest.service';
-
-export interface ParticipantPublic extends Participant {
-    category: string;
-}
+import { ApiService } from '../../../shared/services/api.service';
 
 @Component({
     selector: 'app-public-contest',
@@ -20,15 +17,22 @@ export class PublicContestComponent implements OnInit {
 
     participants$: Observable<ParticipantPublic[]> = null;
 
+    votes$: Observable<{ [idParticipant: string]: PublicVote; }> = null;
+
+    userIP: string;
+
+    loading = false;
+
     constructor(
         private route: ActivatedRoute,
         private publicContestService: PublicContestsService,
         private formBuilder: FormBuilder,
+        private apiService: ApiService,
     ) {}
 
     ngOnInit(): void {
+        this.loading = true;
         this.contest$ = this.route.data.pipe(
-            tap((data) => console.log(data)),
             map((data: {contest: Contest;}) => data.contest),
         );
         this.participants$ = this.contest$.pipe(
@@ -39,13 +43,32 @@ export class PublicContestComponent implements OnInit {
                 (list: ParticipantPublic[], c) => list.concat(c.pools.reduce(
                     (list_: ParticipantPublic[], pool) => list_.concat(
                         // eslint-disable-next-line arrow-body-style
-                        pool.participants.map((part) => {
+                        pool.participants.map((part: ParticipantPublic) => {
                             return { ...part, category: c.name };
                         }),
                     ), [],
                 )), [],
             )),
         );
+        this.votes$ = this.participants$.pipe(
+            switchMap((participants) => combineLatest(
+                participants.map((p) => this.publicContestService.getVote(p.likes).pipe(
+                    // eslint-disable-next-line arrow-body-style
+                    map((vote) => {
+                        return { vote, id: p.likes };
+                    }),
+                )),
+            )),
+            map((votes: { vote: PublicVote; id: string; }[]) => {
+                const votesMap: { [idParticipant: string]: PublicVote; } = {};
+                votes.forEach((vote) => {
+                    votesMap[vote.id] = vote.vote;
+                }, votesMap);
+                this.loading = false;
+                return votesMap;
+            }),
+        );
+        this.getIpCliente().subscribe();
     }
 
     getParticipantForm(p: ParticipantPublic): FormGroup {
@@ -58,5 +81,24 @@ export class PublicContestComponent implements OnInit {
         });
         form.disable();
         return form;
+    }
+
+    getIpCliente(): Observable<any> {
+        return this.apiService.jsonp(
+            'http://api.ipify.org/?format=jsonp&callback=JSONP_CALLBACK',
+        ).pipe(
+            map((res: any) => res.ip),
+            tap((res) => {
+                console.log(res);
+                this.userIP = res;
+            }),
+        );
+    }
+
+    vote(p: ParticipantPublic, vote: PublicVote) {
+        this.loading = true;
+        this.publicContestService.vote(this.userIP, vote, p.likes).then(() => {
+            this.loading = false;
+        });
     }
 }

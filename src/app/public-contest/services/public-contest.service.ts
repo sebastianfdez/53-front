@@ -6,7 +6,7 @@ import {
 } from 'rxjs/operators';
 import { Contest } from '../../shared/models/contest';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { Categorie, Participant } from '../../contests/models/categorie';
+import { Categorie, Participant, PublicVote } from '../../contests/models/categorie';
 
 @Injectable({
     providedIn: 'root',
@@ -101,5 +101,13 @@ export class PublicContestsService {
             }
         }
         return this.firebaseService.updateCategorie(category_);
+    }
+
+    getVote(idVote: string): Observable<PublicVote> {
+        return this.firebaseService.getParticipantVotes(idVote);
+    }
+
+    vote(userIP: string, vote: PublicVote, voteid: string) {
+        return this.firebaseService.vote(userIP, vote, voteid);
     }
 }

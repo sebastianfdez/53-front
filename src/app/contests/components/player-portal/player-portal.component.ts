@@ -11,7 +11,7 @@ import { User } from 'src/app/shared/models/user';
 import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { Router } from '@angular/router';
 import { ContestsService } from '../../services/contest.service';
-import { Categorie, Participant } from '../../models/categorie';
+import { Categorie, Participant, ParticipantPublic } from '../../models/categorie';
 
 @Component({
     selector: 'app-player-portal',
@@ -68,7 +68,7 @@ export class PlayerPortalComponent implements OnInit {
                 }
                 return null;
             }),
-            tap((participant: Participant) => {
+            tap((participant: ParticipantPublic) => {
                 this.playerForm = this.formBuilder.group({
                     name: [participant.name, Validators.required],
                     lastName: [participant.lastName, Validators.required],

@@ -16,7 +16,6 @@ export class PublicContestResolver implements Resolve<Contest> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<Contest> {
         const contestId = route.params.contest;
-        console.log(contestId);
         return contestId ? this.publicContestService.getContest(contestId).pipe(
             take(1),
         ) : this.goHome();

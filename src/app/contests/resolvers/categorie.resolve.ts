@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store } from 'store';
 import { switchMap, take } from 'rxjs/operators';
 import { FirebaseService } from '../../shared/services/firebase.service';
@@ -19,15 +19,23 @@ export class CategorieResolve implements Resolve<Categorie> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<Categorie> {
         const categorieId: string = route.params.id;
-        if (categorieId === 'new') {
-            return null;
-        }
+        const open = route.url[0].path === 'categorie-open';
         return this.store.value[`categorie${categorieId}`] ? this.store.select<Categorie>(`categorie${categorieId}`).pipe(take(1))
             : this.store.select<User>('user').pipe(
                 switchMap(() => this.contestService.getSelectedContest()),
                 take(1),
+                switchMap((contest) => {
+                    if (contest.isPublic && !open) {
+                        this.router.navigate([`portal/categorie-open/${categorieId}`]);
+                        return null;
+                    }
+                    return of(contest);
+                }),
                 switchMap(() => this.firebaseService.getCategorie(categorieId)),
                 switchMap((categorie) => {
+                    if (categorieId === 'new') {
+                        return of(null);
+                    }
                     if (!categorie) {
                         this.router.navigate(['portal/contests']);
                         return null;

@@ -1,6 +1,6 @@
 <ng-container *ngIf="contest$ | async as contest">
   <h1>{{contest.name}}</h1>
-  <div class="container-53 public">
+  <div class="container-53 public" *ngIf="votes$ | async as votes">
     <div class="block-53 public flex-div column">
       <h2> Liste des participants </h2>
       <div class="grid-53 flex-div" *ngIf="participants$ | async as participants">
@@ -8,7 +8,23 @@
           <app-player-form
           [publicContest]="true"
           [playerForm]="getParticipantForm(participant)"
-          ></app-player-form>
+          >
+            <div class="votes" *ngIf="!this.loading">
+              <span>Likes: {{votes[participant.likes].ips.length}}</span>
+              <button mat-raised-button color="primary" class="button" 
+                  *ngIf="!votes[participant.likes].ips.includes(this.userIP) else voted"
+                  (click)="vote(participant, votes[participant.likes])">
+                  Voter
+              </button>
+              <ng-template #voted>
+                <button mat-raised-button color="primary" class="button"
+                disabled>
+                    Déjà Voté
+                </button>
+              </ng-template>
+            </div>
+            <mat-spinner *ngIf="this.loading" [diameter]="20"></mat-spinner>
+          </app-player-form>
         </div>
       </div>
     </div>

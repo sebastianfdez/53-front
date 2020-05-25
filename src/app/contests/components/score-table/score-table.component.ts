@@ -291,8 +291,6 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
                                             lastName: participant.name.split(' ')[1],
                                             id: participant.idPlayer,
                                             votes: [],
-                                            likes: 0,
-                                            videoLink: '',
                                             mail: '',
                                             isUser: false,
                                         }];
@@ -304,8 +302,6 @@ export class ScoreTableComponent implements OnInit, OnDestroy {
                                             lastName: participant.name.split(' ')[1],
                                             id: participant.idPlayer,
                                             votes: [],
-                                            likes: 0,
-                                            videoLink: '',
                                             mail: '',
                                             isUser: false,
                                         });
