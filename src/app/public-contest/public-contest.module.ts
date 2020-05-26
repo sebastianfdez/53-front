@@ -7,21 +7,30 @@ import { PublicContestComponent } from './components/public-contest/public-conte
 import { PublicContestGuardService } from './services/public-contest-guard.service';
 import { PublicContestResolver } from './services/public-contest.resolver';
 import { SharedModule } from '../shared/shared.module';
+import { PublicContestOverviewComponent } from './components/public-contest-overview/public-contest-overview.component';
 
 const routes: Routes = [
     {
         path: '',
         children: [
-            // { path: '', pathMatch: 'full', redirectTo: 'home' },
             {
                 path: ':contest',
-                component: PublicContestComponent,
                 canActivate: [
                     PublicContestGuardService,
                 ],
                 resolve: {
                     contest: PublicContestResolver,
                 },
+                children: [
+                    {
+                        path: 'overview',
+                        component: PublicContestOverviewComponent,
+                    },
+                    {
+                        path: '',
+                        component: PublicContestComponent,
+                    },
+                ],
             },
         ],
     },
@@ -30,6 +39,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         PublicContestComponent,
+        PublicContestOverviewComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
