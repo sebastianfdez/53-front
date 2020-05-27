@@ -92,6 +92,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
                 switchMap(([judges, newJudge]) => {
                     judges.push(newJudge);
                     this.store.set('judges', judges);
+                    this.store.set('selectedContest', { ...this.contest, judges: judges.map((j) => j.id) });
                     return this.firebaseService
                         .updateContest(this.contestId, { judges: judges.map((j) => j.id) });
                 }),
@@ -105,7 +106,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
                     return of(null);
                 }),
             ).subscribe(() => {
-                this.snackBarService.showMessage(`Profil juge créé pour le mail ${this.newJudge.mail}.
+                this.snackBarService.showMessage(`Profil juge créé pour le email ${this.newJudge.mail}.
                     Envoyez le lien de connexion à ${this.newJudge.name} ${this.newJudge.lastName}`);
                 this.createEmptyJudge();
             }),
@@ -132,7 +133,7 @@ export class JudgesComponent implements OnInit, OnDestroy {
             ).onAction().pipe(
                 switchMap(() => {
                     this.contest.judges = this.contest.judges.filter((j) => j !== judge.id);
-                    this.store.set('judges', this.contest.judges);
+                    this.store.set('judges', this.store.value.judges.filter((j) => j.id !== judge.id));
                     return this.firebaseService.updateContest(this.contestId, this.contest);
                 }),
                 switchMap(() => {

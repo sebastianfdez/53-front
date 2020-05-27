@@ -9,61 +9,57 @@
     {{"<"}}
   </button>
 </div>
-<ng-container *ngIf="(judges$ | async).length > 0; else nojudge">
-  <ng-container
-   *ngIf="judges$ | async as judges">
+<div class="container-53 scrollbar-53">
+  <ng-container *ngIf="(judges$ | async).length > 0; else nojudge">
+    <ng-container
+    *ngIf="judges$ | async as judges">
 
-    <div class="judges-container container-53 scrollbar-53" *ngIf="!loading">
-      <h1 class="title-53">Liste des juges</h1>
+      <div class="judges-container" *ngIf="!loading">
+        <h1 class="title-53">Liste des juges</h1>
 
-      <div class="block-53" *ngFor="let judge of judges">
-        <mat-icon class="icon">person</mat-icon>
-        <div class="form-container flex-div column">
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Prénom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
-            [disabled]="true">
-          </mat-form-field>
+        <div class="block-53" *ngFor="let judge of judges">
+          <mat-icon class="icon">person</mat-icon>
+          <div class="form-container flex-div column">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Prénom" [(ngModel)]="judge.name" [ngModelOptions]="{standalone: true}"
+              [disabled]="true">
+            </mat-form-field>
 
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
-            [disabled]="true" aria-label="Judge name">
-          </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nom" [(ngModel)]="judge.lastName" [ngModelOptions]="{standalone: true}"
+              [disabled]="true" aria-label="Judge name">
+            </mat-form-field>
 
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
-          </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="E-mail" [(ngModel)]="judge.mail" [ngModelOptions]="{standalone: true}" disabled>
+            </mat-form-field>
 
-          <h2 *ngIf="judge.autenticated">
-            Ce juge a déjà un compte sur la 53. Il peut dès maintenant participer au {{contest.name}}
-          </h2>
-          <h2 *ngIf="!judge.autenticated">
-            Cette adresse e-mail n'est pas associé à un compte. Cliquez sur
-            <mat-icon (click)="copyLink(judge)" style="cursor: pointer">link</mat-icon>
-            pour générer un lien d'invitation 
-            à envoyer au juge pour qu'il crée son compte.
-          </h2>
-                
-          <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)"
-          role="button" aria-label="Delete Judge">
-            Supprimer juge
-          </button>
+            <h2 *ngIf="judge.autenticated">
+              Ce juge a déjà un compte sur la 53. Il peut dès maintenant participer au {{contest.name}}
+            </h2>
+            <h2 *ngIf="!judge.autenticated">
+              Cette adresse e-mail n'est pas associée à un compte. 
+              pour générer un lien d'invitation à envoyer au juge afin qu'il crée son compte.
+            </h2>
+                  
+            <button mat-flat-button class="button" *ngIf="!addJudge" color="primary" (click)="deleteJudge(judge)"
+            role="button" aria-label="Delete Judge">
+              Supprimer juge
+            </button>
+          </div>
+          <mat-icon class="icon" (click)="copyLink(judge)" style="cursor: pointer"
+          *ngIf="!judge.autenticated">link</mat-icon>
         </div>
-        <mat-icon class="icon" (click)="copyLink(judge)" style="cursor: pointer"
-        *ngIf="!judge.autenticated">link</mat-icon>
       </div>
-    </div>
+    </ng-container>
   </ng-container>
-</ng-container>
 
-<ng-template #nojudge>
-  <div class="container-53">
-    <div class="block-53">
+  <ng-template #nojudge>
+    <div class="block-53 flex-div">
       <h1>Il n'y a pas de juge associé. Ajoutez le premier</h1>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
 
-<div class="container-53">   
   <button mat-flat-button class="button" *ngIf="!addJudge && !loading" color="primary" (click)="addJudge = true"
   role="button" aria-label="Add judge">
     <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Ajouter un juge
@@ -74,26 +70,26 @@
   </button>
 
   <div class="block-53" style="margin-top: 50px !important;" *ngIf="addJudge && !loading">
-    <mat-icon class="icon">person_add</mat-icon>
+    <!-- <mat-icon class="icon">person_add</mat-icon> -->
     <div class="form-container">
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Mail" [(ngModel)]="newJudge.mail" [ngModelOptions]="{standalone: true}"
         aria-label="Judge name">
       </mat-form-field>
     </div>
+              
+    <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
+      [disabled]="newJudge.mail.length < 7" role="button" aria-label="Save Judge">
+      <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
+    </button>
+
   </div>
-            
-  <button mat-flat-button class="button" *ngIf="addJudge && !loading" color="primary" (click)="sendJudge()"
-    [disabled]="newJudge.mail.length < 7" role="button" aria-label="Save Judge">
-    <mat-icon style="height: 29px; width: 29px;">person_add</mat-icon> Sauvegarder Juge
-  </button>
 
-</div>
-
-<div class="container-53" *ngIf="loading">
-  <mat-spinner></mat-spinner>
-</div>
-<div class="footer-image">
-    <img aria-label="Logo 53"
-    src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+  <div class="container-53" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="footer-image">
+      <img aria-label="Logo 53"
+      src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+  </div>
 </div>
