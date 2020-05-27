@@ -107,7 +107,7 @@ export class PublicContestsService {
         return this.firebaseService.getParticipantVotes(idVote);
     }
 
-    vote(userIP: string, vote: PublicVote, voteid: string) {
+    vote(userIP: string, vote: PublicVote, voteid: string): Promise<void> {
         return this.firebaseService.vote(userIP, vote, voteid);
     }
 }
