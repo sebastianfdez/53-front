@@ -1,0 +1,36 @@
+<ng-container *ngIf="contest$ | async as contest">
+  <h1>{{contest.name}}</h1>
+  <div class="container-53 public" *ngIf="votes$ | async as votes">
+    <div class="block-53 public flex-div column">
+      <h2> Liste des participants </h2>
+      <div class="grid-53 flex-div" *ngIf="participants$ | async as participants">
+        <div class="grid-53-item" *ngFor="let participant of participants">
+          <app-player-form
+          [publicContest]="true"
+          [playerForm]="getParticipantForm(participant)"
+          >
+            <div class="votes" *ngIf="!this.loading">
+              <span>Likes: {{votes[participant.likes].ips.length}}</span>
+              <button mat-raised-button color="primary" class="button" 
+                  *ngIf="!votes[participant.likes].ips.includes(this.userIP) else voted"
+                  (click)="vote(participant, votes[participant.likes])">
+                  Voter
+              </button>
+              <ng-template #voted>
+                <button mat-raised-button color="primary" class="button"
+                disabled>
+                    Déjà Voté
+                </button>
+              </ng-template>
+            </div>
+            <mat-spinner *ngIf="this.loading" [diameter]="20"></mat-spinner>
+          </app-player-form>
+        </div>
+      </div>
+    </div>
+    <div class="footer-image">
+      <img aria-label="Logo 53" class="logo-53"
+      src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/logo-la-53-2020.png?alt=media&token=03806a44-28fc-4b7b-a69c-8755765c087d">
+    </div>
+  </div>
+</ng-container>

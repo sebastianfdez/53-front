@@ -18,7 +18,7 @@
       {{(isAdmin | async) ? 'Admin:' : (isJudge | async) ? 'Juge:' : 'Speaker'}} {{judge.name}} {{judge.lastName}}
     </h2>
   
-    <ul class="grid-53 flex-div">
+    <ul class="grid-53 portal flex-div">
       <li class="grid-53-item flex-div column mat-elevation-z3 primary-53" tabindex="0" role="button" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, false)"
       [attr.aria-label]="'Go to category: ' + categorie.name">
@@ -43,7 +43,7 @@
   </div>
   <div class="grid-53-container flex-div column" *ngIf="categories$ | async as categories">
     <h1 class="title-53" *ngIf="!loading && categoriesFinal(categories, true).length">Liste des catégories de finales</h1>
-    <ul class="grid-53 flex-div">
+    <ul class="grid-53 portal flex-div">
       <li class="grid-53-item flex-div column mat-elevation-z3 accent-53" tabindex="0" role="button" (keydown.enter)="goTo(categorie)"
       (mousedown)="mousedown()" (mouseup)="mouseup(categorie, $event)" *ngFor="let categorie of categoriesFinal(categories, true)"
       [attr.aria-label]="'Go to category: ' + categorie.name">

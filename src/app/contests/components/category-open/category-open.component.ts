@@ -3,12 +3,12 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { Store } from 'store';
 import {
-    FormGroup, FormBuilder, Validators, FormArray, AbstractControl,
+    FormGroup, FormBuilder, Validators, FormArray,
 } from '@angular/forms';
 import { UrlSegment, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth-form/services/auth.service';
 import {
-    Categorie, emptyCategorie, Votes, Pool, Participant,
+    Categorie, emptyCategorie, Votes, Pool, ParticipantPublic,
 } from '../../models/categorie';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
@@ -121,7 +121,7 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
             participants: this.formBuilder.array([]),
         }));
         if (pool) {
-            pool.participants.forEach((participant) => {
+            pool.participants.forEach((participant: ParticipantPublic) => {
                 this.addParticipant(this.pools.controls.length - 1, participant);
             });
         } else {
@@ -134,7 +134,7 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
         return array;
     }
 
-    addParticipant(pool: number, participant?: Participant) {
+    addParticipant(pool: number, participant?: ParticipantPublic) {
         const participantsForm = (this.pools.controls[pool].get('participants') as FormArray);
         participantsForm.insert(
             participantsForm.length,
@@ -150,18 +150,7 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
     }
 
     get saveDisabled(): boolean {
-        return !this.isValid(this.categorieForm);
-    }
-
-    isValid(form: AbstractControl): boolean {
-        if (!form.valid) {
-            return false;
-        }
-        if ((form as FormGroup | FormArray).controls) {
-            return Object.values((form as FormGroup | FormArray).controls)
-                .reduce((valid, control) => valid && this.isValid(control), true);
-        }
-        return true;
+        return this.categorieForm.value.name.length < 3;
     }
 
     saveVotes(): void {

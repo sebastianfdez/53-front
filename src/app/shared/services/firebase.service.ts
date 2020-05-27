@@ -8,7 +8,7 @@ import {
 import {
     take, switchMap, map, catchError,
 } from 'rxjs/operators';
-import { Categorie } from '../../contests/models/categorie';
+import { Categorie, PublicVote } from '../../contests/models/categorie';
 import { Contest } from '../models/contest';
 import { User } from '../models/user';
 
@@ -162,6 +162,16 @@ export class FirebaseService {
                 of(user_), this.updateContest(contest_.id, { id: contest_.id }),
             )),
             switchMap(([user_]) => of(user_)),
+        );
+    }
+
+    getParticipantVotes(idVote: string): Observable<PublicVote> {
+        return this.database.collection<PublicVote>('votes').doc<PublicVote>(idVote).valueChanges();
+    }
+
+    vote(userIP: string, vote: PublicVote, voteid: string) {
+        return this.database.collection<PublicVote>('votes').doc<PublicVote>(voteid).update(
+            { ips: vote.ips.concat(userIP) },
         );
     }
 }

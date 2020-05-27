@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Contest } from 'src/app/shared/models/contest';
 import { Subscription, of } from 'rxjs';
 import { tap, switchMap, catchError } from 'rxjs/operators';
-import { Categorie, Participant } from 'src/app/contests/models/categorie';
-import { SnackBarService } from 'src/app/shared/services/snack-bar.service';
 import { Title } from '@angular/platform-browser';
+import { Contest } from '../../shared/models/contest';
+import { Categorie, ParticipantPublic } from '../../contests/models/categorie';
+import { SnackBarService } from '../../shared/services/snack-bar.service';
 import { InscriptionService } from '../inscription.service';
 import { User } from '../../shared/models/user';
 
@@ -91,17 +91,18 @@ export class PlayerInscriptionComponent implements OnInit {
             return;
         }
         this.isLoading = true;
-        const player: Participant = {
+        const player: ParticipantPublic = {
             name: this.user.name,
             lastName: this.user.lastName,
             club: this.playerInscriptionForm.value.place,
             id: this.user.id,
             licence: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
-            likes: 0,
+            likes: '',
             videoLink: this.playerInscriptionForm.value.videoLink,
             mail: this.user.mail,
             votes: [],
             isUser: true,
+            category: '',
         };
         this.subscriptions.push(
             this.inscriptionService.enrollContest(

@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { SharedModule } from '../shared/shared.module';
+import { AuthModule } from '../auth/auth.module';
+import { AuthFormModule } from '../auth/auth-form/auth-form.module';
 
 // Components
 import { ContestsComponent } from './components/contests/contests.component';
@@ -13,12 +15,9 @@ import { ScoreTableComponent } from './components/score-table/score-table.compon
 import { JudgesComponent } from './components/judges/judges.component';
 import { SpeakerComponent } from './components/speaker/speaker.component';
 import { PortalComponent } from './components/portal/portal.component';
-import { PoolFormComponent } from './components/pool-form/pool-form.component';
-import { PlayerFormComponent } from './components/player-form/player-form.component';
 import { NewContestComponent } from './components/new-contest/new-contest.component';
 import { CategoryOpenComponent } from './components/category-open/category-open.component';
-import { AuthModule } from '../auth/auth.module';
-import { AuthFormModule } from '../auth/auth-form/auth-form.module';
+import { PlayerPortalComponent } from './components/player-portal/player-portal.component';
 
 // Services
 import { AuthGuardService } from '../auth/auth-form/services/auth-guard.service';
@@ -29,8 +28,8 @@ import { JudgeResolve } from './resolvers/judge.resolve';
 import { ContestsService } from './services/contest.service';
 import { SelectedContestGuardService } from './services/selected-contest-guard.service';
 import { ExcelHelperService } from './services/excel-helper.service';
-import { PlayerPortalComponent } from './components/player-portal/player-portal.component';
 import { PlayerGuardService } from './services/player-guard.service';
+import { CategoryFormModule } from './category-form/category-form.module';
 
 const routes: Routes = [
     {
@@ -54,7 +53,11 @@ const routes: Routes = [
             {
                 path: 'judges',
                 component: JudgesComponent,
-                canActivate: [AdminAuthGuardService, SelectedContestGuardService, PlayerGuardService],
+                canActivate: [
+                    AdminAuthGuardService,
+                    SelectedContestGuardService,
+                    PlayerGuardService,
+                ],
                 resolve: {
                     judges: JudgeResolve,
                 },
@@ -68,14 +71,13 @@ const routes: Routes = [
             { path: 'player', component: PlayerPortalComponent, canActivate: [AuthGuardService] },
             { path: 'sponsors', component: SpeakerComponent, canActivate: [AdminAuthGuardService, SelectedContestGuardService] },
             {
-                path: 'categorie/new',
-                component: CategorieComponent,
-                canActivate: [AdminAuthGuardService, SelectedContestGuardService, PlayerGuardService],
-            },
-            {
                 path: 'categorie/:id',
                 component: CategorieComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
+                canActivate: [
+                    JudgeAuthGuardService,
+                    SelectedContestGuardService,
+                    PlayerGuardService,
+                ],
                 resolve: {
                     categorie: CategorieResolve,
                 },
@@ -83,7 +85,11 @@ const routes: Routes = [
             {
                 path: 'categorie-open/:id',
                 component: CategoryOpenComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
+                canActivate: [
+                    JudgeAuthGuardService,
+                    SelectedContestGuardService,
+                    PlayerGuardService,
+                ],
                 resolve: {
                     categorie: CategorieResolve,
                 },
@@ -91,7 +97,11 @@ const routes: Routes = [
             {
                 path: 'categorie/:id/scores',
                 component: ScoreTableComponent,
-                canActivate: [JudgeAuthGuardService, SelectedContestGuardService, PlayerGuardService],
+                canActivate: [
+                    JudgeAuthGuardService,
+                    SelectedContestGuardService,
+                    PlayerGuardService,
+                ],
                 resolve: {
                     categorie: CategorieResolve,
                     judges: JudgeResolve,
@@ -119,6 +129,7 @@ const routes: Routes = [
         UploadModule,
         AuthModule,
         AuthFormModule,
+        CategoryFormModule,
     ],
     declarations: [
         ContestsComponent,
@@ -128,8 +139,6 @@ const routes: Routes = [
         JudgesComponent,
         SpeakerComponent,
         PortalComponent,
-        PoolFormComponent,
-        PlayerFormComponent,
         NewContestComponent,
         CategoryOpenComponent,
         PlayerPortalComponent,

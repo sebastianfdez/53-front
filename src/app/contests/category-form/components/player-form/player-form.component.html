@@ -10,6 +10,7 @@
                 <h4>Prenom: {{participant_.name}}</h4>
                 <h4>Nom: {{participant_.lastName}}</h4>
                 <h4>Ville/Club: {{participant_.club}}</h4>
+                <h4 *ngIf="playerForm.get('category')">Category: {{playerForm.value.category}}</h4>
                 <h4 *ngIf="isJudge && !publicContest">Licence: {{participant_.licence}}</h4>
             </div>
             <mat-form-field class="vote-input" *ngIf="isJudge && !isAdmin">
@@ -57,4 +58,5 @@
     </ng-template>
     <ng-content select="button"></ng-content>
     <ng-content select="mat-spinner"></ng-content>
+    <ng-content select="div.votes"></ng-content>
 </div>
