@@ -9,8 +9,8 @@
           [publicContest]="true"
           [playerForm]="getParticipantForm(participant)"
           >
-            <div class="votes" *ngIf="!this.loading">
-              <span>Likes: {{votes[participant.likes].ips.length}}</span>
+            <div class="votes flex-div column" *ngIf="!participant.loading">
+              <h3>Likes: {{votes[participant.likes].ips.length}}</h3>
               <button mat-raised-button color="primary" class="button" 
                   *ngIf="!votes[participant.likes].ips.includes(this.userIP) else voted"
                   (click)="vote(participant, votes[participant.likes])">
@@ -23,7 +23,7 @@
                 </button>
               </ng-template>
             </div>
-            <mat-spinner *ngIf="this.loading" [diameter]="20"></mat-spinner>
+            <mat-spinner *ngIf="participant.loading" [diameter]="30"></mat-spinner>
           </app-player-form>
         </div>
       </div>

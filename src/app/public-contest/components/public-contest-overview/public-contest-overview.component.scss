@@ -1,0 +1,94 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    height: 97vh;
+    overflow: scroll;
+    box-sizing: border-box;
+}
+  
+h2 {
+    margin: 0;
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 35px;
+    font-family: dosis;
+    color: #20405F;
+    font-weight: 100;
+}
+  
+div.nomcontest h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size:50px;
+    font-family: dosis;
+    letter-spacing: 0px;
+    color: #20405F;
+    opacity: 1;
+    font-weight: 100;
+}
+  
+.affichecontest {
+    width: 500px;
+    margin-bottom: 100px;
+}
+  
+.bouton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+    max-width: 500px;
+    margin-bottom: 100px;
+  }
+  
+.bouton li {
+    font-family: dosis;
+    font-size: 22px;
+    color: #FFFFFF;
+    text-align: center;
+    list-style-type: none;
+    background-color: #5F1629;
+    min-width: 150px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+}
+  
+  
+.reglement {
+    font-family: dosis;
+    text-align: center;
+    font-size: 20px;
+    background-color: hsla(0,0%,100%,.78);
+    width: 70vw;
+    padding: 16px 0px;
+    border-radius: 5px;
+    margin-bottom: 100px;
+}
+  
+.reglement p {
+    margin: 0;
+    padding: 0 40px;
+}
+  
+.criteres {
+    font-family: dosis;
+    text-align: center;
+    font-size: 20px;
+    background-color: hsla(0,0%,100%,.78);
+    width: 70vw;
+    padding: 16px 0px;
+    border-radius: 5px;
+    margin-bottom: 100px;
+}
+  
+.criteres p {
+    margin: 0;
+    padding: 0 40px;
+}
+  

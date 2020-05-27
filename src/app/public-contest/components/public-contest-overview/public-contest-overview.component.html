@@ -1,0 +1,42 @@
+<div class="container-53 public" *ngIf="contest$ | async as contest">
+    <div class="nomcontest">
+        <h1>Lyon Roller Open 5 #CovidEdition</h1>
+    </div>
+    <div class="datecontest">
+        <h2>Du 1 juin au 31 août 2020</h2>
+    </div>
+    <img class="affichecontest" src="https://firebasestorage.googleapis.com/v0/b/lyon-roller-open.appspot.com/o/affiche.jpg?alt=media&token=180e4355-c9ec-4260-8abc-fed1e3387d36" alt="affichelro">
+    <ul class="bouton">
+        <li role="link" tabindex="1"
+            (keydown.enter)="goToParticipate(contest.id)"
+            (click)="goToParticipate(contest.id)">PARTICIPER</li>
+        <li role="link" tabindex="1"
+            (keydown.enter)="goToVote(contest.id)"
+            (click)="goToVote(contest.id)">VOTER</li>
+    </ul>
+    <div class="reglementcontest">
+        <h2>Le règlement</h2>
+    </div>
+    <div class="reglement">
+        <p>Inscription gratuite 💸</p>
+        <p>1 minute de vidéo maximum (si ta vidéo est plus longue elle ne sera pas en lice 🤷‍) </p>
+        <p>Il faut au minimum un trick en street (☝pas besoin de dropper de la tour Eiffel, fais travailler ton imagination).</p>
+        <p>Tu as du 1er juin 2020 au 31 août 2020 pour filmer, monter, poster ta vidéo.</p>
+        <p>Ta vidéo devra être postée sur Instagram avec en commentaire ta catégorie et le #LROcovidedition</p>
+        <p>ex: "voici ma vidéo pour le #LROcovidedition pour la catégorie pro"</p>
+        <p>Les catégories sont les suivantes : U12, U14, U18, Amatrices, Amateurs, Pro femme, Pro homme, Vétérants</p>
+        <p>Les vidéos conforment seront regardées et notées par les organisateurs du #LROcovidedition (qui ne participeront pas (moins Homère K) après le 31 août 2020.</p>
+        <p>Les vidéos seront scrupuleusement regardées selon plusieurs critères (qui seront développés un peu plus bas).</p>
+    </div>
+    <div class="criterescontest">
+        <h2>Les critères de jugement</h2>
+    </div>
+    <div class="criteres">
+        <p><strong>La technicité</strong></p>
+        <p>Le choix des figures en fonction des spots.</p>
+        <p><strong>Le style</strong></p>
+        <p>La façon dont les tricks sont exécutés.</p>
+        <p><strong>La qualité du montage</strong></p>
+        <p>Les placements de caméras (téléphones) principalement ainsi que la cohérence de la progression de la vidéo. On sait très bien que c'est un métier de monter des vidéos donc pas besoin de faire des effets spéciaux ou d'acheter de logiciels compliqué (☝encore une fois fait travailler ton imagination)</p>
+    </div>
+</div>

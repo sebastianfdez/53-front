@@ -97,6 +97,7 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
             .filter((pool) => pool.participants.length);
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((participant) => {
+                console.log(participant);
                 const vote: Votes = participant.votes
                     ? participant.votes
                         .find((vote_) => vote_.codeJuge === this.judgeCode) : null;
@@ -141,10 +142,15 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
             this.formBuilder.group({
                 name: this.formBuilder.control(participant ? participant.name : '', [Validators.required, Validators.minLength(3)]),
                 id: participant ? participant.id : '',
+                isUser: participant ? participant.isUser : false,
+                licence: participant ? participant.licence : '',
+                mail: participant ? participant.mail : '',
+                likes: participant ? participant.likes : '',
                 votes: participant ? participant.votes : [],
                 lastName: this.formBuilder.control(participant ? participant.lastName : '', Validators.required),
                 videoLink: this.formBuilder.control(participant ? participant.videoLink : '', Validators.required),
                 club: this.formBuilder.control(participant ? participant.club : '', Validators.required),
+                active: this.formBuilder.control(participant ? participant.active : ''),
             }),
         );
     }
@@ -199,17 +205,23 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
                     this.loadingSave = false;
                 });
         } else {
-            this.firebaseService.updateCategorie(this.categorie)
-                .catch((error) => {
-                    console.log(error);
-                    this.loadingSave = false;
-                    this.snackBarService.showError('Erreur de sauvegarde de la note');
-                })
-                .then(() => {
-                    this.store.set(`categorie${this.categorie.id}`, this.categorie);
-                    this.router.navigate(['/portal/contests']);
-                    this.loadingSave = false;
+            this.firebaseService.updateCategorie({
+                ...this.categorie,
+                name: this.categorieForm.value.name,
+                pools: this.categorieForm.get('pools').value,
+            }).catch((error) => {
+                console.log(error);
+                this.loadingSave = false;
+                this.snackBarService.showError('Erreur de sauvegarde de la note');
+            }).then(() => {
+                this.store.set(`categorie${this.categorie.id}`, {
+                    ...this.categorie,
+                    name: this.categorieForm.value.name,
+                    pools: this.categorieForm.get('pools').value,
                 });
+                this.router.navigate(['/portal/contests']);
+                this.loadingSave = false;
+            });
         }
     }
 }

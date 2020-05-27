@@ -3,10 +3,15 @@ import {
     Observable, combineLatest, of, from,
 } from 'rxjs';
 import { Store } from 'store';
-import { switchMap, catchError, take } from 'rxjs/operators';
+import {
+    switchMap,
+    catchError,
+    take,
+    map,
+} from 'rxjs/operators';
 import { FirebaseService } from '../shared/services/firebase.service';
 import { Contest } from '../shared/models/contest';
-import { Categorie, Participant } from '../contests/models/categorie';
+import { Categorie, Participant, ParticipantPublic } from '../contests/models/categorie';
 import { User } from '../shared/models/user';
 
 @Injectable()
@@ -53,12 +58,21 @@ export class InscriptionService {
      * @param player Participant object
      * @param categorieId Id of the contest
      */
-    enrollContest(player: Participant, categorieId: string): Observable<void> {
-        return this.getCategorie(categorieId).pipe(
-            switchMap((category: Categorie) => {
+    enrollContest(player: ParticipantPublic, categorieId: string): Observable<boolean> {
+        return combineLatest(
+            this.createVotes(),
+            this.getCategorie(categorieId),
+        ).pipe(
+            switchMap((data) => {
+                const category = data[1];
                 const { pools } = category;
-                pools[0].participants.push(player);
-                return from(this.firebaseService.updateCategorie({ ...category, pools }));
+                if (pools[0].participants.find((s: Participant) => s.mail === player.mail)) {
+                    return of(false);
+                }
+                pools[0].participants.push({ ...player, likes: data[0] });
+                return from(this.firebaseService.updateCategorie({ ...category, pools })).pipe(
+                    map(() => true),
+                );
             }),
         );
     }
@@ -68,5 +82,9 @@ export class InscriptionService {
      */
     getUser(): Observable<User> {
         return this.store.select<User>('user');
+    }
+
+    createVotes(): Observable<string> {
+        return this.firebaseService.createVote();
     }
 }

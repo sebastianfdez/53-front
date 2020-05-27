@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Contest } from 'src/app/shared/models/contest';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import {
+    map, switchMap, tap,
+} from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Contest } from '../../../shared/models/contest';
 import { ParticipantPublic, PublicVote } from '../../../contests/models/categorie';
 import { PublicContestsService } from '../../services/public-contest.service';
 import { ApiService } from '../../../shared/services/api.service';
+
+interface ParticipantPublicLoading extends ParticipantPublic {
+    loading: boolean;
+}
 
 @Component({
     selector: 'app-public-contest',
@@ -15,7 +21,7 @@ import { ApiService } from '../../../shared/services/api.service';
 export class PublicContestComponent implements OnInit {
     contest$: Observable<Contest> = null;
 
-    participants$: Observable<ParticipantPublic[]> = null;
+    participants$: Observable<ParticipantPublicLoading[]> = null;
 
     votes$: Observable<{ [idParticipant: string]: PublicVote; }> = null;
 
@@ -31,7 +37,6 @@ export class PublicContestComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.loading = true;
         this.contest$ = this.route.data.pipe(
             map((data: {contest: Contest;}) => data.contest),
         );
@@ -40,15 +45,17 @@ export class PublicContestComponent implements OnInit {
                 contest.categories.map((c) => this.publicContestService.getCategorie(c)),
             )),
             map((categories) => categories.reduce(
-                (list: ParticipantPublic[], c) => list.concat(c.pools.reduce(
-                    (list_: ParticipantPublic[], pool) => list_.concat(
+                (list: ParticipantPublicLoading[], c) => list.concat(c.pools.reduce(
+                    (list_: ParticipantPublicLoading[], pool) => list_.concat(
                         // eslint-disable-next-line arrow-body-style
-                        pool.participants.map((part: ParticipantPublic) => {
-                            return { ...part, category: c.name };
+                        pool.participants.map((part: ParticipantPublicLoading) => {
+                            return { ...part, category: c.name, loading: false };
                         }),
                     ), [],
                 )), [],
             )),
+            map((participants) => participants.filter((p) => p.active)
+                .sort(() => Math.random() - 0.5)),
         );
         this.votes$ = this.participants$.pipe(
             switchMap((participants) => combineLatest(
@@ -64,11 +71,10 @@ export class PublicContestComponent implements OnInit {
                 votes.forEach((vote) => {
                     votesMap[vote.id] = vote.vote;
                 }, votesMap);
-                this.loading = false;
                 return votesMap;
             }),
         );
-        this.getIpCliente().subscribe();
+        this.getClientIP().subscribe();
     }
 
     getParticipantForm(p: ParticipantPublic): FormGroup {
@@ -83,7 +89,8 @@ export class PublicContestComponent implements OnInit {
         return form;
     }
 
-    getIpCliente(): Observable<any> {
+    getClientIP(): Observable<any> {
+        // Get the actual client IP to store into the votes
         return this.apiService.jsonp(
             'http://api.ipify.org/?format=jsonp&callback=JSONP_CALLBACK',
         ).pipe(
@@ -95,10 +102,14 @@ export class PublicContestComponent implements OnInit {
         );
     }
 
-    vote(p: ParticipantPublic, vote: PublicVote) {
-        this.loading = true;
+    vote(p: ParticipantPublicLoading, vote: PublicVote) {
+        // eslint-disable-next-line no-param-reassign
+        p.loading = true;
         this.publicContestService.vote(this.userIP, vote, p.likes).then(() => {
-            this.loading = false;
+            setTimeout(() => {
+                // eslint-disable-next-line no-param-reassign
+                p.loading = false;
+            }, 1000);
         });
     }
 }

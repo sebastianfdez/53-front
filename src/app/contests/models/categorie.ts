@@ -20,6 +20,7 @@ export interface ParticipantPublic extends Participant {
     category: string;
     likes: string;
     videoLink: string;
+    active: boolean;
 }
 
 export interface PublicVote {

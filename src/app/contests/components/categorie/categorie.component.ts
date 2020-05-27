@@ -4,8 +4,6 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { WarningService } from 'src/app/shared/warning/warning.service';
-import { WarningReponse } from 'src/app/shared/warning/warning.component';
 import {
     FileRestrictions, UploadComponent, UploadEvent,
 } from '@progress/kendo-angular-upload';
@@ -14,6 +12,8 @@ import {
     FormBuilder, FormGroup, Validators, FormArray, AbstractControl, ValidationErrors,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { WarningService } from '../../../shared/warning/warning.service';
+import { WarningReponse } from '../../../shared/warning/warning.component';
 import { FirebaseService } from '../../../shared/services/firebase.service';
 import { ContestsService } from '../../services/contest.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
