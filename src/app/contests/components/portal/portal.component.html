@@ -24,8 +24,11 @@
             (keydown.enter)="goTo(contest)" (click)="goTo(contest)"
             *ngFor="let contest of contests">
                 <h4 class="name"> {{contest.name}} </h4>
-                <h5 class="info" *ngIf="user.role[contest.id] !== 'player'">
-                    Role: {{user.role[contest.id] === 'adminjudge' ? 'admin' : user.role[contest.id]}}
+                <h5 class="info" *ngIf="user.role[contest.id] === 'adminjudge' || user.role[contest.id] === 'adminjudge'">
+                    Role: admin
+                </h5>
+                <h5 class="info" *ngIf="user.role[contest.id] === 'judge'">
+                    Role: juge
                 </h5>
             </li>
             <li class="grid-53-item flex-div column primary-53 mat-elevation-z3" tabindex="0" role="link"
@@ -37,7 +40,7 @@
             <li class="grid-53-item flex-div column primary-53 mat-elevation-z3 new" tabindex="0" role="link"
             (keydown.enter)="newContest()" (click)="newContest()">
                 <h4 class="add">+</h4>
-                <h5 class="pool"> Creer Contest</h5>
+                <h5 class="pool"> Créer Contest</h5>
             </li>
         </ul>
         <div *ngIf="loading">

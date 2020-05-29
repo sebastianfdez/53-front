@@ -62,6 +62,9 @@
                         [votesRecord]="votesRecord"
                         [publicContest]="true"
                     ></app-pool-form>
+                    <div class="empty" *ngIf="poolForm.value.participants.length < 1">
+                        <h2>Il n'y a pas encore des riders enregistrés</h2>
+                    </div>
                 </div>
             </div>
 

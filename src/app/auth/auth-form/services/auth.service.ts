@@ -16,8 +16,6 @@ import { FirebaseService } from '../../../shared/services/firebase.service';
 export class AuthService {
     authState$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(undefined);
 
-    disconnected = false;
-
     constructor(
         private afAuth: AngularFireAuth,
         private firebaseService: FirebaseService,
@@ -30,21 +28,20 @@ export class AuthService {
     getAuth() {
         this.afAuth.authState.pipe(
             distinctUntilChanged(),
-            tap((user) => this.authState$.next(user)),
             switchMap((user_) => {
                 if (!user_) {
-                    if (!this.disconnected) {
-                        this.store.set('user', null);
-                    } else {
-                        this.disconnected = false;
-                    }
+                    this.authState$.next(null);
                     return of(false);
                 }
                 this.analytics.setUserId(user_.uid);
                 const user: User = JSON.parse(JSON.stringify(emptyUser));
                 user.id = user_.uid;
                 user.mail = user_.email;
-                return this.getLoggedUserInfo(user_.uid, user_.email);
+                return this.getLoggedUserInfo(user_.uid, user_.email).pipe(
+                    tap(() => {
+                        this.authState$.next(user_);
+                    }),
+                );
             }),
         ).subscribe();
     }
@@ -78,7 +75,7 @@ export class AuthService {
     }
 
     getAuthenticatedUser(reload?: boolean): Observable<User> {
-        if (reload) {
+        if (reload && this.store.value.user) {
             return this.getLoggedUserInfo(this.store.value.user.id, this.store.value.user.mail)
                 .pipe(
                     switchMap(() => this.store.select<User>('user')),
@@ -88,14 +85,19 @@ export class AuthService {
     }
 
     get authenticated(): Observable<boolean> {
-        return this.store.value.user !== undefined ? this.store.select<User>('user').pipe(
-            map((user) => (user ? user.autenticated : false)),
-        ) : this.authState$.pipe(
-            filter((user) => user !== undefined),
-            switchMap(() => this.store.select('user')),
-            filter((user) => user !== undefined),
-            map((user) => !!user),
-        );
+        return (this.store.value.user !== undefined && this.store.value.user !== null)
+            ? this.store.select<User>('user').pipe(
+                map((user) => (user ? user.autenticated : false)),
+            ) : this.authState$.pipe(
+                tap((user) => {
+                    console.log(user);
+                }),
+                filter((user) => user !== undefined),
+                tap((user) => {
+                    console.log(user);
+                }),
+                map((user) => !!user),
+            );
     }
 
     isAdmin(): Observable<boolean> {
@@ -138,8 +140,8 @@ export class AuthService {
 
     logOut() {
         this.store.set('user', undefined);
-        this.disconnected = true;
-        return this.afAuth.signOut();
+        // eslint-disable-next-line no-restricted-globals
+        return this.afAuth.signOut().then(() => location.reload());
     }
 
     // Sign in with email link

@@ -116,7 +116,7 @@ export class PlayerInscriptionComponent implements OnInit {
                 tap((enrolled) => {
                     this.isLoading = false;
                     if (enrolled) {
-                        this.snackBarService.showMessage(`Vous êtes déjà inscrit au contest: ${this.contest.name}`);
+                        this.snackBarService.showMessage(`Félicitation! Vous venez de vous inscrire au contest: ${this.contest.name}`);
                     } else {
                         this.snackBarService.showError('Votre mail est déjà inscrit dans ce contest');
                     }
