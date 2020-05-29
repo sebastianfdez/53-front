@@ -77,6 +77,7 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
                     .value.filter((urls) => urls.path === 'new').length;
                 if (!categorie.categorie || this.createNew) {
                     this.categorie = { ...emptyCategorie };
+                    this.categorie.pools.push({ participants: [] });
                 } else {
                     this.categorie = categorie.categorie;
                 }
@@ -93,8 +94,6 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
     }
 
     patchValue(): void {
-        this.categorie.pools = this.categorie.pools
-            .filter((pool) => pool.participants.length);
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((participant) => {
                 console.log(participant);

@@ -5,8 +5,8 @@ import {
     Component, forwardRef, AfterContentInit, Input, Injector,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
-import { ComponentUtils } from '../../../../shared/services/component-utils';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ComponentUtils } from '../../../../shared/services/component-utils';
 import { Participant, ParticipantPublic } from '../../../models/categorie';
 
 @Component({
@@ -51,7 +51,11 @@ export class PlayerFormComponent implements ControlValueAccessor, AfterContentIn
         }
         this.participant_ = this.playerForm.value;
         if (this.participant_ && (this.participant_ as ParticipantPublic).videoLink) {
-            const cleanURL = (this.participant_ as ParticipantPublic).videoLink.replace('watch?v=', 'embed/').split('&t=')[0];
+            let cleanURL = (this.participant_ as ParticipantPublic).videoLink.replace('watch?v=', 'embed/').split('&t=')[0];
+            // eslint-disable-next-line prefer-destructuring
+            if (cleanURL.includes('/?utm_source')) {
+                cleanURL = cleanURL.split('/?utm_source')[0].concat('/embed');
+            }
             this.safeURL = this._sanitizer
                 .bypassSecurityTrustResourceUrl(cleanURL);
         }
