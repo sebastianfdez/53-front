@@ -89,13 +89,7 @@ export class AuthService {
             ? this.store.select<User>('user').pipe(
                 map((user) => (user ? user.autenticated : false)),
             ) : this.authState$.pipe(
-                tap((user) => {
-                    console.log(user);
-                }),
                 filter((user) => user !== undefined),
-                tap((user) => {
-                    console.log(user);
-                }),
                 map((user) => !!user),
             );
     }
@@ -140,6 +134,7 @@ export class AuthService {
 
     logOut() {
         this.store.set('user', undefined);
+        window.localStorage.removeItem('selectedContest');
         // eslint-disable-next-line no-restricted-globals
         return this.afAuth.signOut().then(() => location.reload());
     }

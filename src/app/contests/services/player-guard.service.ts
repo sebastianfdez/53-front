@@ -14,6 +14,8 @@ export class PlayerGuardService implements CanActivate {
             switchMap((user) => {
                 const roles = Object.values(user.role);
                 if (roles.length === 1 && roles[0] === 'player') {
+                    // eslint-disable-next-line no-undef
+                    window.localStorage.setItem('selectedContest', user.contest[0]);
                     this.router.navigate(['portal/player']);
                     return of(false);
                 }
