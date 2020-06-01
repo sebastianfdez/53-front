@@ -77,7 +77,9 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
                     .value.filter((urls) => urls.path === 'new').length;
                 if (!categorie.categorie || this.createNew) {
                     this.categorie = { ...emptyCategorie };
-                    this.categorie.pools.push({ participants: [] });
+                    if (this.categorie.pools.length < 1) {
+                        this.categorie.pools.push({ participants: [] });
+                    }
                 } else {
                     this.categorie = categorie.categorie;
                 }
@@ -96,7 +98,6 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
     patchValue(): void {
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((participant) => {
-                console.log(participant);
                 const vote: Votes = participant.votes
                     ? participant.votes
                         .find((vote_) => vote_.codeJuge === this.judgeCode) : null;
@@ -163,8 +164,13 @@ export class CategoryOpenComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((s) => s.unsubscribe());
         this.categorie.pools.forEach((pool) => {
             pool.participants.forEach((player) => {
-                let vote: Votes = player.votes
-                    ? player.votes.find((vote_) => vote_.codeJuge === this.judgeCode) : null;
+                let vote: Votes = null;
+                if (player.votes) {
+                    vote = player.votes.find((vote_) => vote_.codeJuge === this.judgeCode);
+                } else {
+                    // eslint-disable-next-line no-param-reassign
+                    player.votes = [];
+                }
                 if (!vote) {
                     vote = {
                         codeJuge: this.judgeCode,
