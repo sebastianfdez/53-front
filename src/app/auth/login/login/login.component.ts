@@ -55,7 +55,9 @@ export class LoginComponent implements OnInit {
                     }),
                 ).subscribe((succes) => {
                     if (succes) {
-                        this.router.navigate(['portal/portal']);
+                        setTimeout(() => {
+                            this.router.navigate(['portal/portal']);
+                        }, 500);
                     }
                 });
             } catch (err) {
