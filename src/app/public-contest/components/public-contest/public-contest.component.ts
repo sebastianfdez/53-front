@@ -92,7 +92,7 @@ export class PublicContestComponent implements OnInit {
     getClientIP(): Observable<any> {
         // Get the actual client IP to store into the votes
         return this.apiService.jsonp(
-            'http://api.ipify.org/?format=jsonp&callback=JSONP_CALLBACK',
+            'https://api.ipify.org/?format=jsonp&callback=JSONP_CALLBACK',
         ).pipe(
             map((res: any) => res.ip),
             tap((res) => {
