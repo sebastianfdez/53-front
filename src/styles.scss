@@ -88,6 +88,9 @@ body {
     max-height: 100%;
     &.public {
         padding: 0;
+        img {
+            max-width: 95%;
+        }
     }
 }
 

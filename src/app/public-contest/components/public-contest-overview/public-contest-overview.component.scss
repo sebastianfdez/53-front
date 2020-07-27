@@ -60,35 +60,20 @@ div.nomcontest h1 {
 }
   
   
-.reglement {
+.reglement, .criteres {
     font-family: dosis;
     text-align: center;
     font-size: 20px;
     background-color: hsla(0,0%,100%,.78);
-    width: 70vw;
+    width: 84vw;
     padding: 16px 0px;
     border-radius: 5px;
     margin-bottom: 100px;
+    p {
+        margin: 0;
+        padding: 0 10px;
+        @media (min-width: 580px) {
+            padding: 0 40px;
+        }
+    }
 }
-  
-.reglement p {
-    margin: 0;
-    padding: 0 40px;
-}
-  
-.criteres {
-    font-family: dosis;
-    text-align: center;
-    font-size: 20px;
-    background-color: hsla(0,0%,100%,.78);
-    width: 70vw;
-    padding: 16px 0px;
-    border-radius: 5px;
-    margin-bottom: 100px;
-}
-  
-.criteres p {
-    margin: 0;
-    padding: 0 40px;
-}
-  
