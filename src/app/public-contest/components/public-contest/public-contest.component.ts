@@ -9,6 +9,7 @@ import { Contest } from '../../../shared/models/contest';
 import { ParticipantPublic, PublicVote } from '../../../contests/models/categorie';
 import { PublicContestsService } from '../../services/public-contest.service';
 import { ApiService } from '../../../shared/services/api.service';
+import { Meta } from '@angular/platform-browser';
 
 interface ParticipantPublicLoading extends ParticipantPublic {
     loading: boolean;
@@ -34,11 +35,15 @@ export class PublicContestComponent implements OnInit {
         private publicContestService: PublicContestsService,
         private formBuilder: FormBuilder,
         private apiService: ApiService,
+        private meta: Meta,
     ) {}
 
     ngOnInit(): void {
         this.contest$ = this.route.data.pipe(
             map((data: {contest: Contest;}) => data.contest),
+            tap((contest) => {
+                this.meta.updateTag({ property: 'og:title', content: contest.name });
+            }),
         );
         this.participants$ = this.contest$.pipe(
             switchMap((contest) => combineLatest(
