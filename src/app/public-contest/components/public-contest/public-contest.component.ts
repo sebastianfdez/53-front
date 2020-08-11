@@ -96,7 +96,6 @@ export class PublicContestComponent implements OnInit {
         ).pipe(
             map((res: any) => res.ip),
             tap((res) => {
-                console.log(res);
                 this.userIP = res;
             }),
         );

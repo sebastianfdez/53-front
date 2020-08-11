@@ -19,7 +19,6 @@ export class PublicContestOverviewComponent {
 
     ngOnInit(): void {
         this.contest$ = this.route.data.pipe(
-            tap((data) => console.log(data)),
             map((data: {contest: Contest;}) => data.contest),
         );
     }
