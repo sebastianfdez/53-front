@@ -12,7 +12,10 @@ export class PublicContestGuardService implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
-        const contestId = route.params.contest;
+        let contestId = route.params.contest;
+        if (contestId === 'lyon-roller-open') {
+            contestId = 'R79TaCy7lqk3XJd2FmMR';
+        }
         return contestId ? this.publicContestService.getContest(contestId).pipe(
             distinctUntilChanged(),
             switchMap((contest) => {
