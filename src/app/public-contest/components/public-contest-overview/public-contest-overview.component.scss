@@ -36,28 +36,29 @@ div.nomcontest h1 {
 }
   
 .bouton {
-    display: flex;
-    flex-direction: row;
+    @media (min-width: 760px) {
+        flex-direction: row;
+    }
     justify-content: space-around;
     width: 100%;
     padding: 0;
     max-width: 500px;
     margin-bottom: 100px;
-  }
-  
-.bouton li {
-    font-family: dosis;
-    font-size: 22px;
-    color: #FFFFFF;
-    text-align: center;
-    list-style-type: none;
-    background-color: #5F1629;
-    min-width: 150px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 5px;
-}
+    li {
+        font-family: dosis;
+        font-size: 22px;
+        color: #FFFFFF;
+        text-align: center;
+        list-style-type: none;
+        background-color: #5F1629;
+        min-width: 150px;
+        padding: 7px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+} 
   
   
 .reglement, .criteres {

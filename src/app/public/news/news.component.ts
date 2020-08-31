@@ -22,6 +22,6 @@ export class NewsComponent {
     }
 
     goToOpenContest() {
-        this.router.navigate(['/public-contest/R79TaCy7lqk3XJd2FmMR/overview']);
+        this.router.navigate(['/public-contest/lyon-roller-open/overview']);
     }
 }

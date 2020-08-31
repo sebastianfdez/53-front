@@ -24,6 +24,10 @@ export class PublicContestOverviewComponent {
     }
 
     goToVote(id: string) {
+        if (id === 'R79TaCy7lqk3XJd2FmMR') {
+            this.router.navigate([`public-contest/lyon-roller-open`]);
+            return;
+        }
         this.router.navigate([`public-contest/${id}`]);
     }
 
