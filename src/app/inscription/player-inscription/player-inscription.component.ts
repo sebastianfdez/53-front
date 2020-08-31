@@ -101,7 +101,7 @@ export class PlayerInscriptionComponent implements OnInit {
             id: this.user.id,
             licence: `${(new Date()).getTime()}${Math.floor(Math.random() * 899999 + 100000)}`,
             likes: '',
-            videoLink: this.playerInscriptionForm.value.videoLink,
+            videoLink: this.cleanUrl(this.playerInscriptionForm.value.videoLink),
             mail: this.user.mail,
             votes: [],
             isUser: true,
@@ -139,5 +139,16 @@ export class PlayerInscriptionComponent implements OnInit {
             ) return null;
             return { videoLinkCheck: { valid: false } };
         };
+    }
+
+    cleanUrl(url: string): string {
+        let url_ = url;
+        if (url_.includes('/?utm_source')) {
+            url_ = url_.split('/?utm_source')[0].concat('/embed');
+        }
+        if (url_.includes('/?igshid')) {
+            url_ = url_.split('/?igshid')[0].concat('/embed');
+        }
+        return url_;
     }
 }

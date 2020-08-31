@@ -45,6 +45,8 @@ body {
 }
 
 .flex-div {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     align-items: center;
     &.column {
@@ -184,6 +186,7 @@ body {
         max-width: 300px;
         width: 100%;
         margin: 17px 0;
+        max-height: 160px;
     }
 }
 
