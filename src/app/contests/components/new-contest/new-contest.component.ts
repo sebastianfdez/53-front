@@ -62,6 +62,7 @@ export class NewContestComponent implements OnInit, OnDestroy {
             judges: [],
             speaker: '',
             isPublic: this.newContestForm.value.isPublic,
+            isActive: true,
         };
         this.loading = true;
         this.subscriptions.push(

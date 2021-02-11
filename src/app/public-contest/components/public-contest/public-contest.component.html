@@ -11,15 +11,23 @@
           >
             <div class="votes flex-div column" *ngIf="!participant.loading">
               <h3>Likes: {{votes[participant.likes].ips.length}}</h3>
-              <button mat-raised-button color="primary" class="button" 
-                  *ngIf="!votes[participant.likes].ips.includes(this.userIP) else voted"
-                  (click)="vote(participant, votes[participant.likes])">
-                  Voter
-              </button>
-              <ng-template #voted>
+              <ng-container *ngIf="contest.isActive">
+                <button mat-raised-button color="primary" class="button" 
+                    *ngIf="!votes[participant.likes].ips.includes(this.userIP) else voted"
+                    (click)="vote(participant, votes[participant.likes])">
+                    Voter
+                </button>
+                <ng-template #voted>
+                  <button mat-raised-button color="primary" class="button"
+                  disabled>
+                      Déjà Voté
+                  </button>
+                </ng-template>
+              </ng-container>
+              <ng-template #closed>
                 <button mat-raised-button color="primary" class="button"
                 disabled>
-                    Déjà Voté
+                    Fermé
                 </button>
               </ng-template>
             </div>
