@@ -18,6 +18,8 @@ export class Contest {
     place: string;
 
     isPublic: boolean;
+
+    isActive: boolean;
 }
 
 export const emptyContest: Contest = {
@@ -31,4 +33,5 @@ export const emptyContest: Contest = {
     date: 0,
     place: '',
     isPublic: false,
+    isActive: false,
 };

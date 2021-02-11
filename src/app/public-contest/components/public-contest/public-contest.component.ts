@@ -5,11 +5,11 @@ import {
     map, switchMap, tap,
 } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Meta } from '@angular/platform-browser';
 import { Contest } from '../../../shared/models/contest';
 import { ParticipantPublic, PublicVote } from '../../../contests/models/categorie';
 import { PublicContestsService } from '../../services/public-contest.service';
 import { ApiService } from '../../../shared/services/api.service';
-import { Meta } from '@angular/platform-browser';
 
 interface ParticipantPublicLoading extends ParticipantPublic {
     loading: boolean;

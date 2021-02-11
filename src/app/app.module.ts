@@ -1,6 +1,8 @@
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+    NgModule, APP_INITIALIZER, ErrorHandler,
+} from '@angular/core';
+import { RouterModule, Routes, Router } from '@angular/router';
 
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,10 +11,12 @@ import { CommonModule } from '@angular/common';
 import { Store } from 'store';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import * as Sentry from '@sentry/angular';
 import { environment } from '../environments/environment';
 import { PublicModule } from './public/public.module';
 import { AppComponent } from './app.component';
 import { AuthServiceModule } from './auth/auth.module';
+
 
 const routes: Routes = [
     {
@@ -51,6 +55,22 @@ const routes: Routes = [
     ],
     providers: [
         Store,
+        {
+            provide: ErrorHandler,
+            useValue: Sentry.createErrorHandler({
+                showDialog: true,
+            }),
+        },
+        {
+            provide: Sentry.TraceService,
+            deps: [Router],
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: () => () => {},
+            deps: [Sentry.TraceService],
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent],
 })
